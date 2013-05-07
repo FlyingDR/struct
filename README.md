@@ -1,0 +1,4 @@
+struct
+======
+
+Generic structures implementation
