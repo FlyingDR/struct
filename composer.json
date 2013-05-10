@@ -1,0 +1,21 @@
+{
+    "name": "flying/struct",
+    "description": "Implementation of generic structures",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Grimalovsky",
+            "email": "alexander.grimalovsky@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Flying\\Struct\\": "lib/",
+            "Flying\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "doctrine/annotations": "1.1.*",
+        "flying/config": "1.0.*"
+    }
+}
