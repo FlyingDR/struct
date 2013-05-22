@@ -7,7 +7,7 @@ use Flying\Struct\Common\StructItemInterface;
 /**
  * Interface for structure property
  */
-interface PropertyInterface extends StructItemInterface
+interface PropertyInterface extends StructItemInterface, \Serializable
 {
     /**
      * Get property value
