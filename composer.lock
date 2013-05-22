@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "09508ad219356907ebf99f99ab6b316b",
+    "hash": "630066e6c9eee340bf2b384b0873d5a1",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -130,16 +130,16 @@
         },
         {
             "name": "flying/config",
-            "version": "1.0.1",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FlyingDR/config.git",
-                "reference": "1.0.1"
+                "reference": "1.1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FlyingDR/config/zipball/1.0.1",
-                "reference": "1.0.1",
+                "url": "https://api.github.com/repos/FlyingDR/config/zipball/1.1.1",
+                "reference": "1.1.1",
                 "shasum": ""
             },
             "type": "library",
@@ -160,7 +160,7 @@
                 }
             ],
             "description": "Implementation of object configuration options",
-            "time": "2013-05-06 17:14:44"
+            "time": "2013-05-16 14:10:29"
         }
     ],
     "packages-dev": [
