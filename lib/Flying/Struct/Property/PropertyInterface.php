@@ -2,10 +2,12 @@
 
 namespace Flying\Struct\Property;
 
+use Flying\Struct\Common\StructItemInterface;
+
 /**
  * Interface for structure property
  */
-interface PropertyInterface
+interface PropertyInterface extends StructItemInterface
 {
     /**
      * Get property value

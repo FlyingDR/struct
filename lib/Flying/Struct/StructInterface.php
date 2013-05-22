@@ -2,10 +2,13 @@
 
 namespace Flying\Struct;
 
+use Flying\Struct\Common\StructItemInterface;
+
 /**
  * Interface for structures
  */
-interface StructInterface extends \Countable, \Iterator, \ArrayAccess, \Serializable
+interface StructInterface extends \Countable, \Iterator, \ArrayAccess, \Serializable,
+    StructItemInterface
 {
 
     /**
