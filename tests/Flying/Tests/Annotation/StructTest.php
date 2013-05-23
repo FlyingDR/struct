@@ -24,7 +24,7 @@ class StructTest extends \PHPUnit_Framework_TestCase
     public function testMissedClass()
     {
         $this->setExpectedException('\Doctrine\Common\Annotations\AnnotationException', 'Required structure annotation is missed: class');
-        $annotation = new Struct(array());
+        new Struct(array());
     }
 
 }
