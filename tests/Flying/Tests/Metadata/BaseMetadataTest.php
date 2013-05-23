@@ -63,7 +63,19 @@ abstract class BaseMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($metadata->getConfig(), $this->_config);
     }
 
-    public function testSerialization()
+    public function testEmptyObjectSerialization()
+    {
+        $metadata = $this->getMetadataObject();
+        $class = get_class($metadata);
+        $data = serialize($metadata);
+
+        /** @var $new MetadataInterface */
+        $new = unserialize($data);
+        $this->assertInstanceOf($class, $new);
+        $this->assertFalse($metadata === $new);
+    }
+
+    public function testFilledObjectSerialization()
     {
         $metadata = $this->getMetadataObject();
         $class = get_class($metadata);
@@ -79,8 +91,12 @@ abstract class BaseMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($new->getName(), $this->_name);
         $this->assertEquals($new->getClass(), $this->_class);
         $this->assertEquals($new->getConfig(), $this->_config);
+    }
 
-        // Test unserialization of invalid serialized data
+    public function testUnserializationOfInvalidSerializationData()
+    {
+        $metadata = $this->getMetadataObject();
+        $class = get_class($metadata);
         $data = sprintf('C:%d:"%s":0:{}', strlen($class), $class);
         $new = unserialize($data);
         $this->assertInstanceOf($class, $new);
@@ -88,6 +104,20 @@ abstract class BaseMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($new->getName());
         $this->assertNull($new->getClass());
         $this->assertEmpty($new->getConfig());
+    }
+
+    public function testToArray()
+    {
+        $metadata = $this->getMetadataObject();
+        $metadata->setName($this->_name)
+            ->setClass($this->_class)
+            ->setConfig($this->_config);
+        $expected = array(
+            'name'   => $this->_name,
+            'class'  => $this->_class,
+            'config' => $this->_config,
+        );
+        $this->assertEquals($expected, $metadata->toArray());
     }
 
     /**

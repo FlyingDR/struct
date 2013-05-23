@@ -54,4 +54,11 @@ interface MetadataInterface extends \Serializable
      */
     public function setConfig(array $config);
 
+    /**
+     * Get metadata information as array
+     *
+     * @return array
+     */
+    public function toArray();
+
 }

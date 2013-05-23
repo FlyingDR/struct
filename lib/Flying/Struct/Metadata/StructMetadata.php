@@ -158,4 +158,19 @@ class StructMetadata extends PropertyMetadata
         }
     }
 
+    public function toArray()
+    {
+        $array = array(
+            'name'       => $this->getName(),
+            'class'      => $this->getClass(),
+            'config'     => $this->getConfig(),
+            'properties' => array(),
+        );
+        /** @var $property MetadataInterface */
+        foreach ($this->getProperties() as $name => $property) {
+            $array['properties'][$name] = $property->toArray();
+        }
+        return $array;
+    }
+
 }

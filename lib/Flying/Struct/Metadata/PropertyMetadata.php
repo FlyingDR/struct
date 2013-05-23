@@ -63,7 +63,7 @@ class PropertyMetadata implements MetadataInterface
      */
     public function setName($name)
     {
-        if (!is_string($name)) {
+        if ((!is_string($name)) && ($name !== null)) {
             throw new \InvalidArgumentException('Property name must be a string');
         }
         $this->_name = $name;
@@ -89,7 +89,7 @@ class PropertyMetadata implements MetadataInterface
      */
     public function setClass($class)
     {
-        if (!is_string($class)) {
+        if ((!is_string($class)) && ($class !== null)) {
             throw new \InvalidArgumentException('Property class name must be a string');
         }
         $this->_class = $class;
@@ -125,11 +125,7 @@ class PropertyMetadata implements MetadataInterface
      */
     public function serialize()
     {
-        return (serialize(array(
-            'name'   => $this->getName(),
-            'class'  => $this->getClass(),
-            'config' => $this->getConfig(),
-        )));
+        return (serialize($this->toArray()));
     }
 
     /**
@@ -153,6 +149,20 @@ class PropertyMetadata implements MetadataInterface
         if (array_key_exists('config', $array)) {
             $this->setConfig($array['config']);
         }
+    }
+
+    /**
+     * Get metadata information as array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'name'   => $this->getName(),
+            'class'  => $this->getClass(),
+            'config' => $this->getConfig(),
+        );
     }
 
 }
