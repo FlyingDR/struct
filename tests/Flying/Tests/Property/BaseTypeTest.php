@@ -29,7 +29,14 @@ abstract class BaseTypeTest extends BasePropertyTest
             ));
             $this->assertEquals($expected, $property->get());
 
-            // Test setting value as default
+            // Test setting value as default with null value allowed
+            $property = $this->getTestProperty(null, array(
+                'nullable' => true,
+                'default'  => $value,
+            ));
+            $this->assertEquals($expected, $property->get());
+
+            // Test setting value as default with null value not allowed
             $property = $this->getTestProperty(null, array(
                 'nullable' => false,
                 'default'  => $value,
@@ -55,6 +62,7 @@ abstract class BaseTypeTest extends BasePropertyTest
     {
         $property = $this->getTestProperty(null, array(
             'nullable' => true,
+            'default'  => null,
         ));
         $this->assertNull($property->get());
         $property->set(null);

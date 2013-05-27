@@ -30,12 +30,12 @@ abstract class AbstractProperty implements PropertyInterface
     /**
      * Class constructor
      *
-     * @param mixed $value      Property value
+     * @param mixed $value      OPTIONAL Property value
      * @param array $config     OPTIONAL Configuration options for this property
      * @throws Exception
      * @return AbstractProperty
      */
-    public function __construct($value, array $config = null)
+    public function __construct($value = null, array $config = null)
     {
         // No change notification is required during object construction
         $flag = $this->_skipNotify;
@@ -45,17 +45,10 @@ abstract class AbstractProperty implements PropertyInterface
         ), $config);
         // We must be sure that property value is always valid
         // even if no value for the property is given explicitly
-        // To achieve this - invalid property value should be initialized
-        // with default value that should, in its turn, should be valid by itself
-        if ($this->normalize($value)) {
-            $this->_value = $value;
+        if ($value !== null) {
+            $this->set($value);
         } else {
-            $default = $this->getConfig('default');
-            if ($this->normalize($default)) {
-                $this->_value = $default;
-            } else {
-                throw new Exception('Default value for property class ' . get_class($this) . ' is not acceptable for property validation rules');
-            }
+            $this->reset();
         }
         $this->_skipNotify = $flag;
     }
