@@ -5,7 +5,7 @@ namespace Flying\Struct\Property;
 /**
  * Structure property with boolean value
  */
-class Boolean extends AbstractProperty
+class Boolean extends Property
 {
 
     /**
@@ -13,8 +13,14 @@ class Boolean extends AbstractProperty
      */
     protected function normalize(&$value)
     {
+        if (!parent::normalize($value)) {
+            return false;
+        }
         if ($value === null) {
-            return $this->getConfig('nullable');
+            return true;
+        }
+        if (!is_scalar($value)) {
+            $value = !empty($value);
         }
         $value = (boolean)$value;
         return true;

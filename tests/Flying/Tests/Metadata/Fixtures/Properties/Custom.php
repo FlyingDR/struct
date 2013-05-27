@@ -2,23 +2,13 @@
 
 namespace Flying\Tests\Metadata\Fixtures\Properties;
 
-use Flying\Struct\Property\AbstractProperty;
+use Flying\Struct\Property\Property;
 
 /**
  * Custom structure property
  */
-class Custom extends AbstractProperty
+class Custom extends Property
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function normalize(&$value)
-    {
-        if ($value === null) {
-            return $this->getConfig('nullable');
-        }
-        return true;
-    }
 
 }

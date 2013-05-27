@@ -2,14 +2,14 @@
 
 namespace Flying\Tests\Property\Fixtures;
 
-use Flying\Struct\Property\AbstractProperty;
+use Flying\Struct\Property\Property as BaseProperty;
 use Flying\Tests\Tools\CallbackLog;
 use Flying\Tests\Tools\CallbackTrackingInterface;
 
 /**
  * Test property class to allow testing of various callbacks and notification calls
  */
-class Property extends AbstractProperty implements CallbackTrackingInterface
+class Property extends BaseProperty implements CallbackTrackingInterface
 {
     /**
      * Available callback loggers
@@ -54,10 +54,7 @@ class Property extends AbstractProperty implements CallbackTrackingInterface
     protected function normalize(&$value)
     {
         $this->logCallbackCall(__FUNCTION__, func_get_args());
-        if (($value === null) && (!$this->getConfig('nullable'))) {
-            return false;
-        }
-        return true;
+        return parent::normalize($value);
     }
 
     /**

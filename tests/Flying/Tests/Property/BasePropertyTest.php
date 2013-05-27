@@ -68,13 +68,13 @@ abstract class BasePropertyTest extends \PHPUnit_Framework_TestCase
      *
      * @param mixed $value
      * @param array $config
-     * @return \Flying\Struct\Property\AbstractProperty
+     * @return \Flying\Struct\Property\Property
      */
     protected function getTestProperty($value = null, $config = null)
     {
         $class = $this->getPropertyClass();
-        if (!is_subclass_of($class, 'Flying\Struct\Property\AbstractProperty')) {
-            $this->fail('Test property class must be inherited from AbstractProperty');
+        if (!is_subclass_of($class, 'Flying\Struct\Property\Property')) {
+            $this->fail('Test property class must be inherited from Property');
         }
         if (!is_array($config)) {
             $config = array();

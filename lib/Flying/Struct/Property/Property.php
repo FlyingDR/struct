@@ -9,7 +9,7 @@ use Flying\Struct\Exception;
 /**
  * Abstract implementation of structure property
  */
-abstract class AbstractProperty implements PropertyInterface
+class Property implements PropertyInterface
 {
     /**
      * Property value
@@ -33,7 +33,7 @@ abstract class AbstractProperty implements PropertyInterface
      * @param mixed $value      OPTIONAL Property value
      * @param array $config     OPTIONAL Configuration options for this property
      * @throws Exception
-     * @return AbstractProperty
+     * @return Property
      */
     public function __construct($value = null, array $config = null)
     {
@@ -130,7 +130,16 @@ abstract class AbstractProperty implements PropertyInterface
      * @param mixed $value  Given property value (passed by reference)
      * @return mixed        TRUE if value can be accepted, FALSE otherwise
      */
-    abstract protected function normalize(&$value);
+    protected function normalize(&$value)
+    {
+        if ((($value === null)) && (!$this->getConfig('nullable'))) {
+            return false;
+        }
+        if ($value instanceof PropertyInterface) {
+            $value = $value->get();
+        }
+        return true;
+    }
 
     /**
      * Get list of configuration options to use for config initialization

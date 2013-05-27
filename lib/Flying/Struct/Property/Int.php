@@ -5,7 +5,7 @@ namespace Flying\Struct\Property;
 /**
  * Structure property with string value
  */
-class Int extends AbstractProperty
+class Int extends Property
 {
 
     /**
@@ -24,8 +24,11 @@ class Int extends AbstractProperty
      */
     protected function normalize(&$value)
     {
+        if (!parent::normalize($value)) {
+            return false;
+        }
         if ($value === null) {
-            return $this->getConfig('nullable');
+            return true;
         }
         if (!is_scalar($value)) {
             return false;
