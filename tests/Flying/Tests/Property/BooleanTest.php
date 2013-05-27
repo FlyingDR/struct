@@ -3,6 +3,8 @@
 namespace Flying\Tests\Property;
 
 
+use Flying\Struct\Property\Property;
+
 class BooleanTest extends BaseTypeTest
 {
     /**
@@ -39,5 +41,13 @@ class BooleanTest extends BaseTypeTest
         true,
         false,
     );
+
+    public function getValueTests()
+    {
+        $tests = $this->_valueTests;
+        $tests[] = array(new \ArrayObject(), true);
+        $tests[] = array(new Property(false), false);
+        return $tests;
+    }
 
 }

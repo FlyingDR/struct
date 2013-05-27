@@ -3,6 +3,8 @@
 namespace Flying\Tests\Property;
 
 
+use Flying\Struct\Property\Property;
+
 class IntTest extends BaseTypeTest
 {
     /**
@@ -60,5 +62,17 @@ class IntTest extends BaseTypeTest
         -100,
         100,
     );
+
+    public function getValueTests()
+    {
+        $tests = $this->_valueTests;
+        // Non-scalar values are not acceptable for this property
+        // so default value should be set instead
+        $tests[] = array(array(), 123, array('default' => 123));
+        $tests[] = array(new \ArrayObject(), 123, array('default' => 123));
+        $tests[] = array(new Property('abc'), 0);
+        $tests[] = array(new Property('12345'), 12345);
+        return $tests;
+    }
 
 }

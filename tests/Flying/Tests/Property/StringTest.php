@@ -2,6 +2,9 @@
 
 namespace Flying\Tests\Property;
 
+use Flying\Struct\Property\Property;
+use Flying\Tests\Property\Stubs\ToString;
+use Flying\Tests\Property\Stubs\UsToString;
 
 class StringTest extends BaseTypeTest
 {
@@ -44,5 +47,17 @@ class StringTest extends BaseTypeTest
         'some text',
         'some long text for property value',
     );
+
+    public function getValueTests()
+    {
+        $tests = $this->_valueTests;
+        $tests[] = array(array(), 'test', array('default' => 'test'));
+        $tests[] = array(new \ArrayObject(), 'test', array('default' => 'test'));
+        $tests[] = array(new Property('abc'), 'abc');
+        $tests[] = array(new Property('12345'), '12345');
+        $tests[] = array(new ToString('test string'), 'test string');
+        $tests[] = array(new UsToString('another test string'), 'another test string');
+        return $tests;
+    }
 
 }
