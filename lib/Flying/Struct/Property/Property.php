@@ -44,7 +44,11 @@ class Property implements PropertyInterface
         // We must be sure that property value is always valid
         // even if no value for the property is given explicitly
         if ($value !== null) {
-            $this->set($value);
+            if ($this->normalize($value)) {
+                $this->_value = $value;
+            } else {
+                $this->reset();
+            }
         } else {
             $this->reset();
         }
