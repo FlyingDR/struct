@@ -52,33 +52,6 @@ class PropertyTest extends BasePropertyTest
         ));
     }
 
-    public function testSerialization()
-    {
-        $property = $this->getTestProperty();
-        $testSerialize = function ($value) use ($property) {
-            $value = serialize($value);
-            $class = get_class($property);
-            $result = sprintf('C:%d:"%s":%d:{%s}', strlen($class), $class, strlen($value), $value);
-            return $result;
-        };
-        $this->assertEquals($testSerialize($this->_defaultValue), serialize($property));
-        $testValues = array(
-            true,
-            false,
-            12345,
-            -123.45,
-            'some string',
-            new \ArrayObject(),
-        );
-        foreach ($testValues as $value) {
-            $property->set($value);
-            $serialized = serialize($property);
-            $this->assertEquals($testSerialize($value), $serialized);
-            $p = unserialize($serialized);
-            $this->assertEquals($value, $p->get());
-        }
-    }
-
     public function testValueNormalizationCallback()
     {
         $this->runCallbackTest('normalize', array(
@@ -144,6 +117,23 @@ class PropertyTest extends BasePropertyTest
         $property->set(null);
         // Reset should not trigger update notification
         $property->reset();
+    }
+
+    public function serializationDataProvider()
+    {
+        $testValues = array(
+            true,
+            false,
+            12345,
+            -123.45,
+            'some string',
+            new \ArrayObject(),
+        );
+        $result = array();
+        foreach ($testValues as $value) {
+            $result[] = array($value, $value);
+        }
+        return $result;
     }
 
 }

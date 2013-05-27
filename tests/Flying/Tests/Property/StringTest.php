@@ -35,5 +35,14 @@ class StringTest extends BaseTypeTest
         array('some long text for property value', 'some long ', array('maxlength' => 10)),
         array('some long text for property value', 'some long text for p', array('maxlength' => 20)),
     );
+    /**
+     * Serialization tests
+     * @var array
+     */
+    protected $_serializationTests = array(
+        '',
+        'some text',
+        'some long text for property value',
+    );
 
 }

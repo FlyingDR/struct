@@ -29,6 +29,24 @@ abstract class BasePropertyTest extends \PHPUnit_Framework_TestCase
     protected $_defaultValue = 'default value';
 
     /**
+     * @dataProvider serializationDataProvider
+     */
+    public function testSerialization($value, $expected, $config = null)
+    {
+        $property = $this->getTestProperty($value, $config);
+        $testSerialize = function ($value) use ($property) {
+            $value = serialize($value);
+            $class = get_class($property);
+            $result = sprintf('C:%d:"%s":%d:{%s}', strlen($class), $class, strlen($value), $value);
+            return $result;
+        };
+        $serialized = serialize($property);
+        $this->assertEquals($testSerialize($value), $serialized);
+        $p = unserialize($serialized);
+        $this->assertEquals($value, $p->get());
+    }
+
+    /**
      * Get class name of the property to test
      *
      * @return string
@@ -67,5 +85,7 @@ abstract class BasePropertyTest extends \PHPUnit_Framework_TestCase
         $property = new $class($value, $config);
         return $property;
     }
+
+    abstract public function serializationDataProvider();
 
 }

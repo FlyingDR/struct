@@ -31,5 +31,13 @@ class BooleanTest extends BaseTypeTest
         array(array(), false),
         array(array(1, 2, 3), true),
     );
+    /**
+     * Serialization tests
+     * @var array
+     */
+    protected $_serializationTests = array(
+        true,
+        false,
+    );
 
 }

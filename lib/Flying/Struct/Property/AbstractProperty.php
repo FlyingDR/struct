@@ -40,9 +40,7 @@ abstract class AbstractProperty implements PropertyInterface
         // No change notification is required during object construction
         $flag = $this->_skipNotify;
         $this->_skipNotify = true;
-        $this->_config = new ObjectConfig($this, $this->getConfigOptions(), array(
-            'validateConfig' => array($this, 'validateConfig'),
-        ), $config);
+        $this->initConfigObject($config);
         // We must be sure that property value is always valid
         // even if no value for the property is given explicitly
         if ($value !== null) {
@@ -173,6 +171,13 @@ abstract class AbstractProperty implements PropertyInterface
         return true;
     }
 
+    protected function initConfigObject(array $config = null)
+    {
+        $this->_config = new ObjectConfig($this, $this->getConfigOptions(), array(
+            'validateConfig' => array($this, 'validateConfig'),
+        ), $config);
+    }
+
     /**
      * Get object's configuration or configuration option with given name
      * If argument is passed as string - value of configuration option with this name will be returned
@@ -185,6 +190,9 @@ abstract class AbstractProperty implements PropertyInterface
      */
     public function getConfig($config = null)
     {
+        if (!$this->_config) {
+            $this->initConfigObject();
+        }
         return ($this->_config->getConfig($config));
     }
 
@@ -198,6 +206,9 @@ abstract class AbstractProperty implements PropertyInterface
      */
     protected function setConfig($config, $value = null)
     {
+        if (!$this->_config) {
+            $this->initConfigObject();
+        }
         $this->_config->setConfig($config, $value);
     }
 

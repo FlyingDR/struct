@@ -50,5 +50,15 @@ class IntTest extends BaseTypeTest
         array('-135.79', -135),
         array('test', 0),
     );
+    /**
+     * Serialization tests
+     * @var array
+     */
+    protected $_serializationTests = array(
+        0,
+        1,
+        -100,
+        100,
+    );
 
 }
