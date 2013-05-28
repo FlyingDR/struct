@@ -12,7 +12,7 @@ class NamespacesMapTest extends \PHPUnit_Framework_TestCase
         $map = $this->getObject();
         $map->add('test', '\\A\\B\\C\\');
         $this->assertTrue($map->has('test'));
-        $this->assertFalse($map->has('nonexisting'));
+        $this->assertFalse($map->has('unavailable'));
         $this->assertEquals($map->get('test'), 'A\B\C');
         $temp = $map->getAll();
         $this->assertEquals(sizeof($temp), 1);
@@ -38,7 +38,7 @@ class NamespacesMapTest extends \PHPUnit_Framework_TestCase
     {
         $map = $this->getObject();
         $this->setExpectedException('Flying\Struct\Exception');
-        $map->get('nonexisting');
+        $map->get('unavailable');
     }
 
     public function testSettingInvalidNamespaceAlias()

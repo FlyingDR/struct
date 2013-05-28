@@ -43,7 +43,7 @@ abstract class BasePropertyTest extends \PHPUnit_Framework_TestCase
         $serialized = serialize($property);
         $this->assertEquals($testSerialize($value), $serialized);
         $p = unserialize($serialized);
-        $this->assertEquals($value, $p->get());
+        $this->assertEquals($expected, $p->get());
     }
 
     /**

@@ -81,7 +81,7 @@ class StructMetadataTest extends BaseMetadataTest
     {
         $this->setExpectedException('\Flying\Struct\Exception');
         $metadata = $this->getMetadataObject();
-        $metadata->getProperty('nonexisting');
+        $metadata->getProperty('unavailable');
     }
 
     public function testSerializationOfStructureWithProperties()
