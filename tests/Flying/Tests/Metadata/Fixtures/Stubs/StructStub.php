@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Metadata\Fixtures\Stubs;
 
+use Flying\Struct\Common\StructItemInterface;
 use Flying\Struct\StructInterface;
 
 /**
@@ -197,6 +198,17 @@ class StructStub implements StructInterface
      * @return void
      */
     public function unserialize($data)
+    {
+
+    }
+
+    /**
+     * Handle notification about update of given property
+     *
+     * @param StructItemInterface $property
+     * @return void
+     */
+    public function updateNotify(StructItemInterface $property)
     {
 
     }
