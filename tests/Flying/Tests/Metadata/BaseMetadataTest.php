@@ -3,8 +3,9 @@
 namespace Flying\Tests\Metadata;
 
 use Flying\Struct\Metadata\MetadataInterface;
+use Flying\Tests\TestCase;
 
-abstract class BaseMetadataTest extends \PHPUnit_Framework_TestCase
+abstract class BaseMetadataTest extends TestCase
 {
     protected $_name = 'test_name';
     protected $_class = 'test_class';

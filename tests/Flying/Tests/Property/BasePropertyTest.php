@@ -2,7 +2,9 @@
 
 namespace Flying\Tests\Property;
 
-abstract class BasePropertyTest extends \PHPUnit_Framework_TestCase
+use Flying\Tests\TestCase;
+
+abstract class BasePropertyTest extends TestCase
 {
     /**
      * Class name of the property to test

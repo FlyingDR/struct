@@ -3,8 +3,9 @@
 namespace Flying\Tests\Configuration;
 
 use Flying\Struct\Configuration\NamespacesMap;
+use Flying\Tests\TestCase;
 
-class NamespacesMapTest extends \PHPUnit_Framework_TestCase
+class NamespacesMapTest extends TestCase
 {
 
     public function testBasicOperations()

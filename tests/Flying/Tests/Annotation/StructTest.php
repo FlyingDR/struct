@@ -3,8 +3,9 @@
 namespace Flying\Tests\Annotation;
 
 use Flying\Struct\Annotation\Struct\Struct;
+use Flying\Tests\TestCase;
 
-class StructTest extends \PHPUnit_Framework_TestCase
+class StructTest extends TestCase
 {
 
     public function testBasicOperations()

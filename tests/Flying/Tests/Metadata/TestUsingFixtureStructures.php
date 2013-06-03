@@ -4,11 +4,12 @@ namespace Flying\Tests\Metadata;
 
 use Flying\Struct\Configuration;
 use Flying\Struct\ConfigurationManager;
+use Flying\Tests\TestCaseUsingConfiguration;
 
 /**
  * Basic class to allow using fixture structures into tests
  */
-abstract class TestUsingFixtureStructures extends \PHPUnit_Framework_TestCase
+abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
 {
 
     protected $_annotationFixtures = array(

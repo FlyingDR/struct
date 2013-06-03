@@ -4,15 +4,20 @@ namespace Flying\Tests\Struct;
 
 use Flying\Struct\Configuration;
 use Flying\Struct\ConfigurationManager;
+use Flying\Tests\TestCaseUsingConfiguration;
 
-abstract class BaseStructTest extends \PHPUnit_Framework_TestCase
+abstract class BaseStructTest extends TestCaseUsingConfiguration
 {
+    /**
+     * Namespace for fixtures structures
+     * @var string
+     */
+    protected $_fixturesNs = 'Flying\Tests\Struct\Fixtures';
 
     public function setUp()
     {
-        $configuration = new Configuration();
-        $configuration->getStructNamespacesMap()->add('fixtures', 'Flying\Tests\Struct\Fixtures');
-        ConfigurationManager::setConfiguration($configuration);
+        parent::setUp();
+        ConfigurationManager::getConfiguration()->getStructNamespacesMap()->add('fixtures', $this->_fixturesNs);
     }
 
     /**

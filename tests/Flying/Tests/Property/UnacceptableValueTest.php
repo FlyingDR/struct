@@ -3,8 +3,9 @@
 namespace Flying\Tests\Property;
 
 use Flying\Tests\Property\Fixtures\PropertyForUnacceptableValues;
+use Flying\Tests\TestCase;
 
-class UnacceptableValueTest extends \PHPUnit_Framework_TestCase
+class UnacceptableValueTest extends TestCase
 {
 
     public function testNullValueToNullableProperty()

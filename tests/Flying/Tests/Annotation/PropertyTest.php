@@ -3,8 +3,9 @@
 namespace Flying\Tests\Annotation;
 
 use Flying\Struct\Annotation\Struct\Property;
+use Flying\Tests\TestCase;
 
-class PropertyTest extends \PHPUnit_Framework_TestCase
+class PropertyTest extends TestCase
 {
     protected $_propertyNamespace = 'Flying\Struct\Annotation\Struct';
     protected $_typesMap = array(
