@@ -39,6 +39,16 @@ class Struct extends AbstractConfig implements StructInterface
      * @var int
      */
     protected $_index = 0;
+    /**
+     * Structure metadata
+     * @var StructMetadata
+     */
+    protected $_metadata = null;
+    /**
+     * Parent structure or NULL if this is top-level structure
+     * @var Struct
+     */
+    protected $_parent = null;
 
     /**
      * Class constructor
@@ -68,17 +78,20 @@ class Struct extends AbstractConfig implements StructInterface
      */
     protected function getMetadata()
     {
-        /** @var $metadata StructMetadata */
-        $metadata = $this->getConfig('metadata');
-        if (!$metadata instanceof StructMetadata) {
-            /** @var $configuration Configuration */
-            $configuration = $this->getConfig('configuration');
-            $metadata = $configuration->getMetadataManager()->getMetadata($this);
+        if (!$this->_metadata) {
+            /** @var $metadata StructMetadata */
+            $metadata = $this->getConfig('metadata');
             if (!$metadata instanceof StructMetadata) {
-                throw new Exception('No metadata information is found for structure: ' . get_class($this));
+                /** @var $configuration Configuration */
+                $configuration = $this->getConfig('configuration');
+                $metadata = $configuration->getMetadataManager()->getMetadata($this);
+                if (!$metadata instanceof StructMetadata) {
+                    throw new Exception('No metadata information is found for structure: ' . get_class($this));
+                }
             }
+            $this->_metadata = $metadata;
         }
-        return $metadata;
+        return $this->_metadata;
     }
 
     /**
@@ -416,6 +429,28 @@ class Struct extends AbstractConfig implements StructInterface
     }
 
     /**
+     * Perform required operations when configuration option value is changed
+     *
+     * @param string $name          Configuration option name
+     * @param mixed $value          Configuration option value
+     * @param boolean $merge        TRUE if configuration option is changed during merge process,
+     *                              FALSE if it is changed by setting configuration option
+     * @return void
+     */
+    protected function onConfigChange($name, $value, $merge)
+    {
+        switch ($name) {
+            case 'metadata':
+                $this->_metadata = $value;
+                break;
+            case 'parent_structure':
+                $this->_parent = $value;
+                break;
+        }
+        parent::onConfigChange($name, $value, $merge);
+    }
+
+    /**
      * Support isset() overloading
      *
      * @param string $name
@@ -577,27 +612,36 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function serialize()
     {
-        return (serialize($this->_struct));
+        return (serialize(array(
+            'metadata' => $this->getMetadata(),
+            'struct'   => $this->toArray(),
+        )));
     }
 
     /**
      * Implementation of Serializable interface
      *
      * @param array $data   Serialized object data
+     * @throws \InvalidArgumentException
      * @return void
      */
     public function unserialize($data)
     {
-        $this->createStruct();
         $data = @unserialize($data);
-        if (!is_array($data)) {
-            return;
+        if ((!is_array($data)) ||
+            (!array_key_exists('metadata', $data)) ||
+            (!$data['metadata'] instanceof StructMetadata) ||
+            (!array_key_exists('struct', $data)) ||
+            (!is_array($data['struct']))
+        ) {
+            throw new \InvalidArgumentException('Serialized structure information has invalid format');
         }
-        foreach ($data as $name => $value) {
-            if (array_key_exists($name, $this->_struct)) {
-                $this->_struct[$name] = $value;
-            }
-        }
+        $flag = $this->_skipNotify;
+        $this->_skipNotify = true;
+        $this->setConfig('metadata', $data['metadata']);
+        $this->createStruct();
+        $this->set($data['struct']);
+        $this->_skipNotify = $flag;
     }
 
 }

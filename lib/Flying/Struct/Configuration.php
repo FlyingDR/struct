@@ -9,6 +9,10 @@ use Flying\Struct\Metadata\AnnotationParser;
 use Flying\Struct\Metadata\MetadataManager;
 use Flying\Struct\Metadata\MetadataManagerInterface;
 use Flying\Struct\Metadata\MetadataParserInterface;
+use Flying\Struct\Storage\ArrayBackend;
+use Flying\Struct\Storage\BackendInterface;
+use Flying\Struct\Storage\Storage;
+use Flying\Struct\Storage\StorageInterface;
 
 /**
  * Structures configuration
@@ -45,6 +49,16 @@ class Configuration
      * @var MetadataParserInterface
      */
     protected $_metadataParser;
+    /**
+     * Structures storage manager
+     * @var StorageInterface
+     */
+    protected $_storage;
+    /**
+     * Backend for structures storage
+     * @var BackendInterface
+     */
+    protected $_storageBackend;
 
     /**
      * Get cache for structures information
@@ -160,6 +174,56 @@ class Configuration
     public function setMetadataParser(MetadataParserInterface $parser)
     {
         $this->_metadataParser = $parser;
+        return $this;
+    }
+
+    /**
+     * Get storage container
+     *
+     * @return StorageInterface
+     */
+    public function getStorage()
+    {
+        if (!$this->_storage) {
+            $this->_storage = new Storage();
+        }
+        return $this->_storage;
+    }
+
+    /**
+     * Set storage container
+     *
+     * @param StorageInterface $storage
+     * @return $this
+     */
+    public function setStorage(StorageInterface $storage)
+    {
+        $this->_storage = $storage;
+        return $this;
+    }
+
+    /**
+     * Get backend for structures storage
+     *
+     * @return BackendInterface
+     */
+    public function getStorageBackend()
+    {
+        if (!$this->_storageBackend) {
+            $this->_storageBackend = new ArrayBackend();
+        }
+        return $this->_storageBackend;
+    }
+
+    /**
+     * Set backend for structures storage
+     *
+     * @param BackendInterface $backend
+     * @return $this
+     */
+    public function setStorageBackend(BackendInterface $backend)
+    {
+        $this->_storageBackend = $backend;
         return $this;
     }
 

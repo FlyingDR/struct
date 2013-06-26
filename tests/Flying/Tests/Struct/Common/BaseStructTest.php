@@ -1,6 +1,6 @@
 <?php
 
-namespace Flying\Tests\Struct;
+namespace Flying\Tests\Struct\Common;
 
 use Flying\Struct\Configuration;
 use Flying\Struct\ConfigurationManager;
