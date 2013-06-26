@@ -8,14 +8,16 @@ namespace Flying\Struct\Property;
 class String extends Property
 {
 
+
     /**
      * {@inheritdoc}
      */
-    protected function getConfigOptions()
+    protected function initConfig()
     {
-        return (array_merge(parent::getConfigOptions(), array(
+        parent::initConfig();
+        $this->mergeConfig(array(
             'maxlength' => null, // String length limitation
-        )));
+        ));
     }
 
     /**

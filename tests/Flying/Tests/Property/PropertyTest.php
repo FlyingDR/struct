@@ -33,6 +33,13 @@ class PropertyTest extends BasePropertyTest
         $this->assertEquals($this->_defaultValue, $property->getConfig('default'));
     }
 
+    public function testConfigurationModificationsInRuntimeAreNotAllowed()
+    {
+        $property = $this->getTestProperty();
+        $this->setExpectedException('\RuntimeException', 'Property configuration options can\t be changed in runtime');
+        $property->setConfig('default', 'abc');
+    }
+
     public function testPropertyRemainsTheSameOnSettingInvalidValue()
     {
         $property = $this->getTestProperty();

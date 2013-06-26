@@ -11,12 +11,13 @@ class Int extends Property
     /**
      * {@inheritdoc}
      */
-    protected function getConfigOptions()
+    protected function initConfig()
     {
-        return (array_merge(parent::getConfigOptions(), array(
+        parent::initConfig();
+        $this->mergeConfig(array(
             'min' => null, // Minimum allowed value
             'max' => null, // Maximum allowed value
-        )));
+        ));
     }
 
     /**

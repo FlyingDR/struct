@@ -2,14 +2,14 @@
 
 namespace Flying\Struct\Property;
 
-use Flying\Config\ObjectConfig;
+use Flying\Config\AbstractConfig;
 use Flying\Struct\Common\UpdateNotifyListenerInterface;
 use Flying\Struct\Exception;
 
 /**
  * Abstract implementation of structure property
  */
-class Property implements PropertyInterface
+class Property extends AbstractConfig implements PropertyInterface
 {
     /**
      * Property value
@@ -17,15 +17,20 @@ class Property implements PropertyInterface
      */
     protected $_value;
     /**
-     * Property configuration
-     * @var ObjectConfig
+     * TRUE if we're in object constructor, FALSE otherwise
+     * @var boolean
      */
-    protected $_config;
+    protected $_inConstructor = false;
     /**
      * TRUE to skip property change notification, FALSE otherwise
      * @var boolean
      */
     protected $_skipNotify = false;
+    /**
+     * Cached value of "nullable" configuration option
+     * @var boolean
+     */
+    protected $_nullable = true;
 
     /**
      * Class constructor
@@ -40,7 +45,9 @@ class Property implements PropertyInterface
         // No change notification is required during object construction
         $flag = $this->_skipNotify;
         $this->_skipNotify = true;
-        $this->initConfigObject($config);
+        $this->_inConstructor = true;
+        $this->bootstrapConfig();
+        $this->setConfig($config);
         // We must be sure that property value is always valid
         // even if no value for the property is given explicitly
         if ($value !== null) {
@@ -53,6 +60,7 @@ class Property implements PropertyInterface
             $this->reset();
         }
         $this->_skipNotify = $flag;
+        $this->_inConstructor = false;
     }
 
     /**
@@ -136,7 +144,7 @@ class Property implements PropertyInterface
      */
     protected function normalize(&$value)
     {
-        if ((($value === null)) && (!$this->getConfig('nullable'))) {
+        if ((($value === null)) && (!$this->_nullable)) {
             return false;
         }
         if ($value instanceof PropertyInterface) {
@@ -146,13 +154,12 @@ class Property implements PropertyInterface
     }
 
     /**
-     * Get list of configuration options to use for config initialization
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function getConfigOptions()
+    protected function initConfig()
     {
-        return (array(
+        parent::initConfig();
+        $this->mergeConfig(array(
             'nullable'               => true, // TRUE if property value can be NULL, FALSE if not
             'default'                => null, // Default value for the property
             'update_notify_listener' => null, // Listener of property update notifications
@@ -160,12 +167,7 @@ class Property implements PropertyInterface
     }
 
     /**
-     * Check that given value of configuration option is valid
-     *
-     * @param string $name          Configuration option name
-     * @param mixed $value          Option value (passed by reference)
-     * @throws \InvalidArgumentException
-     * @return boolean
+     * {@inheritdoc}
      */
     public function validateConfig($name, &$value)
     {
@@ -184,45 +186,20 @@ class Property implements PropertyInterface
         return true;
     }
 
-    protected function initConfigObject(array $config = null)
-    {
-        $this->_config = new ObjectConfig($this, $this->getConfigOptions(), array(
-            'validateConfig' => array($this, 'validateConfig'),
-        ), $config);
-    }
-
     /**
-     * Get object's configuration or configuration option with given name
-     * If argument is passed as string - value of configuration option with this name will be returned
-     * If argument is some kind of configuration options set - it will be merged with current object's configuration and returned
-     * If no argument is passed - current object's configuration will be returned
-     *
-     * @param string|array|null $config     OPTIONAL Option name to get or configuration options
-     *                                      to override default object's configuration.
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function getConfig($config = null)
+    protected function onConfigChange($name, $value, $merge)
     {
-        if (!$this->_config) {
-            $this->initConfigObject();
+        // Configuration options are only defined during object construction
+        if (!$this->_inConstructor) {
+            throw new \RuntimeException('Property configuration options can\t be changed in runtime');
         }
-        return ($this->_config->getConfig($config));
-    }
-
-    /**
-     * Set configuration options for object
-     *
-     * @param array|string $config          Configuration options to set
-     * @param mixed $value                  If first parameter is passed as string then it will be treated as
-     *                                      configuration option name and $value as its value
-     * @return void
-     */
-    protected function setConfig($config, $value = null)
-    {
-        if (!$this->_config) {
-            $this->initConfigObject();
+        switch ($name) {
+            case 'nullable':
+                $this->_nullable = $value;
+                break;
         }
-        $this->_config->setConfig($config, $value);
     }
 
     /**
