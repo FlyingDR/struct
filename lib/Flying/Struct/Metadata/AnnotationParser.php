@@ -88,9 +88,14 @@ class AnnotationParser extends AbstractMetadataParser
      */
     public function getMetadata($class)
     {
-        $metadata = new StructMetadata();
-        $metadata->setClass($class);
         $reflection = new \ReflectionClass($class);
+        $parent = $reflection->getParentClass();
+        if (($parent instanceof \ReflectionClass) && ($parent->isInstantiable())) {
+            $metadata = $this->getMetadata($parent->getName());
+        } else {
+            $metadata = new StructMetadata();
+        }
+        $metadata->setClass($class);
         $reader = $this->getReader();
         $annotations = $reader->getClassAnnotations($reflection);
         foreach ($annotations as $annotation) {
