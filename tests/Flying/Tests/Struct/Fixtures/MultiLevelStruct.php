@@ -2,11 +2,6 @@
 
 namespace Flying\Tests\Struct\Fixtures;
 
-use Flying\Struct\Common\StructItemInterface;
-use Flying\Struct\Struct;
-use Flying\Tests\Tools\CallbackLog;
-use Flying\Tests\Tools\CallbackTrackingInterface;
-
 /**
  * Multi-level structure with child structure
  *
@@ -19,41 +14,8 @@ use Flying\Tests\Tools\CallbackTrackingInterface;
  * @property ChildStruct $child
  * @Struct\Struct(name="child", class="ChildStruct")
  */
-class MultiLevelStruct extends Struct implements CallbackTrackingInterface
+class MultiLevelStruct extends TestStruct
 {
-    /**
-     * Available callback loggers
-     * @var array
-     */
-    private $_cbLogs = array();
-
-    /**
-     * Set logger for defined method
-     *
-     * @param string $method        Method name
-     * @param CallbackLog $logger
-     * @return void
-     */
-    public function setCallbackLogger($method, CallbackLog $logger)
-    {
-        $this->_cbLogs[$method] = $logger;
-    }
-
-    /**
-     * Log call to callback
-     *
-     * @param string $method    Method name
-     * @param array $args       Method call arguments
-     * @return void
-     */
-    protected function logCallbackCall($method, array $args)
-    {
-        if (array_key_exists($method, $this->_cbLogs)) {
-            /** @var $logger CallbackLog */
-            $logger = $this->_cbLogs[$method];
-            $logger->add($method, $args);
-        }
-    }
 
     public function getExpectedContents()
     {
@@ -67,42 +29,6 @@ class MultiLevelStruct extends Struct implements CallbackTrackingInterface
                 'z' => 'string',
             ),
         ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getMissed($name, $default)
-    {
-        $this->logCallbackCall(__FUNCTION__, func_get_args());
-        return parent::getMissed($name, $default);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setMissed($name, $value)
-    {
-        $this->logCallbackCall(__FUNCTION__, func_get_args());
-        parent::setMissed($name, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function onChange($name)
-    {
-        $this->logCallbackCall(__FUNCTION__, func_get_args());
-        parent::onChange($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function updateNotify(StructItemInterface $property)
-    {
-        $this->logCallbackCall(__FUNCTION__, func_get_args());
-        parent::updateNotify($property);
     }
 
 }
