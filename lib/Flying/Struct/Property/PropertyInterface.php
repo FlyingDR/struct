@@ -14,7 +14,7 @@ interface PropertyInterface extends StructItemInterface, \Serializable
      *
      * @return mixed
      */
-    public function get();
+    public function getValue();
 
     /**
      * Set property value
@@ -22,7 +22,7 @@ interface PropertyInterface extends StructItemInterface, \Serializable
      * @param mixed $value
      * @return void
      */
-    public function set($value);
+    public function setValue($value);
 
     /**
      * Reset property to its default state

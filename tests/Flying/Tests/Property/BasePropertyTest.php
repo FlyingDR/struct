@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Property;
 
+use Flying\Struct\Property\Property;
 use Flying\Tests\TestCase;
 
 abstract class BasePropertyTest extends TestCase
@@ -44,8 +45,9 @@ abstract class BasePropertyTest extends TestCase
         };
         $serialized = serialize($property);
         $this->assertEquals($testSerialize($value), $serialized);
+        /** @var $p Property */
         $p = unserialize($serialized);
-        $this->assertEquals($expected, $p->get());
+        $this->assertEquals($expected, $p->getValue());
     }
 
     /**

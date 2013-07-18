@@ -68,7 +68,7 @@ class Property extends AbstractConfig implements PropertyInterface
      *
      * @return mixed
      */
-    public function get()
+    public function getValue()
     {
         return ($this->_value);
     }
@@ -79,7 +79,7 @@ class Property extends AbstractConfig implements PropertyInterface
      * @param mixed $value
      * @return void
      */
-    public function set($value)
+    public function setValue($value)
     {
         if ($this->normalize($value)) {
             $this->_value = $value;
@@ -148,7 +148,7 @@ class Property extends AbstractConfig implements PropertyInterface
             return false;
         }
         if ($value instanceof PropertyInterface) {
-            $value = $value->get();
+            $value = $value->getValue();
         }
         return true;
     }
@@ -223,7 +223,7 @@ class Property extends AbstractConfig implements PropertyInterface
         $flag = $this->_skipNotify;
         $this->_skipNotify = true;
         $value = unserialize($data);
-        $this->set($value);
+        $this->setValue($value);
         $this->_skipNotify = $flag;
     }
 

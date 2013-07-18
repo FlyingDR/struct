@@ -13,7 +13,7 @@ class UnacceptableValueTest extends TestCase
         $property = new PropertyForUnacceptableValues(null, array(
             'nullable' => true,
         ));
-        $this->assertNull($property->get());
+        $this->assertNull($property->getValue());
     }
 
     public function testNotNullValueToNullableProperty()
@@ -21,7 +21,7 @@ class UnacceptableValueTest extends TestCase
         $property = new PropertyForUnacceptableValues('test', array(
             'nullable' => true,
         ));
-        $this->assertNull($property->get());
+        $this->assertNull($property->getValue());
     }
 
     public function testUnacceptableValuePassedToConstructor()
@@ -30,7 +30,7 @@ class UnacceptableValueTest extends TestCase
             'nullable' => false,
             'default'  => 'value',
         ));
-        $this->assertEquals('value', $property->get());
+        $this->assertEquals('value', $property->getValue());
     }
 
 }

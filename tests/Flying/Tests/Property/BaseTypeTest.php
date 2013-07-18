@@ -25,7 +25,7 @@ abstract class BaseTypeTest extends BasePropertyTest
         if (is_array($config)) {
             // Run test with given config
             $property = $this->getTestProperty($value, $config);
-            $this->assertEquals($expected, $property->get());
+            $this->assertEquals($expected, $property->getValue());
 
         } else {
             // Test setting value through constructor
@@ -33,29 +33,29 @@ abstract class BaseTypeTest extends BasePropertyTest
                 'nullable' => true,
                 'default'  => null,
             ));
-            $this->assertEquals($expected, $property->get());
+            $this->assertEquals($expected, $property->getValue());
 
             // Test setting value as default with null value allowed
             $property = $this->getTestProperty(null, array(
                 'nullable' => true,
                 'default'  => $value,
             ));
-            $this->assertEquals($expected, $property->get());
+            $this->assertEquals($expected, $property->getValue());
 
             // Test setting value as default with null value not allowed
             $property = $this->getTestProperty(null, array(
                 'nullable' => false,
                 'default'  => $value,
             ));
-            $this->assertEquals($expected, $property->get());
+            $this->assertEquals($expected, $property->getValue());
 
             // Test setting value explicitly
             $property = $this->getTestProperty(null, array(
                 'nullable' => true,
                 'default'  => null,
             ));
-            $property->set($value);
-            $this->assertEquals($expected, $property->get());
+            $property->setValue($value);
+            $this->assertEquals($expected, $property->getValue());
         }
     }
 
@@ -70,9 +70,9 @@ abstract class BaseTypeTest extends BasePropertyTest
             'nullable' => true,
             'default'  => null,
         ));
-        $this->assertNull($property->get());
-        $property->set(null);
-        $this->assertNull($property->get());
+        $this->assertNull($property->getValue());
+        $property->setValue(null);
+        $this->assertNull($property->getValue());
     }
 
     public function testUnacceptableNullValue()
@@ -80,7 +80,7 @@ abstract class BaseTypeTest extends BasePropertyTest
         $property = $this->getTestProperty(null, array(
             'nullable' => false,
         ));
-        $this->assertEquals($property->get(), $this->_defaultValue);
+        $this->assertEquals($property->getValue(), $this->_defaultValue);
     }
 
     public function serializationDataProvider()

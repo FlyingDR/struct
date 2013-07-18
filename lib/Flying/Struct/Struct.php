@@ -204,7 +204,7 @@ class Struct extends AbstractConfig implements StructInterface
         if (array_key_exists($name, $this->_struct)) {
             $property = $this->_struct[$name];
             if ($property instanceof PropertyInterface) {
-                $result = $property->get();
+                $result = $property->getValue();
             } elseif ($property instanceof StructInterface) {
                 $result = $property;
             }
@@ -257,7 +257,7 @@ class Struct extends AbstractConfig implements StructInterface
             }
             $property = $this->_struct[$k];
             if ($property instanceof PropertyInterface) {
-                $property->set($v);
+                $property->setValue($v);
             } elseif ($property instanceof StructInterface) {
                 $property->set($v);
                 $this->updateNotify($property);
@@ -330,7 +330,7 @@ class Struct extends AbstractConfig implements StructInterface
         $array = array();
         foreach ($this->_struct as $key => $value) {
             if ($value instanceof PropertyInterface) {
-                $array[$key] = $value->get();
+                $array[$key] = $value->getValue();
             } elseif ($value instanceof StructInterface) {
                 $array[$key] = $value->toArray();
             }

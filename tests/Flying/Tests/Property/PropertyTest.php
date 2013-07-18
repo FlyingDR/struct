@@ -17,13 +17,13 @@ class PropertyTest extends BasePropertyTest
     public function testBasicOperations()
     {
         $property = $this->getTestProperty();
-        $this->assertEquals($this->_defaultValue, $property->get());
-        $property->set(12345);
-        $this->assertEquals(12345, $property->get());
-        $property->set(true);
-        $this->assertTrue($property->get());
+        $this->assertEquals($this->_defaultValue, $property->getValue());
+        $property->setValue(12345);
+        $this->assertEquals(12345, $property->getValue());
+        $property->setValue(true);
+        $this->assertTrue($property->getValue());
         $property->reset();
-        $this->assertEquals($this->_defaultValue, $property->get());
+        $this->assertEquals($this->_defaultValue, $property->getValue());
     }
 
     public function testConfigurationOptionsAccess()
@@ -43,11 +43,11 @@ class PropertyTest extends BasePropertyTest
     public function testPropertyRemainsTheSameOnSettingInvalidValue()
     {
         $property = $this->getTestProperty();
-        $this->assertEquals($this->_defaultValue, $property->get());
-        $property->set(12345);
-        $this->assertEquals(12345, $property->get());
-        $property->set(null); // NULL is not allowed so property should not change its value
-        $this->assertEquals(12345, $property->get());
+        $this->assertEquals($this->_defaultValue, $property->getValue());
+        $property->setValue(12345);
+        $this->assertEquals(12345, $property->getValue());
+        $property->setValue(null); // NULL is not allowed so property should not change its value
+        $this->assertEquals(12345, $property->getValue());
     }
 
     public function testExceptionOnInvalidDefaultValue()
@@ -90,12 +90,12 @@ class PropertyTest extends BasePropertyTest
         $property->setCallbackLogger($method, $logger);
 
         $value = 12345;
-        $property->set($value);
-        $property->get();
-        $property->set(null);
-        $property->get();
+        $property->setValue($value);
+        $property->getValue();
+        $property->setValue(null);
+        $property->getValue();
         $property->reset();
-        $property->get();
+        $property->getValue();
 
         $log = $logger->get();
         $this->assertEquals(sizeof($expected), sizeof($log));
@@ -119,9 +119,9 @@ class PropertyTest extends BasePropertyTest
             'default'                => $this->_defaultValue,
             'update_notify_listener' => $mock,
         ));
-        $property->set(12345);
+        $property->setValue(12345);
         // Attempt to set invalid property value should not trigger update notification
-        $property->set(null);
+        $property->setValue(null);
         // Reset should not trigger update notification
         $property->reset();
     }
