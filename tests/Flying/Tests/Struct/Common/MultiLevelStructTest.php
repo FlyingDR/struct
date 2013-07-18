@@ -3,6 +3,7 @@
 namespace Flying\Tests\Struct\Common;
 
 use Flying\Tests\Struct\Fixtures\MultiLevelStruct;
+use Mockery;
 
 abstract class MultiLevelStructTest extends BaseStructTest
 {
@@ -70,6 +71,19 @@ abstract class MultiLevelStructTest extends BaseStructTest
         $this->assertEquals(777, $struct->child->y);
         /** @noinspection PhpUndefinedFieldInspection */
         $this->assertEquals('test string', $struct->child->z);
+    }
+
+    public function testUpdateNotificationBubbling()
+    {
+        $struct = $this->getTestStruct();
+        $m1 = Mockery::mock('Flying\Struct\Common\UpdateNotifyListenerInterface')
+            ->shouldReceive('updateNotify')->once()
+            ->with(Mockery::type('\Flying\Struct\Common\StructItemInterface'))
+            ->getMock();
+        $struct->setConfig('update_notify_listener', $m1);
+        $m2 = clone($m1);
+        $struct->child->setConfig('update_notify_listener', $m2);
+        $struct->child->x = true;
     }
 
     /**
