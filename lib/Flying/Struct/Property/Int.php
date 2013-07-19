@@ -3,7 +3,7 @@
 namespace Flying\Struct\Property;
 
 /**
- * Structure property with string value
+ * Structure property with integer value
  */
 class Int extends Property
 {
