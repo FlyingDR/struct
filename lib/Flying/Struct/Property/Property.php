@@ -51,9 +51,7 @@ class Property extends AbstractConfig implements PropertyInterface
         // We must be sure that property value is always valid
         // even if no value for the property is given explicitly
         if ($value !== null) {
-            if ($this->normalize($value)) {
-                $this->_value = $value;
-            } else {
+            if (!$this->setValue($value)) {
                 $this->reset();
             }
         } else {
@@ -77,15 +75,17 @@ class Property extends AbstractConfig implements PropertyInterface
      * Set property value
      *
      * @param mixed $value
-     * @return void
+     * @return boolean
      */
     public function setValue($value)
     {
         if ($this->normalize($value)) {
             $this->_value = $value;
             $this->onChange();
+            return true;
         } else {
             $this->onInvalidValue($value);
+            return false;
         }
     }
 
@@ -209,7 +209,7 @@ class Property extends AbstractConfig implements PropertyInterface
      */
     public function serialize()
     {
-        return (serialize($this->_value));
+        return (serialize($this->getValue()));
     }
 
     /**

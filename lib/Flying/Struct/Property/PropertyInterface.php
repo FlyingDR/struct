@@ -2,12 +2,12 @@
 
 namespace Flying\Struct\Property;
 
-use Flying\Struct\Common\StructItemInterface;
+use Flying\Struct\Common\SimplePropertyInterface;
 
 /**
  * Interface for structure property
  */
-interface PropertyInterface extends StructItemInterface, \Serializable
+interface PropertyInterface extends SimplePropertyInterface
 {
     /**
      * Get property value
@@ -23,12 +23,5 @@ interface PropertyInterface extends StructItemInterface, \Serializable
      * @return void
      */
     public function setValue($value);
-
-    /**
-     * Reset property to its default state
-     *
-     * @return void
-     */
-    public function reset();
 
 }

@@ -11,9 +11,9 @@ interface UpdateNotifyListenerInterface
     /**
      * Handle notification about update of given property
      *
-     * @param StructItemInterface $property
+     * @param SimplePropertyInterface $property
      * @return void
      */
-    public function updateNotify(StructItemInterface $property);
+    public function updateNotify(SimplePropertyInterface $property);
 
 }

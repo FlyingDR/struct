@@ -2,7 +2,7 @@
 
 namespace Flying\Tests\Storage\Struct\Fixtures;
 
-use Flying\Struct\Common\StructItemInterface;
+use Flying\Struct\Common\SimplePropertyInterface;
 use Flying\Struct\StorableStruct;
 use Flying\Tests\Tools\CallbackLog;
 use Flying\Tests\Tools\CallbackTrackingInterface;
@@ -73,7 +73,7 @@ abstract class TestStruct extends StorableStruct implements CallbackTrackingInte
     /**
      * {@inheritdoc}
      */
-    public function updateNotify(StructItemInterface $property)
+    public function updateNotify(SimplePropertyInterface $property)
     {
         $this->logCallbackCall(__FUNCTION__, func_get_args());
         parent::updateNotify($property);

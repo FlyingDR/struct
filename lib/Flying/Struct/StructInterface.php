@@ -2,14 +2,13 @@
 
 namespace Flying\Struct;
 
-use Flying\Struct\Common\StructItemInterface;
+use Flying\Struct\Common\ComplexPropertyInterface;
 use Flying\Struct\Common\UpdateNotifyListenerInterface;
 
 /**
  * Interface for structures
  */
-interface StructInterface extends \Countable, \Iterator, \RecursiveIterator,
-    \ArrayAccess, \Serializable, StructItemInterface, UpdateNotifyListenerInterface
+interface StructInterface extends \RecursiveIterator, ComplexPropertyInterface, UpdateNotifyListenerInterface
 {
 
     /**
@@ -30,19 +29,5 @@ interface StructInterface extends \Countable, \Iterator, \RecursiveIterator,
      * @return void
      */
     public function set($name, $value = null);
-
-    /**
-     * Reset structure to its initial state
-     *
-     * @return void
-     */
-    public function reset();
-
-    /**
-     * Get structure contents as associative array
-     *
-     * @return array
-     */
-    public function toArray();
 
 }

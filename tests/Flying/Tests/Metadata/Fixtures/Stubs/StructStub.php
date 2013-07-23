@@ -2,7 +2,7 @@
 
 namespace Flying\Tests\Metadata\Fixtures\Stubs;
 
-use Flying\Struct\Common\StructItemInterface;
+use Flying\Struct\Common\SimplePropertyInterface;
 use Flying\Struct\StructInterface;
 
 /**
@@ -205,10 +205,10 @@ class StructStub implements StructInterface
     /**
      * Handle notification about update of given property
      *
-     * @param StructItemInterface $property
+     * @param SimplePropertyInterface $property
      * @return void
      */
-    public function updateNotify(StructItemInterface $property)
+    public function updateNotify(SimplePropertyInterface $property)
     {
 
     }

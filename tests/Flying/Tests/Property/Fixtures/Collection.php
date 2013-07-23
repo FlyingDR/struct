@@ -1,13 +1,12 @@
 <?php
 
-namespace Flying\Tests\Struct\Fixtures;
+namespace Flying\Tests\Property\Fixtures;
 
-use Flying\Struct\Common\SimplePropertyInterface;
-use Flying\Struct\Struct;
+use Flying\Struct\Property\Collection as BaseCollection;
 use Flying\Tests\Tools\CallbackLog;
 use Flying\Tests\Tools\CallbackTrackingInterface;
 
-abstract class TestStruct extends Struct implements CallbackTrackingInterface
+class Collection extends BaseCollection implements CallbackTrackingInterface
 {
     /**
      * Available callback loggers
@@ -46,37 +45,28 @@ abstract class TestStruct extends Struct implements CallbackTrackingInterface
     /**
      * {@inheritdoc}
      */
-    protected function getMissed($name, $default)
+    protected function normalize(&$value, $key = null)
     {
         $this->logCallbackCall(__FUNCTION__, func_get_args());
-        return parent::getMissed($name, $default);
+        return parent::normalize($value, $key);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setMissed($name, $value)
+    protected function onChange()
     {
         $this->logCallbackCall(__FUNCTION__, func_get_args());
-        parent::setMissed($name, $value);
+        parent::onChange();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function onChange($name)
+    protected function onInvalidValue($value, $key = null)
     {
         $this->logCallbackCall(__FUNCTION__, func_get_args());
-        parent::onChange($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function updateNotify(SimplePropertyInterface $property)
-    {
-        $this->logCallbackCall(__FUNCTION__, func_get_args());
-        parent::updateNotify($property);
+        parent::onInvalidValue($value, $key);
     }
 
 }

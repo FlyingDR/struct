@@ -29,7 +29,7 @@ class BasicStructTest extends CommonBasicStructTest
         $this->assertArrayHasKey('RecursiveIterator', $interfaces);
         $this->assertArrayHasKey('ArrayAccess', $interfaces);
         $this->assertArrayHasKey('Serializable', $interfaces);
-        $this->assertArrayHasKey('Flying\Struct\Common\StructItemInterface', $interfaces);
+        $this->assertArrayHasKey('Flying\Struct\Common\ComplexPropertyInterface', $interfaces);
         $this->assertArrayHasKey('Flying\Struct\Common\UpdateNotifyListenerInterface', $interfaces);
     }
 

@@ -3,7 +3,8 @@
 namespace Flying\Struct;
 
 use Flying\Config\AbstractConfig;
-use Flying\Struct\Common\StructItemInterface;
+use Flying\Struct\Common\ComplexPropertyInterface;
+use Flying\Struct\Common\SimplePropertyInterface;
 use Flying\Struct\Common\UpdateNotifyListenerInterface;
 use Flying\Struct\Metadata\MetadataInterface;
 use Flying\Struct\Metadata\StructMetadata;
@@ -203,10 +204,11 @@ class Struct extends AbstractConfig implements StructInterface
         $result = $default;
         if (array_key_exists($name, $this->_struct)) {
             $property = $this->_struct[$name];
-            if ($property instanceof PropertyInterface) {
-                $result = $property->getValue();
-            } elseif ($property instanceof StructInterface) {
+            if ($property instanceof ComplexPropertyInterface) {
                 $result = $property;
+            } elseif ($property instanceof SimplePropertyInterface) {
+                /** @var $property PropertyInterface */
+                $result = $property->getValue();
             }
         } else {
             $result = $this->getMissed($name, $default);
@@ -329,10 +331,10 @@ class Struct extends AbstractConfig implements StructInterface
     {
         $array = array();
         foreach ($this->_struct as $key => $value) {
-            if ($value instanceof PropertyInterface) {
-                $array[$key] = $value->getValue();
-            } elseif ($value instanceof StructInterface) {
+            if ($value instanceof ComplexPropertyInterface) {
                 $array[$key] = $value->toArray();
+            } elseif ($value instanceof PropertyInterface) {
+                $array[$key] = $value->getValue();
             }
         }
         return ($array);
@@ -341,10 +343,10 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Handle notification about update of given property
      *
-     * @param StructItemInterface $property
+     * @param SimplePropertyInterface $property
      * @return void
      */
-    public function updateNotify(StructItemInterface $property)
+    public function updateNotify(SimplePropertyInterface $property)
     {
         if (!$this->_skipNotify) {
             $owner = $this->getConfig('update_notify_listener');

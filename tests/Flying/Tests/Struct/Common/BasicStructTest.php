@@ -24,7 +24,7 @@ abstract class BasicStructTest extends BaseStructTest
         $this->assertArrayHasKey('RecursiveIterator', $interfaces);
         $this->assertArrayHasKey('ArrayAccess', $interfaces);
         $this->assertArrayHasKey('Serializable', $interfaces);
-        $this->assertArrayHasKey('Flying\Struct\Common\StructItemInterface', $interfaces);
+        $this->assertArrayHasKey('Flying\Struct\Common\ComplexPropertyInterface', $interfaces);
         $this->assertArrayHasKey('Flying\Struct\Common\UpdateNotifyListenerInterface', $interfaces);
     }
 
@@ -263,7 +263,7 @@ abstract class BasicStructTest extends BaseStructTest
     {
         $mock = Mockery::mock('Flying\Struct\Common\UpdateNotifyListenerInterface')
             ->shouldReceive('updateNotify')->once()
-            ->with(Mockery::type('\Flying\Struct\Common\StructItemInterface'))
+            ->with(Mockery::type('\Flying\Struct\Common\SimplePropertyInterface'))
             ->getMock();
         $struct = $this->getTestStruct(null, array(
             'update_notify_listener' => $mock,

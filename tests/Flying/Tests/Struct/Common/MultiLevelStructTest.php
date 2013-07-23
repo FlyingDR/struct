@@ -78,7 +78,7 @@ abstract class MultiLevelStructTest extends BaseStructTest
         $struct = $this->getTestStruct();
         $m1 = Mockery::mock('Flying\Struct\Common\UpdateNotifyListenerInterface')
             ->shouldReceive('updateNotify')->once()
-            ->with(Mockery::type('\Flying\Struct\Common\StructItemInterface'))
+            ->with(Mockery::type('\Flying\Struct\Common\SimplePropertyInterface'))
             ->getMock();
         $struct->setConfig('update_notify_listener', $m1);
         $m2 = clone($m1);
