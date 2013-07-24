@@ -7,6 +7,10 @@ use Doctrine\Common\Annotations\AnnotationException;
 /**
  * @Annotation
  * @Target({"CLASS"})
+ * @Attributes({
+ * @Attribute("name", required=true, type="string"),
+ * @Attribute("class", required=true, type="string"),
+ * })
  */
 class Struct
 {
