@@ -204,27 +204,53 @@ class Property extends AbstractConfig implements PropertyInterface
     }
 
     /**
+     * Get property's configuration options prepared for serialization
+     *
+     * @return array
+     */
+    protected function getConfigForSerialization()
+    {
+        $config = $this->getConfig();
+        unset($config['update_notify_listener']);
+        return $config;
+    }
+
+    /**
      * Implementation of Serializable interface
      *
      * @return string
      */
     public function serialize()
     {
-        return (serialize($this->getValue()));
+        return (serialize(array(
+            'value'  => $this->getValue(),
+            'config' => $this->getConfigForSerialization(),
+        )));
     }
 
     /**
      * Implementation of Serializable interface
      *
      * @param array $data   Serialized object data
+     * @throws \InvalidArgumentException
      * @return void
      */
     public function unserialize($data)
     {
+        $data = @unserialize($data);
+        if ((!is_array($data)) ||
+            (!array_key_exists('value', $data)) ||
+            (!array_key_exists('config', $data)) ||
+            (!is_array($data['config']))
+        ) {
+            throw new \InvalidArgumentException('Serialized property information has invalid format');
+        }
         $flag = $this->_skipNotify;
         $this->_skipNotify = true;
-        $value = unserialize($data);
-        $this->setValue($value);
+        $this->_inConstructor = true;
+        $this->setConfig($data['config']);
+        $this->setValue($data['value']);
+        $this->_inConstructor = false;
         $this->_skipNotify = $flag;
     }
 

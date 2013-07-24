@@ -37,17 +37,11 @@ abstract class BasePropertyTest extends TestCase
     public function testSerialization($value, $expected, $config = null)
     {
         $property = $this->getTestProperty($value, $config);
-        $testSerialize = function ($value) use ($property) {
-            $value = serialize($value);
-            $class = get_class($property);
-            $result = sprintf('C:%d:"%s":%d:{%s}', strlen($class), $class, strlen($value), $value);
-            return $result;
-        };
         $serialized = serialize($property);
-        $this->assertEquals($testSerialize($value), $serialized);
         /** @var $p Property */
         $p = unserialize($serialized);
         $this->assertEquals($expected, $p->getValue());
+        $this->assertEquals($property->getConfig(), $p->getConfig());
     }
 
     /**
