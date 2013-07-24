@@ -87,7 +87,7 @@ abstract class BaseTypeTest extends BasePropertyTest
     {
         $tests = array();
         foreach ($this->_serializationTests as $test) {
-            $tests[] = array($test, $test);
+            $tests[] = array($test, $test, $this->_defaultConfig);
         }
         return $tests;
     }
