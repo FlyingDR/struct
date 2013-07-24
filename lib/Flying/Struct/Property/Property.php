@@ -192,6 +192,7 @@ class Property extends AbstractConfig implements PropertyInterface
     protected function onConfigChange($name, $value, $merge)
     {
         // Configuration options are only defined during object construction
+        // @TODO This should be changed after implementation of read-only configuration
         if (!$this->_inConstructor) {
             throw new \RuntimeException('Property configuration options can\t be changed in runtime');
         }
