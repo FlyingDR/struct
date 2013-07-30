@@ -18,6 +18,11 @@ class PropertyMetadata implements MetadataInterface
      */
     protected $_class;
     /**
+     * Hash for property object
+     * @var string
+     */
+    protected $_hash;
+    /**
      * Configuration options for property object
      * @var array
      */
@@ -67,6 +72,7 @@ class PropertyMetadata implements MetadataInterface
             throw new \InvalidArgumentException('Property name must be a string');
         }
         $this->_name = $name;
+        $this->_hash = null;
         return $this;
     }
 
@@ -93,6 +99,7 @@ class PropertyMetadata implements MetadataInterface
             throw new \InvalidArgumentException('Property class name must be a string');
         }
         $this->_class = $class;
+        $this->_hash = null;
         return $this;
     }
 
@@ -115,6 +122,7 @@ class PropertyMetadata implements MetadataInterface
     public function setConfig(array $config)
     {
         $this->_config = $config;
+        $this->_hash = null;
         return $this;
     }
 
@@ -149,6 +157,9 @@ class PropertyMetadata implements MetadataInterface
         if (array_key_exists('config', $array)) {
             $this->setConfig($array['config']);
         }
+        if (array_key_exists('hash', $array)) {
+            $this->_hash = $array['hash'];
+        }
     }
 
     /**
@@ -162,7 +173,21 @@ class PropertyMetadata implements MetadataInterface
             'name'   => $this->getName(),
             'class'  => $this->getClass(),
             'config' => $this->getConfig(),
+            'hash'   => $this->getHash(),
         );
+    }
+
+    /**
+     * Get hash for this structure metadata item
+     *
+     * @return string
+     */
+    public function getHash()
+    {
+        if (!$this->_hash) {
+            $this->_hash = sha1($this->getName() . $this->getClass() . serialize($this->getConfig()));
+        }
+        return $this->_hash;
     }
 
 }

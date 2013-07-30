@@ -26,6 +26,7 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
             'name'       => null,
             'class'      => __CLASS__,
             'config'     => array(),
+            'hash'       => 'test',
             'properties' => array(
                 'name'  => array(
                     'name'   => 'name',
@@ -34,6 +35,7 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
                         'nullable'  => false,
                         'maxlength' => 100,
                     ),
+                    'hash'   => 'test',
                 ),
                 'email' => array(
                     'name'   => 'email',
@@ -42,6 +44,7 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
                         'nullable'  => false,
                         'maxlength' => 255,
                     ),
+                    'hash'   => 'test',
                 ),
                 'child' => array(
                     'name'       => 'child',
@@ -50,6 +53,7 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
                         'option'  => 'value',
                         'another' => 12345,
                     ),
+                    'hash'       => 'test',
                     'properties' => array(),
                 ),
             ),

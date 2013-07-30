@@ -61,4 +61,11 @@ interface MetadataInterface extends \Serializable
      */
     public function toArray();
 
+    /**
+     * Get hash for this structure metadata item
+     *
+     * @return string
+     */
+    public function getHash();
+
 }

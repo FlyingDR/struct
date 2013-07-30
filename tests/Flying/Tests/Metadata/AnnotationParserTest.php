@@ -40,6 +40,11 @@ class AnnotationParserTest extends TestUsingFixtureStructures
             $this->assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $metadata);
             $expected = $fixture->getExpectedMetadata();
             $actual = $metadata->toArray();
+            array_walk_recursive($actual, function (&$v, $k) {
+                if ($k == 'hash') {
+                    $v = 'test';
+                };
+            });
             $this->assertEquals($expected, $actual);
         }
     }

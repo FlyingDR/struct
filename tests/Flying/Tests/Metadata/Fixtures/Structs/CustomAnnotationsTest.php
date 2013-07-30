@@ -26,11 +26,13 @@ class CustomAnnotationsTest extends StructStub implements MetadataTestcaseInterf
             'name'       => null,
             'class'      => __CLASS__,
             'config'     => array(),
+            'hash'       => 'test',
             'properties' => array(
                 'standard'       => array(
                     'name'   => 'standard',
                     'class'  => $nsMap->get('default') . '\\String',
                     'config' => array(),
+                    'hash'   => 'test',
                 ),
                 'custom'         => array(
                     'name'   => 'custom',
@@ -39,6 +41,7 @@ class CustomAnnotationsTest extends StructStub implements MetadataTestcaseInterf
                         'test'    => 123,
                         'enabled' => true,
                     ),
+                    'hash'   => 'test',
                 ),
                 'fromAnnotation' => array(
                     'name'   => 'fromAnnotation',
@@ -46,6 +49,7 @@ class CustomAnnotationsTest extends StructStub implements MetadataTestcaseInterf
                     'config' => array(
                         'abc' => 'xyz',
                     ),
+                    'hash'   => 'test',
                 ),
             ),
         );

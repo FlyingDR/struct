@@ -117,6 +117,7 @@ abstract class BaseMetadataTest extends TestCase
             'name'   => $this->_name,
             'class'  => $this->_class,
             'config' => $this->_config,
+            'hash'   => $metadata->getHash(),
         );
         $this->assertEquals($expected, $metadata->toArray());
     }

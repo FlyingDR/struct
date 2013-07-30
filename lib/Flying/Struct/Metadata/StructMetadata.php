@@ -77,6 +77,7 @@ class StructMetadata extends PropertyMetadata
     public function addProperty(MetadataInterface $metadata)
     {
         $this->_properties[$metadata->getName()] = $metadata;
+        $this->_hash = null;
         return $this;
     }
 
@@ -104,6 +105,7 @@ class StructMetadata extends PropertyMetadata
     public function removeProperty($name)
     {
         unset($this->_properties[$name]);
+        $this->_hash = null;
         return $this;
     }
 
@@ -115,6 +117,7 @@ class StructMetadata extends PropertyMetadata
     public function clearProperties()
     {
         $this->_properties = array();
+        $this->_hash = null;
     }
 
     /**
@@ -129,6 +132,7 @@ class StructMetadata extends PropertyMetadata
             'class'      => $this->getClass(),
             'config'     => $this->getConfig(),
             'properties' => $this->getProperties(),
+            'hash'       => $this->getHash(),
         )));
     }
 
@@ -153,17 +157,24 @@ class StructMetadata extends PropertyMetadata
         if (array_key_exists('config', $array)) {
             $this->setConfig($array['config']);
         }
+        if (array_key_exists('hash', $array)) {
+            $this->_hash = $array['hash'];
+        }
         if (array_key_exists('properties', $array)) {
             $this->setProperties($array['properties']);
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function toArray()
     {
         $array = array(
             'name'       => $this->getName(),
             'class'      => $this->getClass(),
             'config'     => $this->getConfig(),
+            'hash'       => $this->getHash(),
             'properties' => array(),
         );
         /** @var $property MetadataInterface */
@@ -171,6 +182,26 @@ class StructMetadata extends PropertyMetadata
             $array['properties'][$name] = $property->toArray();
         }
         return $array;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHash()
+    {
+        if (!$this->_hash) {
+            $hash = array(
+                $this->getName(),
+                $this->getClass(),
+                serialize($this->getConfig()),
+            );
+            /** @var $property PropertyMetadata */
+            foreach ($this->getProperties() as $property) {
+                $hash[] = $property->getHash();
+            }
+            $this->_hash = sha1(join('|', $hash));
+        }
+        return $this->_hash;
     }
 
 }

@@ -27,16 +27,19 @@ class InheritanceTestStructB extends InheritanceTestStructA
             'name'   => 'a2',
             'class'  => $pNs . '\\Int',
             'config' => array(),
+            'hash'   => 'test',
         );
         $metadata['properties']['b2'] = array(
             'name'   => 'b2',
             'class'  => $pNs . '\\Boolean',
             'config' => array(),
+            'hash'   => 'test',
         );
         $metadata['properties']['c2'] = array(
             'name'   => 'c2',
             'class'  => $pNs . '\\String',
             'config' => array(),
+            'hash'   => 'test',
         );
         $metadata['properties']['overloaded'] = array(
             'name'   => 'overloaded',
@@ -44,6 +47,7 @@ class InheritanceTestStructB extends InheritanceTestStructA
             'config' => array(
                 'default' => 'FromB',
             ),
+            'hash'   => 'test',
         );
         return $metadata;
     }

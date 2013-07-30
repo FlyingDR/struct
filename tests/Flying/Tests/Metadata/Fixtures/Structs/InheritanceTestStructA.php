@@ -27,21 +27,25 @@ class InheritanceTestStructA extends StructStub implements MetadataTestcaseInter
             'name'       => null,
             'class'      => __CLASS__,
             'config'     => array(),
+            'hash'       => 'test',
             'properties' => array(
                 'a1'         => array(
                     'name'   => 'a1',
                     'class'  => $pNs . '\\Int',
                     'config' => array(),
+                    'hash'   => 'test',
                 ),
                 'b1'         => array(
                     'name'   => 'b1',
                     'class'  => $pNs . '\\Boolean',
                     'config' => array(),
+                    'hash'   => 'test',
                 ),
                 'c1'         => array(
                     'name'   => 'c1',
                     'class'  => $pNs . '\\String',
                     'config' => array(),
+                    'hash'   => 'test',
                 ),
                 'overloaded' => array(
                     'name'   => 'overloaded',
@@ -49,6 +53,7 @@ class InheritanceTestStructA extends StructStub implements MetadataTestcaseInter
                     'config' => array(
                         'default' => 'FromA',
                     ),
+                    'hash'   => 'test',
                 ),
             ),
         );

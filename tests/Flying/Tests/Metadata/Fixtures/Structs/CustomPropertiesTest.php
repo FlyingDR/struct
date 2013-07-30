@@ -26,21 +26,25 @@ class CustomPropertiesTest extends StructStub implements MetadataTestcaseInterfa
             'name'       => null,
             'class'      => __CLASS__,
             'config'     => array(),
+            'hash'       => 'test',
             'properties' => array(
                 'standard' => array(
                     'name'   => 'standard',
                     'class'  => $nsMap->get('default') . '\\String',
                     'config' => array(),
+                    'hash'   => 'test',
                 ),
                 'custom'   => array(
                     'name'   => 'custom',
                     'class'  => $nsMap->get('fixtures') . '\\Custom',
                     'config' => array(),
+                    'hash'   => 'test',
                 ),
                 'complex'  => array(
                     'name'   => 'complex',
                     'class'  => $nsMap->get('fixtures') . '\\PropertyWithComplexName',
                     'config' => array(),
+                    'hash'   => 'test',
                 ),
             ),
         );

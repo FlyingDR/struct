@@ -27,6 +27,7 @@ class BasicStruct extends StructStub implements MetadataTestcaseInterface
             'name'       => null,
             'class'      => __CLASS__,
             'config'     => array(),
+            'hash'       => 'test',
             'properties' => array(
                 'first'  => array(
                     'name'   => 'first',
@@ -34,6 +35,7 @@ class BasicStruct extends StructStub implements MetadataTestcaseInterface
                     'config' => array(
                         'default' => true,
                     ),
+                    'hash'   => 'test',
                 ),
                 'second' => array(
                     'name'   => 'second',
@@ -44,11 +46,13 @@ class BasicStruct extends StructStub implements MetadataTestcaseInterface
                         'min'      => 10,
                         'max'      => 1000,
                     ),
+                    'hash'   => 'test',
                 ),
                 'third'  => array(
                     'name'   => 'third',
                     'class'  => $pNs . '\\String',
                     'config' => array(),
+                    'hash'   => 'test',
                 ),
                 'fourth' => array(
                     'name'   => 'fourth',
@@ -56,6 +60,7 @@ class BasicStruct extends StructStub implements MetadataTestcaseInterface
                     'config' => array(
                         'default' => 'some value',
                     ),
+                    'hash'   => 'test',
                 ),
             ),
         );

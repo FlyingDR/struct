@@ -111,6 +111,7 @@ class StructMetadataTest extends BaseMetadataTest
             'name'       => $this->_name,
             'class'      => $this->_class,
             'config'     => $this->_config,
+            'hash'       => $metadata->getHash(),
             'properties' => array(),
         );
         $this->assertEquals($expected, $metadata->toArray());
@@ -130,6 +131,7 @@ class StructMetadataTest extends BaseMetadataTest
             'name'       => $this->_name,
             'class'      => $this->_class,
             'config'     => $this->_config,
+            'hash'       => $metadata->getHash(),
             'properties' => array(
                 'p1' => $p1->toArray(),
                 'p2' => $p2->toArray(),

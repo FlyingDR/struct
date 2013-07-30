@@ -27,6 +27,7 @@ class ComplexStructure extends StructStub implements MetadataTestcaseInterface
             'name'       => null,
             'class'      => __CLASS__,
             'config'     => array(),
+            'hash'       => 'test',
             'properties' => array(
                 'basic'          => array(
                     'name'       => 'basic',
@@ -35,24 +36,28 @@ class ComplexStructure extends StructStub implements MetadataTestcaseInterface
                         'abc' => 123,
                         'xyz' => 'test',
                     ),
+                    'hash'       => 'test',
                     'properties' => array(),
                 ),
                 'child'          => array(
                     'name'       => 'child',
                     'class'      => $nsMap->get('fixtures') . '\\StructWithChild',
                     'config'     => array(),
+                    'hash'       => 'test',
                     'properties' => array(),
                 ),
                 'propertyTest'   => array(
                     'name'       => 'propertyTest',
                     'class'      => $nsMap->get('fixtures') . '\\CustomPropertiesTest',
                     'config'     => array(),
+                    'hash'       => 'test',
                     'properties' => array(),
                 ),
                 'annotationTest' => array(
                     'name'       => 'annotationTest',
                     'class'      => $nsMap->get('fixtures') . '\\CustomAnnotationsTest',
                     'config'     => array(),
+                    'hash'       => 'test',
                     'properties' => array(),
                 ),
             ),

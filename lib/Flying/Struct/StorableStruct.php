@@ -63,9 +63,8 @@ class StorableStruct extends Struct implements StorableInterface
             return null;
         }
         if (!$this->_storageKey) {
-            $class = get_class($this);
-            $hash = sha1(serialize($this->getMetadata()));
-            $this->_storageKey = $class . '_' . $hash;
+            $class = str_replace('\\', '_', get_class($this));
+            $this->_storageKey = $class . '_' . $this->getMetadata()->getHash();
         }
         return $this->_storageKey;
     }
