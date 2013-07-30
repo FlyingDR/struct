@@ -132,15 +132,33 @@ class MetadataManagerTest extends TestUsingFixtureStructures
             ->andReturn($metadata);
         /** @var $parser MetadataParserInterface */
         $manager->setParser($parser);
-        $cache = Mockery::mock('Doctrine\Common\Cache\Cache');
-        $cache->shouldReceive('contains')->once()
-            ->andReturn(false);
+        $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
+            ->shouldIgnoreMissing()
+            ->shouldReceive('contains')->once()->andReturn(false)->getMock();
         /** @var $cache Cache */
         $manager->setCache($cache);
 
         $manager->getMetadata($class);
         // Second attempt to get same metadata should not cause calls to either metadata parser or cache
         $manager->getMetadata($class);
+    }
+
+    public function testManagerUsesResultsFromCacheIfAvailable()
+    {
+        $class = $this->getFixtureClass('BasicStruct');
+        $manager = $this->getTestManager();
+        $metadata = $manager->getMetadata($class);
+
+        $manager = $this->getTestManager();
+        $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
+            ->shouldReceive('contains')->once()->ordered()->andReturn(true)->getMock()
+            ->shouldReceive('fetch')->once()->ordered()->andReturn($metadata)->getMock();
+        /** @var $cache Cache */
+        $manager->setCache($cache);
+
+        $m = $manager->getMetadata($class);
+        $this->assertEquals($m->toArray(), $metadata->toArray());
+        $this->assertFalse($m === $metadata);
     }
 
     public function testManagerStoresResultsInCache()
@@ -150,11 +168,9 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $metadata = $manager->getMetadata($class);
 
         $manager = $this->getTestManager();
-        $cache = Mockery::mock('Doctrine\Common\Cache\Cache');
-        $cache->shouldReceive('contains')->once()->ordered()
-            ->andReturn(true);
-        $cache->shouldReceive('fetch')->once()->ordered()
-            ->andReturn($metadata);
+        $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
+            ->shouldReceive('contains')->once()->ordered()->andReturn(false)->getMock()
+            ->shouldReceive('save')->once()->ordered()->with(Mockery::type('string'), get_class($metadata))->andReturnUndefined()->getMock();
         /** @var $cache Cache */
         $manager->setCache($cache);
 
@@ -166,12 +182,11 @@ class MetadataManagerTest extends TestUsingFixtureStructures
     public function testManagerUsesOnlyValidCacheResults()
     {
         $manager = $this->getTestManager();
-        $cache = Mockery::mock('Doctrine\Common\Cache\Cache');
-        $cache->shouldReceive('contains')->once()->ordered()
-            ->andReturn(true);
-        $cache->shouldReceive('fetch')->once()->ordered()
-            ->andReturn(array());
-        $cache->shouldReceive('delete')->once()->ordered();
+        $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
+            ->shouldReceive('contains')->once()->ordered()->andReturn(true)->getMock()
+            ->shouldReceive('fetch')->once()->ordered()->andReturn(array())->getMock()
+            ->shouldReceive('delete')->once()->ordered()->getMock()
+            ->shouldReceive('save')->once()->ordered()->with(Mockery::type('string'), Mockery::any())->andReturnUndefined()->getMock();
         /** @var $cache Cache */
         $manager->setCache($cache);
         $manager->getMetadata($this->getFixtureClass('BasicStruct'));

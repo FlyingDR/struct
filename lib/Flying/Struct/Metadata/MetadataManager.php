@@ -83,6 +83,17 @@ class MetadataManager implements MetadataManagerInterface
     }
 
     /**
+     * Get cache key for given class
+     *
+     * @param string $class
+     * @return string
+     */
+    protected function getCacheKey($class)
+    {
+        return $this->_cachePrefix . str_replace('\\', '_', $class);
+    }
+
+    /**
      * Get structure metadata information for given structure
      *
      * @param string|StructInterface $struct    Either structure class name or instance of structure object
@@ -115,7 +126,7 @@ class MetadataManager implements MetadataManagerInterface
             return clone $this->_metadata[$class];
         }
         // Check metadata cache
-        $cacheKey = $this->_cachePrefix . $class;
+        $cacheKey = $this->getCacheKey($class);
         if ($this->getCache()->contains($cacheKey)) {
             $metadata = $this->getCache()->fetch($cacheKey);
             if ($metadata instanceof StructMetadata) {
@@ -130,6 +141,7 @@ class MetadataManager implements MetadataManagerInterface
         $metadata = $this->getParser()->getMetadata($class);
         if ($metadata instanceof StructMetadata) {
             $this->_metadata[$class] = $metadata;
+            $this->getCache()->save($cacheKey, $metadata);
             return clone $metadata;
         }
         // No metadata is found for structure
