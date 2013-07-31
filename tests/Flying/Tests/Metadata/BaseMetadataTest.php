@@ -122,6 +122,20 @@ abstract class BaseMetadataTest extends TestCase
         $this->assertEquals($expected, $metadata->toArray());
     }
 
+    public function testHashUpdateOnChange()
+    {
+        $metadata = $this->getMetadataObject();
+        $hash = $metadata->getHash();
+        $metadata->setName($this->_name);
+        $this->assertNotEquals($hash, $metadata->getHash());
+        $hash = $metadata->getHash();
+        $metadata->setClass($this->_class);
+        $this->assertNotEquals($hash, $metadata->getHash());
+        $hash = $metadata->getHash();
+        $metadata->setConfig($this->_config);
+        $this->assertNotEquals($hash, $metadata->getHash());
+    }
+
     /**
      * @return MetadataInterface
      */

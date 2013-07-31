@@ -140,6 +140,28 @@ class StructMetadataTest extends BaseMetadataTest
         $this->assertEquals($expected, $metadata->toArray());
     }
 
+    public function testHashUpdateOnPropertiesOperations()
+    {
+        $metadata = $this->getMetadataObject();
+        $p1 = new PropertyMetadata('p1');
+        $p2 = new PropertyMetadata('p2');
+        $hash = $metadata->getHash();
+        $metadata->addProperty($p1);
+        $this->assertNotEquals($hash, $metadata->getHash());
+        $hash = $metadata->getHash();
+        $metadata->addProperty($p2);
+        $this->assertNotEquals($hash, $metadata->getHash());
+        $hash = $metadata->getHash();
+        $metadata->removeProperty($p1->getName());
+        $this->assertNotEquals($hash, $metadata->getHash());
+        $hash = $metadata->getHash();
+        $metadata->clearProperties();
+        $this->assertNotEquals($hash, $metadata->getHash());
+        $hash = $metadata->getHash();
+        $metadata->setProperties(array($p1, $p2));
+        $this->assertNotEquals($hash, $metadata->getHash());
+    }
+
     /**
      * @return StructMetadata
      */
