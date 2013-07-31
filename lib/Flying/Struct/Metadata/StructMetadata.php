@@ -157,11 +157,11 @@ class StructMetadata extends PropertyMetadata
         if (array_key_exists('config', $array)) {
             $this->setConfig($array['config']);
         }
-        if (array_key_exists('hash', $array)) {
-            $this->_hash = $array['hash'];
-        }
         if (array_key_exists('properties', $array)) {
             $this->setProperties($array['properties']);
+        }
+        if (array_key_exists('hash', $array)) {
+            $this->_hash = $array['hash'];
         }
     }
 
