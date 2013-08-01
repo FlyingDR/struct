@@ -10,7 +10,7 @@ namespace Flying\Struct\Annotation\Struct;
  * @Attribute("type", required=false, type="string"),
  * @Attribute("default", required=false, type="mixed"),
  * @Attribute("nullable", required=false, type="boolean"),
- * @Attribute("values", required=true, type="array<mixed>")
+ * @Attribute("values", required=true, type="array")
  * })
  */
 class Enum extends Property
