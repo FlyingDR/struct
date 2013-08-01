@@ -8,6 +8,7 @@ use Flying\Struct\Common\SimplePropertyInterface;
 use Flying\Struct\Common\UpdateNotifyListenerInterface;
 use Flying\Struct\Metadata\MetadataInterface;
 use Flying\Struct\Metadata\StructMetadata;
+use Flying\Struct\Property\Property;
 use Flying\Struct\Property\PropertyInterface;
 
 /**
@@ -69,6 +70,25 @@ class Struct extends AbstractConfig implements StructInterface
         }
         $this->createStruct($this->getMetadata());
         $this->_skipNotify = $flag;
+    }
+
+    /**
+     * Handling of object cloning
+     *
+     * @return void
+     */
+    public function __clone()
+    {
+        $config = array(
+            'parent_structure'       => $this,
+            'update_notify_listener' => $this,
+        );
+        /** @var $property Property */
+        foreach ($this->_struct as $name => $property) {
+            $property = clone $property;
+            $property->setConfig($config);
+            $this->_struct[$name] = $property;
+        }
     }
 
     /**

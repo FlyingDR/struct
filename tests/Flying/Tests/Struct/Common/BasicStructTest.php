@@ -339,6 +339,24 @@ abstract class BasicStructTest extends BaseStructTest
         ), $struct->toArray());
     }
 
+    public function testCloning()
+    {
+        $struct = $this->getTestStruct();
+        $clone = clone $struct;
+        foreach ($struct as $name => $value) {
+            $this->assertEquals($value, $clone->get($name));
+        }
+        $clone->set(array(
+            'first'  => false,
+            'second' => 77,
+            'third'  => 'modified',
+            'fourth' => 'another value',
+        ));
+        foreach ($struct as $name => $value) {
+            $this->assertNotEquals($value, $clone->get($name));
+        }
+    }
+
     /**
      * @param array|object $contents    OPTIONAL Contents to initialize structure with
      * @param array|object $config      OPTIONAL Configuration for this structure

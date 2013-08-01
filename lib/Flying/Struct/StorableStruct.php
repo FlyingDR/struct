@@ -51,6 +51,19 @@ class StorableStruct extends Struct implements StorableInterface
         $this->_skipNotify = $flag;
     }
 
+    public function __clone()
+    {
+        parent::__clone();
+        // Register newly cloned object into storage
+        if (!$this->_parent) {
+            $this->getStorage()->register($this);
+            // If structure had some changes before cloning - its cloned version should also be marked as "dirty"
+            if ($this->_markedAsDirty) {
+                $this->getStorage()->markAsDirty($this);
+            }
+        }
+    }
+
     /**
      * Get key for this structure to use in structures storage
      *
