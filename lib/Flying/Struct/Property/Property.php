@@ -17,11 +17,6 @@ class Property extends AbstractConfig implements PropertyInterface
      */
     protected $_value;
     /**
-     * TRUE if we're in object constructor, FALSE otherwise
-     * @var boolean
-     */
-    protected $_inConstructor = false;
-    /**
      * TRUE to skip property change notification, FALSE otherwise
      * @var boolean
      */
@@ -45,7 +40,6 @@ class Property extends AbstractConfig implements PropertyInterface
         // No change notification is required during object construction
         $flag = $this->_skipNotify;
         $this->_skipNotify = true;
-        $this->_inConstructor = true;
         $this->bootstrapConfig();
         $this->setConfig($config);
         // We must be sure that property value is always valid
@@ -58,7 +52,6 @@ class Property extends AbstractConfig implements PropertyInterface
             $this->reset();
         }
         $this->_skipNotify = $flag;
-        $this->_inConstructor = false;
     }
 
     /**
@@ -191,11 +184,6 @@ class Property extends AbstractConfig implements PropertyInterface
      */
     protected function onConfigChange($name, $value, $merge)
     {
-        // Configuration options are only defined during object construction
-        // @TODO This should be changed after implementation of read-only configuration
-        if (!$this->_inConstructor) {
-            throw new \RuntimeException('Property configuration options can\t be changed in runtime');
-        }
         switch ($name) {
             case 'nullable':
                 $this->_nullable = $value;
@@ -247,10 +235,8 @@ class Property extends AbstractConfig implements PropertyInterface
         }
         $flag = $this->_skipNotify;
         $this->_skipNotify = true;
-        $this->_inConstructor = true;
         $this->setConfig($data['config']);
         $this->setValue($data['value']);
-        $this->_inConstructor = false;
         $this->_skipNotify = $flag;
     }
 
