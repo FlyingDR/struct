@@ -35,6 +35,18 @@ class NamespacesMapTest extends TestCase
         $this->assertEquals($map->get('test'), 'A\B\C');
     }
 
+    public function testRegisteringNamespacesThroughConstructor()
+    {
+        $map = $this->getObject();
+        $this->assertEmpty($map->getAll());
+        $map = $this->getObject('A\B\C');
+        $this->assertEquals(array('a_b_c' => 'A\B\C'), $map->getAll());
+        $map = $this->getObject(array('A\B\C', 'D\E\F'));
+        $this->assertEquals(array('a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F'), $map->getAll());
+        $map = $this->getObject(array('a' => 'A\B\C', 'b' => 'D\E\F'));
+        $this->assertEquals(array('a' => 'A\B\C', 'b' => 'D\E\F'), $map->getAll());
+    }
+
     public function testGettingInvalidNamespace()
     {
         $map = $this->getObject();
@@ -57,11 +69,12 @@ class NamespacesMapTest extends TestCase
     }
 
     /**
+     * @param array $namespaces
      * @return NamespacesMap
      */
-    protected function getObject()
+    protected function getObject($namespaces = null)
     {
-        return new NamespacesMap();
+        return new NamespacesMap($namespaces);
     }
 
 }

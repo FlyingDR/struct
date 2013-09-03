@@ -16,6 +16,27 @@ class NamespacesMap
     protected $_namespaces = array();
 
     /**
+     * Class constructor
+     *
+     * @param array|string $namespaces  OPTIONAL Namespaces to register
+     */
+    public function __construct($namespaces = null)
+    {
+        $this->_namespaces = array();
+        if (is_string($namespaces)) {
+            $namespaces = array($namespaces);
+        }
+        if (is_array($namespaces)) {
+            foreach ($namespaces as $alias => $ns) {
+                if (!is_string($alias)) {
+                    $alias = mb_strtolower(str_replace('\\', '_', $ns));
+                }
+                $this->add($alias, $ns);
+            }
+        }
+    }
+
+    /**
      * Get registered namespace by given alias
      *
      * @param string $alias     Namespace alias
