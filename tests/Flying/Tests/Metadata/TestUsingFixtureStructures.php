@@ -27,9 +27,9 @@ abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
     public function setUp()
     {
         $configuration = new Configuration();
-        $configuration->getStructNamespacesMap()->add('fixtures', 'Flying\Tests\Metadata\Fixtures\Structs');
-        $configuration->getPropertyNamespacesMap()->add('fixtures', 'Flying\Tests\Metadata\Fixtures\Properties');
-        $configuration->getAnnotationNamespacesMap()->add('fixtures', 'Flying\Tests\Metadata\Fixtures\Annotations');
+        $configuration->getStructNamespacesMap()->add('Flying\Tests\Metadata\Fixtures\Structs', 'fixtures');
+        $configuration->getPropertyNamespacesMap()->add('Flying\Tests\Metadata\Fixtures\Properties', 'fixtures');
+        $configuration->getAnnotationNamespacesMap()->add('Flying\Tests\Metadata\Fixtures\Annotations', 'fixtures');
         ConfigurationManager::setConfiguration($configuration);
     }
 

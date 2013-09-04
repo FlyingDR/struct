@@ -17,7 +17,7 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
     public function setUp()
     {
         parent::setUp();
-        ConfigurationManager::getConfiguration()->getStructNamespacesMap()->add('fixtures', $this->_fixturesNs);
+        ConfigurationManager::getConfiguration()->getStructNamespacesMap()->add($this->_fixturesNs, 'fixtures');
     }
 
     /**

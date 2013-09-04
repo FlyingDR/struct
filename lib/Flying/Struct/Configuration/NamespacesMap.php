@@ -23,16 +23,8 @@ class NamespacesMap
     public function __construct($namespaces = null)
     {
         $this->_namespaces = array();
-        if (is_string($namespaces)) {
-            $namespaces = array($namespaces);
-        }
-        if (is_array($namespaces)) {
-            foreach ($namespaces as $alias => $ns) {
-                if (!is_string($alias)) {
-                    $alias = mb_strtolower(str_replace('\\', '_', $ns));
-                }
-                $this->add($alias, $ns);
-            }
+        if ($namespaces) {
+            $this->add($namespaces);
         }
     }
 
@@ -75,20 +67,26 @@ class NamespacesMap
     /**
      * Register class namespace
      *
-     * @param string $alias         Namespace alias
-     * @param string $namespace     Class namespace
+     * @param string|array $namespace     Class namespace
+     * @param string $alias               OPTIONAL Namespace alias
      * @throws \InvalidArgumentException
      * @return $this
      */
-    public function add($alias, $namespace)
+    public function add($namespace, $alias = null)
     {
-        if ((!is_string($alias)) || (!strlen($alias))) {
-            throw new \InvalidArgumentException('Class namespace alias must be a string');
+        if (!is_array($namespace)) {
+            $namespace = ($alias !== null) ? array($alias => $namespace) : array($namespace);
         }
-        if ((!is_string($namespace)) || (!strlen($namespace))) {
-            throw new \InvalidArgumentException('Class namespace must be a string');
+        foreach ($namespace as $alias => $ns) {
+            if ((!is_string($ns)) || (!strlen($ns))) {
+                throw new \InvalidArgumentException('Class namespace must be a string');
+            }
+            if ((!is_string($alias)) || (!strlen($alias))) {
+                $alias = mb_strtolower(str_replace('\\', '_', $ns));
+            }
+            $ns = trim($ns, '\\');
+            $this->_namespaces[$alias] = $ns;
         }
-        $this->_namespaces[$alias] = trim($namespace, '\\');
         return ($this);
     }
 

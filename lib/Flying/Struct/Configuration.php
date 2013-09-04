@@ -94,7 +94,7 @@ class Configuration
     {
         if (!$this->_structNsMap) {
             $this->_structNsMap = new NamespacesMap();
-            $this->_structNsMap->add('default', 'Flying\Struct');
+            $this->_structNsMap->add('Flying\Struct', 'default');
         }
         return $this->_structNsMap;
     }
@@ -108,7 +108,7 @@ class Configuration
     {
         if (!$this->_propertyNsMap) {
             $this->_propertyNsMap = new NamespacesMap();
-            $this->_propertyNsMap->add('default', 'Flying\Struct\Property');
+            $this->_propertyNsMap->add('Flying\Struct\Property', 'default');
         }
         return $this->_propertyNsMap;
     }
@@ -122,7 +122,7 @@ class Configuration
     {
         if (!$this->_annotationNsMap) {
             $this->_annotationNsMap = new NamespacesMap();
-            $this->_annotationNsMap->add('default', 'Flying\Struct\Annotation');
+            $this->_annotationNsMap->add('Flying\Struct\Annotation', 'default');
         }
         return $this->_annotationNsMap;
     }

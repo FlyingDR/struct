@@ -11,7 +11,7 @@ class NamespacesMapTest extends TestCase
     public function testBasicOperations()
     {
         $map = $this->getObject();
-        $map->add('test', '\\A\\B\\C\\');
+        $map->add('\\A\\B\\C\\', 'test');
         $this->assertTrue($map->has('test'));
         $this->assertFalse($map->has('unavailable'));
         $this->assertEquals($map->get('test'), 'A\B\C');
@@ -27,24 +27,57 @@ class NamespacesMapTest extends TestCase
     public function testNamespaceSlashesTrimming()
     {
         $map = $this->getObject();
-        $map->add('test', 'A\\B\\C');
+        $map->add('A\\B\\C', 'test');
         $this->assertEquals($map->get('test'), 'A\B\C');
-        $map->add('test', '\\A\\B\\C');
+        $map->add('\\A\\B\\C', 'test');
         $this->assertEquals($map->get('test'), 'A\B\C');
-        $map->add('test', 'A\\B\\C\\');
+        $map->add('A\\B\\C\\', 'test');
         $this->assertEquals($map->get('test'), 'A\B\C');
     }
 
-    public function testRegisteringNamespacesThroughConstructor()
+    /**
+     * @param mixed $ns
+     * @param mixed $alias
+     * @param array $expected
+     * @dataProvider dataProviderRegisteringNamespaces
+     */
+    public function testRegisteringNamespaces($ns, $alias, $expected)
     {
         $map = $this->getObject();
-        $this->assertEmpty($map->getAll());
-        $map = $this->getObject('A\B\C');
-        $this->assertEquals(array('a_b_c' => 'A\B\C'), $map->getAll());
-        $map = $this->getObject(array('A\B\C', 'D\E\F'));
-        $this->assertEquals(array('a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F'), $map->getAll());
-        $map = $this->getObject(array('a' => 'A\B\C', 'b' => 'D\E\F'));
-        $this->assertEquals(array('a' => 'A\B\C', 'b' => 'D\E\F'), $map->getAll());
+        $map->add($ns, $alias);
+        $this->assertEquals($expected, $map->getAll());
+    }
+
+    public function dataProviderRegisteringNamespaces()
+    {
+        return array(
+            array('A\B\C', null, array('a_b_c' => 'A\B\C')),
+            array('A\B\C', 'test', array('test' => 'A\B\C')),
+            array(array('A\B\C', 'D\E\F'), null, array('a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F')),
+            array(array('A\B\C', 'D\E\F'), 'test', array('a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F')),
+            array(array('a' => 'A\B\C', 'b' => 'D\E\F'), null, array('a' => 'A\B\C', 'b' => 'D\E\F')),
+        );
+    }
+
+    /**
+     * @param mixed $ns
+     * @param array $expected
+     * @dataProvider dataProviderRegisteringNamespacesThroughConstructor
+     */
+    public function testRegisteringNamespacesThroughConstructor($ns, $expected)
+    {
+        $map = $this->getObject($ns);
+        $this->assertEquals($expected, $map->getAll());
+    }
+
+    public function dataProviderRegisteringNamespacesThroughConstructor()
+    {
+        return array(
+            array(null, array()),
+            array('A\B\C', array('a_b_c' => 'A\B\C')),
+            array(array('A\B\C', 'D\E\F'), array('a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F')),
+            array(array('a' => 'A\B\C', 'b' => 'D\E\F'), array('a' => 'A\B\C', 'b' => 'D\E\F')),
+        );
     }
 
     public function testGettingInvalidNamespace()
@@ -54,18 +87,25 @@ class NamespacesMapTest extends TestCase
         $map->get('unavailable');
     }
 
-    public function testSettingInvalidNamespaceAlias()
-    {
-        $map = $this->getObject();
-        $this->setExpectedException('\InvalidArgumentException', 'Class namespace alias must be a string');
-        $map->add(array('test'), null);
-    }
-
-    public function testSettingInvalidNamespace()
+    /**
+     * @dataProvider dataProviderSettingInvalidNamespace
+     */
+    public function testSettingInvalidNamespace($ns, $alias = null)
     {
         $map = $this->getObject();
         $this->setExpectedException('\InvalidArgumentException', 'Class namespace must be a string');
-        $map->add('test', null);
+        $map->add($ns, $alias);
+    }
+
+    public function dataProviderSettingInvalidNamespace()
+    {
+        return array(
+            array(null),
+            array(true),
+            array(12345),
+            array(''),
+            array(new \ArrayObject()),
+        );
     }
 
     /**
