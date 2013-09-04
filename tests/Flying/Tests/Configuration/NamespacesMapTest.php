@@ -51,6 +51,8 @@ class NamespacesMapTest extends TestCase
     public function dataProviderRegisteringNamespaces()
     {
         return array(
+            array(null, null, array()),
+            array(null, 'test', array()),
             array('A\B\C', null, array('a_b_c' => 'A\B\C')),
             array('A\B\C', 'test', array('test' => 'A\B\C')),
             array(array('A\B\C', 'D\E\F'), null, array('a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F')),
@@ -100,7 +102,6 @@ class NamespacesMapTest extends TestCase
     public function dataProviderSettingInvalidNamespace()
     {
         return array(
-            array(null),
             array(true),
             array(12345),
             array(''),

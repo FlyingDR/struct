@@ -75,7 +75,7 @@ class NamespacesMap
     public function add($namespace, $alias = null)
     {
         if (!is_array($namespace)) {
-            $namespace = ($alias !== null) ? array($alias => $namespace) : array($namespace);
+            $namespace = ($namespace !== null) ? (($alias !== null) ? array($alias => $namespace) : array($namespace)) : array();
         }
         foreach ($namespace as $alias => $ns) {
             if ((!is_string($ns)) || (!strlen($ns))) {
