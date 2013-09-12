@@ -17,12 +17,5 @@ use Doctrine\Common\Annotations\AnnotationException;
  */
 class Collection extends Property
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDefaultType()
-    {
-        return 'collection';
-    }
 
 }

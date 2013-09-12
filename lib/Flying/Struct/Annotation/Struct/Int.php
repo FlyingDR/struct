@@ -16,12 +16,5 @@ namespace Flying\Struct\Annotation\Struct;
  */
 class Int extends Property
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDefaultType()
-    {
-        return 'int';
-    }
 
 }

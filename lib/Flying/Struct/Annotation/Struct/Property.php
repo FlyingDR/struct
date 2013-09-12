@@ -14,13 +14,8 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Attribute("nullable", required=false, type="boolean")
  * })
  */
-class Property
+class Property extends Annotation
 {
-    /**
-     * Property name
-     * @var string
-     */
-    protected $_name;
     /**
      * Property type
      * @var string
@@ -33,48 +28,21 @@ class Property
     protected $_config = array();
 
     /**
-     * Class constructor
-     *
-     * @param array $values
-     * @throws AnnotationException
-     * @return Property
+     * {@inheritdoc}
      */
-    public function __construct(array $values)
+    protected function parseValues(array &$values)
     {
-        foreach ($values as $k => $v) {
-            switch ($k) {
-                case 'name':
-                    $this->_name = $v;
-                    break;
-                case 'type':
-                    $this->_type = $v;
-                    break;
-                default:
-                    $this->_config[$k] = $v;
-                    break;
-            }
+        parent::parseValues($values);
+        $this->_type = $this->getDefaultType();
+        if (array_key_exists('type', $values)) {
+            $this->_type = $values['type'];
+            unset($values['type']);
         }
-        $type = $this->getDefaultType();
-        if ($type !== null) {
-            $this->_type = $type;
-        }
+        $this->_config = $values;
         // Check if we got required properties
-        if ((!is_string($this->_name)) || (!strlen($this->_name))) {
-            throw new AnnotationException('Required property annotation is missed: name');
-        }
         if ((!is_string($this->_type)) || (!strlen($this->_type))) {
             throw new AnnotationException('Required property annotation is missed: type');
         }
-    }
-
-    /**
-     * Get property name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->_name;
     }
 
     /**
@@ -104,7 +72,9 @@ class Property
      */
     protected function getDefaultType()
     {
-        return null;
+        $type = explode('\\', strtolower(get_class($this)));
+        $type = array_pop($type);
+        return ($type !== 'property') ? $type : null;
     }
 
 }

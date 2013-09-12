@@ -16,6 +16,12 @@ class PropertyTest extends TestCase
         'Collection' => 'collection',
     );
 
+    public function testInheritance()
+    {
+        $annotation = new Property(array('name' => 'test', 'type' => 'test'));
+        $this->assertInstanceOf('Flying\Struct\Annotation\Struct\Annotation', $annotation);
+    }
+
     public function testBasicOperations()
     {
         $annotation = new Property(array(

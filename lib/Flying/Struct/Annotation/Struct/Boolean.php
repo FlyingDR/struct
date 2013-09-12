@@ -14,12 +14,5 @@ namespace Flying\Struct\Annotation\Struct;
  */
 class Boolean extends Property
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDefaultType()
-    {
-        return 'boolean';
-    }
 
 }

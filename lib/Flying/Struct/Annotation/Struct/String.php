@@ -15,12 +15,5 @@ namespace Flying\Struct\Annotation\Struct;
  */
 class String extends Property
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDefaultType()
-    {
-        return 'string';
-    }
 
 }

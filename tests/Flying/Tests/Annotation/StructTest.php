@@ -8,6 +8,12 @@ use Flying\Tests\TestCase;
 class StructTest extends TestCase
 {
 
+    public function testInheritance()
+    {
+        $annotation = new Struct(array('name' => 'test', 'class' => 'test'));
+        $this->assertInstanceOf('Flying\Struct\Annotation\Struct\Annotation', $annotation);
+    }
+
     public function testBasicOperations()
     {
         $annotation = new Struct(array(
@@ -25,7 +31,7 @@ class StructTest extends TestCase
     public function testMissedClass()
     {
         $this->setExpectedException('\Doctrine\Common\Annotations\AnnotationException', 'Required structure annotation is missed: class');
-        new Struct(array());
+        new Struct(array('name' => 'test'));
     }
 
 }

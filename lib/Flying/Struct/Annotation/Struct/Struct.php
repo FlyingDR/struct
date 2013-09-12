@@ -12,15 +12,10 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Attribute("class", required=true, type="string"),
  * })
  */
-class Struct
+class Struct extends Annotation
 {
     /**
-     * Property name
-     * @var string
-     */
-    protected $_name;
-    /**
-     * Property type
+     * Class name of structure property
      * @var string
      */
     protected $_class;
@@ -31,40 +26,20 @@ class Struct
     protected $_config = array();
 
     /**
-     * Class constructor
-     *
-     * @param array $values
-     * @throws AnnotationException
-     * @return Struct
+     * {@inheritdoc}
      */
-    public function __construct(array $values)
+    protected function parseValues(array &$values)
     {
-        foreach ($values as $k => $v) {
-            switch ($k) {
-                case 'name':
-                    $this->_name = $v;
-                    break;
-                case 'class':
-                    $this->_class = $v;
-                    break;
-                default:
-                    $this->_config[$k] = $v;
-            }
+        parent::parseValues($values);
+        if (array_key_exists('class', $values)) {
+            $this->_class = $values['class'];
+            unset($values['class']);
         }
+        $this->_config = $values;
         // Check if we got required properties
         if ((!is_string($this->_class)) || (!strlen($this->_class))) {
             throw new AnnotationException('Required structure annotation is missed: class');
         }
-    }
-
-    /**
-     * Get structure name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->_name;
     }
 
     /**
