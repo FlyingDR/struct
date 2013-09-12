@@ -4,7 +4,7 @@ namespace Flying\Struct\Annotation\Struct;
 
 /**
  * @Annotation
- * @Target({"CLASS"})
+ * @Target({"CLASS", "ANNOTATION"})
  * @Attributes({
  * @Attribute("name", required=true, type="string"),
  * @Attribute("type", required=false, type="string"),

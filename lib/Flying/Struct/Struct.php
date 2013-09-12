@@ -202,6 +202,11 @@ class Struct extends AbstractConfig implements StructInterface
             $class = $property->getClass();
             $value = (array_key_exists($name, $contents)) ? $contents[$name] : null;
             $config = array_merge($property->getConfig(), $baseConfig);
+            if ($class === null) {
+                // Structure properties metadata is defined explicitly
+                $class = $this->getConfig('explicit_metadata_class');
+                $config['metadata'] = $property;
+            }
             $instance = new $class($value, $config);
             if ((!$instance instanceof PropertyInterface) && (!$instance instanceof StructInterface)) {
                 throw new Exception('Invalid class "' . $class . '" for structure property: ' . $name);
@@ -385,10 +390,11 @@ class Struct extends AbstractConfig implements StructInterface
     {
         parent::initConfig();
         $this->mergeConfig(array(
-            'configuration'          => null, // Structures configuration object (@see Configuration)
-            'metadata'               => null, // Structure metadata
-            'parent_structure'       => null, // Link to parent structure in a case of multi-level structures
-            'update_notify_listener' => null, // Listener for structure's update notifications
+            'configuration'           => null, // Structures configuration object (@see Configuration)
+            'metadata'                => null, // Structure metadata
+            'parent_structure'        => null, // Link to parent structure in a case of multi-level structures
+            'update_notify_listener'  => null, // Listener for structure's update notifications
+            'explicit_metadata_class' => null, // Name of the class to use to create structures from explicitly defined properties
         ));
     }
 
@@ -409,6 +415,8 @@ class Struct extends AbstractConfig implements StructInterface
                 $configuration = $this->getConfig('configuration');
                 return $configuration->getMetadataManager()->getMetadata($this);
                 break;
+            case 'explicit_metadata_class':
+                return __CLASS__;
             default:
                 return parent::lazyConfigInit($name);
                 break;
@@ -444,6 +452,18 @@ class Struct extends AbstractConfig implements StructInterface
             case 'update_notify_listener':
                 if (($value !== null) && (!$value instanceof UpdateNotifyListenerInterface)) {
                     throw new \InvalidArgumentException('Update notification listener must implement UpdateNotifyListenerInterface interface');
+                }
+                break;
+            case 'explicit_metadata_class':
+                if (!is_string($value)) {
+                    throw new \InvalidArgumentException('Explicit metadata class name should be defined as string');
+                }
+                if (!class_exists($value)) {
+                    throw new \InvalidArgumentException('Unknown class name is defined for explicit metadata class');
+                }
+                $reflection = new \ReflectionClass($value);
+                if ((!$reflection->isInstantiable()) || (!$reflection->implementsInterface('Flying\Struct\StructInterface'))) {
+                    throw new \InvalidArgumentException('Invalid class is defined for explicit metadata class');
                 }
                 break;
         }
