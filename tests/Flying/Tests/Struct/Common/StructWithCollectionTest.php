@@ -2,14 +2,44 @@
 
 namespace Flying\Tests\Struct\Common;
 
+use Flying\Struct\Common\ComplexPropertyInterface;
 use Flying\Tests\Struct\Fixtures\StructWithCollection;
 
+/**
+ * @method \Flying\Tests\Struct\Fixtures\StructWithCollection getTestStruct($contents = null, $config = null)
+ */
 abstract class StructWithCollectionTest extends BaseStructTest
 {
+    /**
+     * Name of fixture class to test
+     * @var string
+     */
+    protected $_fixtureClass = 'Flying\Tests\Struct\Fixtures\StructWithCollection';
+
     public function testCreation()
     {
         $struct = $this->getTestStruct();
         $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
+    }
+
+    public function testRecursiveIteratorInterface()
+    {
+        $struct = $this->getTestStruct();
+        $expected = array();
+        $temp = $struct->getExpectedContents();
+        // Don't walk recursively to avoid converting collection into list of its values
+        array_walk($temp, function ($v, $k) use (&$expected) {
+            $expected[] = array($k, $v);
+        });
+        $actual = array();
+        $iterator = new \RecursiveIteratorIterator($struct);
+        foreach ($iterator as $key => $value) {
+            if ($value instanceof ComplexPropertyInterface) {
+                $value = $value->toArray();
+            }
+            $actual[] = array($key, $value);
+        }
+        $this->assertEquals($expected, $actual);
     }
 
     public function testCollectionAccess()
@@ -27,18 +57,6 @@ abstract class StructWithCollectionTest extends BaseStructTest
         $struct->collection[] = 7;
         /** @noinspection PhpUndefinedMethodInspection */
         $this->assertEquals(array(1, 2, 3, 4, 5), $struct->collection->toArray());
-    }
-
-    /**
-     * @param array|object $contents    OPTIONAL Contents to initialize structure with
-     * @param array|object $config      OPTIONAL Configuration for this structure
-     * @return StructWithCollection
-     */
-    protected function getTestStruct($contents = null, $config = null)
-    {
-        $class = $this->getFixtureClass('StructWithCollection');
-        $struct = new $class($contents, $config);
-        return $struct;
     }
 
 }

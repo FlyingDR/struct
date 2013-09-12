@@ -17,6 +17,11 @@ class BasicStructTest extends CommonBasicStructTest
      * @var string
      */
     protected $_fixturesNs = 'Flying\Tests\Storage\Struct\Fixtures';
+    /**
+     * Name of fixture class to test
+     * @var string
+     */
+    protected $_fixtureClass = 'Flying\Tests\Storage\Struct\Fixtures\BasicStruct';
 
     public function testStructureInterfaces()
     {

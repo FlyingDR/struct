@@ -13,6 +13,9 @@ use Flying\Struct\Property\Collection;
 class StructWithCollection extends BasicStruct
 {
 
+    /**
+     * {@inheritdoc}
+     */
     public function getExpectedContents()
     {
         $contents = parent::getExpectedContents();

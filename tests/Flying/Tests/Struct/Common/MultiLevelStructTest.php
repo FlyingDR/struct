@@ -6,27 +6,21 @@ use Flying\Struct\Common\ComplexPropertyInterface;
 use Flying\Tests\Struct\Fixtures\MultiLevelStruct;
 use Mockery;
 
+/**
+ * @method \Flying\Tests\Struct\Fixtures\MultiLevelStruct getTestStruct($contents = null, $config = null)
+ */
 abstract class MultiLevelStructTest extends BaseStructTest
 {
+    /**
+     * Name of fixture class to test
+     * @var string
+     */
+    protected $_fixtureClass = 'Flying\Tests\Struct\Fixtures\MultiLevelStruct';
 
     public function testCreation()
     {
         $struct = $this->getTestStruct();
         $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
-    }
-
-    public function testRecursiveIteratorInterface()
-    {
-        $struct = $this->getTestStruct();
-        $iterator = new \RecursiveIteratorIterator($struct);
-        $contents = array();
-        foreach ($iterator as $key => $value) {
-            $contents[$key] = $value;
-        }
-        $expected = $struct->getExpectedContents();
-        $expected = array_merge($expected, $expected['child']);
-        unset($expected['child']);
-        $this->assertEquals($expected, $contents);
     }
 
     public function testGettingChildStructureProperty()
@@ -121,18 +115,6 @@ abstract class MultiLevelStructTest extends BaseStructTest
                 $this->assertNotEquals($value, $clone->get($name));
             }
         }
-    }
-
-    /**
-     * @param array|object $contents    OPTIONAL Contents to initialize structure with
-     * @param array|object $config      OPTIONAL Configuration for this structure
-     * @return MultiLevelStruct
-     */
-    protected function getTestStruct($contents = null, $config = null)
-    {
-        $class = $this->getFixtureClass('MultiLevelStruct');
-        $struct = new $class($contents, $config);
-        return $struct;
     }
 
 }

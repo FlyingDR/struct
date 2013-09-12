@@ -17,18 +17,19 @@ namespace Flying\Tests\Storage\Struct\Fixtures;
 class MultiLevelStruct extends TestStruct
 {
 
+    /**
+     * {@inheritdoc}
+     */
     public function getExpectedContents()
     {
-        return (array(
-            'b'     => true,
-            'i'     => 123,
-            's'     => 'test',
-            'child' => array(
-                'x' => false,
-                'y' => 345,
-                'z' => 'string',
-            ),
-        ));
+        $contents = array(
+            'b' => true,
+            'i' => 123,
+            's' => 'test',
+        );
+        $child = new ChildStruct();
+        $contents['child'] = $child->getExpectedContents();
+        return ($contents);
     }
 
 }

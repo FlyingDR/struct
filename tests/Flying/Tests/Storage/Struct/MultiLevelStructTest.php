@@ -15,6 +15,11 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
      * @var string
      */
     protected $_fixturesNs = 'Flying\Tests\Storage\Struct\Fixtures';
+    /**
+     * Name of fixture class to test
+     * @var string
+     */
+    protected $_fixtureClass = 'Flying\Tests\Storage\Struct\Fixtures\MultiLevelStruct';
 
     public function testChildStructureShouldNotRegisterItselfIntoStorage()
     {

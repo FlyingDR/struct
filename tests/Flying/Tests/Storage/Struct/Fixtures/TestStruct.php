@@ -79,4 +79,11 @@ abstract class TestStruct extends StorableStruct implements CallbackTrackingInte
         parent::updateNotify($property);
     }
 
+    /**
+     * Get contents that are expected to be returned by this structure
+     *
+     * @return array
+     */
+    abstract public function getExpectedContents();
+
 }

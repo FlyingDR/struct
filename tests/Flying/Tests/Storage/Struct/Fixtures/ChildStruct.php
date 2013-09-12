@@ -15,4 +15,16 @@ namespace Flying\Tests\Storage\Struct\Fixtures;
 class ChildStruct extends TestStruct
 {
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getExpectedContents()
+    {
+        return array(
+            'x' => false,
+            'y' => 345,
+            'z' => 'string',
+        );
+    }
+
 }

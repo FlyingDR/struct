@@ -17,6 +17,9 @@ namespace Flying\Tests\Struct\Fixtures;
 class BasicStruct extends TestStruct
 {
 
+    /**
+     * {@inheritdoc}
+     */
     public function getExpectedContents()
     {
         return (array(

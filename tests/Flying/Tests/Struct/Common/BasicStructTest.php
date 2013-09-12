@@ -11,8 +11,16 @@ use Flying\Tests\Struct\Fixtures\BasicStruct;
 use Flying\Tests\Tools\CallbackLog;
 use Mockery;
 
+/**
+ * @method \Flying\Tests\Struct\Fixtures\BasicStruct getTestStruct($contents = null, $config = null)
+ */
 abstract class BasicStructTest extends BaseStructTest
 {
+    /**
+     * Name of fixture class to test
+     * @var string
+     */
+    protected $_fixtureClass = 'Flying\Tests\Struct\Fixtures\BasicStruct';
 
     public function testStructureInterfaces()
     {
@@ -26,49 +34,6 @@ abstract class BasicStructTest extends BaseStructTest
         $this->assertArrayHasKey('Serializable', $interfaces);
         $this->assertArrayHasKey('Flying\Struct\Common\ComplexPropertyInterface', $interfaces);
         $this->assertArrayHasKey('Flying\Struct\Common\UpdateNotifyListenerInterface', $interfaces);
-    }
-
-    public function testCountableInterface()
-    {
-        $struct = $this->getTestStruct();
-        $expected = $struct->getExpectedContents();
-        $this->assertEquals(sizeof($expected), sizeof($struct));
-    }
-
-    public function testIteratorInterface()
-    {
-        $struct = $this->getTestStruct();
-        $contents = array();
-        foreach ($struct as $key => $value) {
-            $contents[$key] = $value;
-        }
-        $this->assertEquals($struct->getExpectedContents(), $contents);
-    }
-
-    public function testRecursiveIteratorInterface()
-    {
-        $struct = $this->getTestStruct();
-        $iterator = new \RecursiveIteratorIterator($struct);
-        $contents = array();
-        foreach ($iterator as $key => $value) {
-            $contents[$key] = $value;
-        }
-        $this->assertEquals($struct->getExpectedContents(), $contents);
-    }
-
-    public function testArrayAccessInterface()
-    {
-        $struct = $this->getTestStruct();
-        $expected = $struct->getExpectedContents();
-        foreach ($expected as $key => $value) {
-            $this->assertEquals($struct[$key], $value);
-        }
-    }
-
-    public function testConversionToArray()
-    {
-        $struct = $this->getTestStruct();
-        $this->assertEquals($struct->toArray(), $struct->getExpectedContents());
     }
 
     public function testExplicitGetter()
@@ -207,18 +172,6 @@ abstract class BasicStructTest extends BaseStructTest
         $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
     }
 
-    public function testSerialization()
-    {
-        $struct = $this->getTestStruct();
-        $class = get_class($struct);
-        $data = serialize($struct);
-        /** @var $new BasicStruct */
-        $new = unserialize($data);
-        $this->assertInstanceOf($class, $new);
-        $this->assertNotEquals($struct, $new);
-        $this->assertEquals($struct->getExpectedContents(), $new->toArray());
-    }
-
     /**
      * @dataProvider getExplicitInitialContents
      */
@@ -355,18 +308,6 @@ abstract class BasicStructTest extends BaseStructTest
         foreach ($struct as $name => $value) {
             $this->assertNotEquals($value, $clone->get($name));
         }
-    }
-
-    /**
-     * @param array|object $contents    OPTIONAL Contents to initialize structure with
-     * @param array|object $config      OPTIONAL Configuration for this structure
-     * @return BasicStruct
-     */
-    protected function getTestStruct($contents = null, $config = null)
-    {
-        $class = $this->getFixtureClass('BasicStruct');
-        $struct = new $class($contents, $config);
-        return $struct;
     }
 
 }
