@@ -9,9 +9,11 @@ class PropertyTest extends TestCase
 {
     protected $_propertyNamespace = 'Flying\Struct\Annotation\Struct';
     protected $_typesMap = array(
-        'Boolean' => 'boolean',
-        'Int'     => 'int',
-        'String'  => 'string',
+        'Boolean'    => 'boolean',
+        'Int'        => 'int',
+        'String'     => 'string',
+        'Enum'       => 'enum',
+        'Collection' => 'collection',
     );
 
     public function testBasicOperations()
