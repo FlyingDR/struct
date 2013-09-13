@@ -231,8 +231,7 @@ class Struct extends AbstractConfig implements StructInterface
             $property = $this->_struct[$name];
             if ($property instanceof ComplexPropertyInterface) {
                 $result = $property;
-            } elseif ($property instanceof SimplePropertyInterface) {
-                /** @var $property PropertyInterface */
+            } elseif ($property instanceof PropertyInterface) {
                 $result = $property->getValue();
             }
         } else {
