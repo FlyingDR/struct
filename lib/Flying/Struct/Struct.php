@@ -241,6 +241,20 @@ class Struct extends AbstractConfig implements StructInterface
     }
 
     /**
+     * Get structure property with given name
+     *
+     * @param string $name
+     * @return PropertyInterface|ComplexPropertyInterface|null
+     */
+    public function getProperty($name)
+    {
+        if ($this->__isset($name)) {
+            return $this->_struct[$name];
+        }
+        return null;
+    }
+
+    /**
      * Handle get requests for missed structure properties
      *
      * @param string $name      Requested structure property name

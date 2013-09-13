@@ -45,6 +45,13 @@ abstract class BasicStructTest extends BaseStructTest
         $this->assertEquals('default', $struct->get('unknown', 'default'));
     }
 
+    public function testGettingProperty()
+    {
+        $struct = $this->getTestStruct();
+        $this->assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('first'));
+        $this->assertNull($struct->getProperty('unavailable'));
+    }
+
     public function testIssetUnset()
     {
         $struct = $this->getTestStruct();

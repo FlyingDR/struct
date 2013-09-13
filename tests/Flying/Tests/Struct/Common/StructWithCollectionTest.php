@@ -22,6 +22,14 @@ abstract class StructWithCollectionTest extends BaseStructTest
         $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
     }
 
+    public function testGettingProperty()
+    {
+        $struct = $this->getTestStruct();
+        $this->assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('first'));
+        $this->assertInstanceOf('Flying\Struct\Common\ComplexPropertyInterface', $struct->getProperty('collection'));
+        $this->assertNull($struct->getProperty('unavailable'));
+    }
+
     public function testRecursiveIteratorInterface()
     {
         $struct = $this->getTestStruct();

@@ -23,6 +23,15 @@ abstract class MultiLevelStructTest extends BaseStructTest
         $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
     }
 
+    public function testGettingProperty()
+    {
+        $struct = $this->getTestStruct();
+        $this->assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('b'));
+        $this->assertInstanceOf('Flying\Struct\StructInterface', $struct->getProperty('child'));
+        $this->assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->child->getProperty('x'));
+        $this->assertNull($struct->getProperty('unavailable'));
+    }
+
     public function testGettingChildStructureProperty()
     {
         $struct = $this->getTestStruct();
