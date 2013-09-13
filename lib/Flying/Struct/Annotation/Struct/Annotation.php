@@ -13,7 +13,7 @@ abstract class Annotation
      * Name of structure property
      * @var string
      */
-    protected $_name;
+    protected $name;
 
     /**
      * Class constructor
@@ -36,11 +36,11 @@ abstract class Annotation
     protected function parseValues(array &$values)
     {
         if (array_key_exists('name', $values)) {
-            $this->_name = $values['name'];
+            $this->name = $values['name'];
             unset($values['name']);
         }
         // Check if we got required properties
-        if ((!is_string($this->_name)) || (!strlen($this->_name))) {
+        if ((!is_string($this->name)) || (!strlen($this->name))) {
             throw new AnnotationException('Required property annotation is missed: name');
         }
     }
@@ -52,7 +52,6 @@ abstract class Annotation
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
-
 }

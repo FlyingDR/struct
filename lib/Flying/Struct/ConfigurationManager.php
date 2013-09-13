@@ -15,7 +15,7 @@ class ConfigurationManager
      * Structures configuration
      * @var Configuration
      */
-    private static $_configuration;
+    private static $configuration;
 
     /**
      * Get structures configuration class
@@ -24,10 +24,10 @@ class ConfigurationManager
      */
     public static function getConfiguration()
     {
-        if (!self::$_configuration instanceof Configuration) {
+        if (!self::$configuration instanceof Configuration) {
             self::setConfiguration(new Configuration());
         }
-        return (self::$_configuration);
+        return (self::$configuration);
     }
 
     /**
@@ -38,7 +38,6 @@ class ConfigurationManager
      */
     public static function setConfiguration(Configuration $configuration)
     {
-        self::$_configuration = $configuration;
+        self::$configuration = $configuration;
     }
-
 }

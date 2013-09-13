@@ -7,7 +7,6 @@ namespace Flying\Struct\Metadata;
  */
 interface MetadataParserInterface
 {
-
     /**
      * Get structure metadata information for given class
      *
@@ -15,5 +14,4 @@ interface MetadataParserInterface
      * @return StructMetadata
      */
     public function getMetadata($class);
-
 }

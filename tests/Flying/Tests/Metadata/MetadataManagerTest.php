@@ -14,7 +14,6 @@ use Mockery;
 
 class MetadataManagerTest extends TestUsingFixtureStructures
 {
-
     public function testMetadataRetrievingByClassName()
     {
         $manager = $this->getTestManager();
@@ -50,7 +49,10 @@ class MetadataManagerTest extends TestUsingFixtureStructures
      */
     public function testGettingMetadataForInvalidObjects($object)
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Structure class must implement StructInterface interface');
+        $this->setExpectedException(
+            '\InvalidArgumentException',
+            'Structure class must implement StructInterface interface'
+        );
         $manager = $this->getTestManager();
         $manager->getMetadata($object);
     }
@@ -68,7 +70,10 @@ class MetadataManagerTest extends TestUsingFixtureStructures
      */
     public function testGettingMetadataForInvalidValues($value)
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Invalid structure information is given');
+        $this->setExpectedException(
+            '\InvalidArgumentException',
+            'Invalid structure information is given'
+        );
         $manager = $this->getTestManager();
         $manager->getMetadata($value);
     }
@@ -85,7 +90,7 @@ class MetadataManagerTest extends TestUsingFixtureStructures
 
     public function testManagerReceivesDependenciesFromConfigurationByDefault()
     {
-        $config = Mockery::mock('\Flying\Struct\Configuration');
+        $config = Mockery::mock('Flying\Struct\Configuration');
         $config->shouldReceive('getMetadataParser')->once()
             ->andReturn(new AnnotationParser());
         $config->shouldReceive('getCache')->once()
@@ -219,5 +224,4 @@ class MetadataManagerTest extends TestUsingFixtureStructures
     {
         return new MetadataManager();
     }
-
 }

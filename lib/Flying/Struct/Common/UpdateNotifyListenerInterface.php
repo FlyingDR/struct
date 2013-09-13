@@ -7,7 +7,6 @@ namespace Flying\Struct\Common;
  */
 interface UpdateNotifyListenerInterface
 {
-
     /**
      * Handle notification about update of given property
      *
@@ -15,5 +14,4 @@ interface UpdateNotifyListenerInterface
      * @return void
      */
     public function updateNotify(SimplePropertyInterface $property);
-
 }

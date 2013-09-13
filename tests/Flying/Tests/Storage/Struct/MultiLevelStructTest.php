@@ -14,12 +14,12 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
      * Namespace for fixtures structures
      * @var string
      */
-    protected $_fixturesNs = 'Flying\Tests\Storage\Struct\Fixtures';
+    protected $fixturesNs = 'Flying\Tests\Storage\Struct\Fixtures';
     /**
      * Name of fixture class to test
      * @var string
      */
-    protected $_fixtureClass = 'Flying\Tests\Storage\Struct\Fixtures\MultiLevelStruct';
+    protected $fixtureClass = 'Flying\Tests\Storage\Struct\Fixtures\MultiLevelStruct';
 
     public function testChildStructureShouldNotRegisterItselfIntoStorage()
     {
@@ -51,5 +51,4 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
         $s3 = $this->getTestStruct();
         $this->assertEquals($modified, $s3->child->z);
     }
-
 }

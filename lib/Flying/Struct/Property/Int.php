@@ -64,5 +64,4 @@ class Int extends Property
         }
         return true;
     }
-
 }

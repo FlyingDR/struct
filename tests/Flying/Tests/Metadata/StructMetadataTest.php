@@ -7,7 +7,6 @@ use Flying\Struct\Metadata\StructMetadata;
 
 class StructMetadataTest extends BaseMetadataTest
 {
-
     public function testPropertyOperations()
     {
         $metadata = $this->getMetadataObject();
@@ -67,10 +66,10 @@ class StructMetadataTest extends BaseMetadataTest
             new PropertyMetadata('p2'),
         );
         /** @var $metadata StructMetadata */
-        $metadata = new $class($this->_name, $this->_class, $this->_config, $properties);
-        $this->assertEquals($metadata->getName(), $this->_name);
-        $this->assertEquals($metadata->getClass(), $this->_class);
-        $this->assertTrue($metadata->getConfig() === $this->_config);
+        $metadata = new $class($this->name, $this->class, $this->config, $properties);
+        $this->assertEquals($metadata->getName(), $this->name);
+        $this->assertEquals($metadata->getClass(), $this->class);
+        $this->assertTrue($metadata->getConfig() === $this->config);
         /** @var $property PropertyMetadata */
         foreach ($properties as $property) {
             $this->assertTrue($metadata->getProperty($property->getName()) === $property);
@@ -79,7 +78,7 @@ class StructMetadataTest extends BaseMetadataTest
 
     public function testGettingInvalidProperty()
     {
-        $this->setExpectedException('\Flying\Struct\Exception');
+        $this->setExpectedException('Flying\Struct\Exception');
         $metadata = $this->getMetadataObject();
         $metadata->getProperty('unavailable');
     }
@@ -104,13 +103,13 @@ class StructMetadataTest extends BaseMetadataTest
     public function testToArray()
     {
         $metadata = $this->getMetadataObject();
-        $metadata->setName($this->_name)
-            ->setClass($this->_class)
-            ->setConfig($this->_config);
+        $metadata->setName($this->name)
+            ->setClass($this->class)
+            ->setConfig($this->config);
         $expected = array(
-            'name'       => $this->_name,
-            'class'      => $this->_class,
-            'config'     => $this->_config,
+            'name'       => $this->name,
+            'class'      => $this->class,
+            'config'     => $this->config,
             'hash'       => $metadata->getHash(),
             'properties' => array(),
         );
@@ -122,15 +121,15 @@ class StructMetadataTest extends BaseMetadataTest
         $metadata = $this->getMetadataObject();
         $p1 = new PropertyMetadata('p1');
         $p2 = new PropertyMetadata('p2');
-        $metadata->setName($this->_name)
-            ->setClass($this->_class)
-            ->setConfig($this->_config)
+        $metadata->setName($this->name)
+            ->setClass($this->class)
+            ->setConfig($this->config)
             ->addProperty($p1)
             ->addProperty($p2);
         $expected = array(
-            'name'       => $this->_name,
-            'class'      => $this->_class,
-            'config'     => $this->_config,
+            'name'       => $this->name,
+            'class'      => $this->class,
+            'config'     => $this->config,
             'hash'       => $metadata->getHash(),
             'properties' => array(
                 'p1' => $p1->toArray(),
@@ -169,5 +168,4 @@ class StructMetadataTest extends BaseMetadataTest
     {
         return new StructMetadata();
     }
-
 }

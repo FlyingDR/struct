@@ -12,7 +12,6 @@ use Mockery;
 
 class AnnotationParserTest extends TestUsingFixtureStructures
 {
-
     /**
      * @param string $class
      * @dataProvider getAnnotationFixtures
@@ -56,7 +55,10 @@ class AnnotationParserTest extends TestUsingFixtureStructures
             ->andReturnNull();
         /** @var $manager MetadataManagerInterface */
         ConfigurationManager::getConfiguration()->setMetadataManager($manager);
-        $this->setExpectedException('Flying\Struct\Exception', 'Failed to get structure metadata for class: ' . $this->getFixtureClass('BasicStruct'));
+        $this->setExpectedException(
+            'Flying\Struct\Exception',
+            'Failed to get structure metadata for class: ' . $this->getFixtureClass('BasicStruct')
+        );
         $parser = $this->getTestParser();
         $parser->getMetadata($this->getFixtureClass('StructWithChild'));
     }
@@ -83,5 +85,4 @@ class AnnotationParserTest extends TestUsingFixtureStructures
     {
         return new AnnotationParser();
     }
-
 }

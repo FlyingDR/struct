@@ -11,17 +11,17 @@ class IntTest extends BaseTypeTest
      * Class name of the property to test
      * @var string
      */
-    protected $_propertyClass = 'Int';
+    protected $propertyClass = 'Int';
     /**
      * Default property value
      * @var string
      */
-    protected $_defaultValue = 12345;
+    protected $defaultValue = 12345;
     /**
      * Value validation tests
      * @var array
      */
-    protected $_valueTests = array(
+    protected $valueTests = array(
         array(true, 1),
         array(false, 0),
 
@@ -56,7 +56,7 @@ class IntTest extends BaseTypeTest
      * Serialization tests
      * @var array
      */
-    protected $_serializationTests = array(
+    protected $serializationTests = array(
         0,
         1,
         -100,
@@ -65,7 +65,7 @@ class IntTest extends BaseTypeTest
 
     public function getValueTests()
     {
-        $tests = $this->_valueTests;
+        $tests = $this->valueTests;
         // Non-scalar values are not acceptable for this property
         // so default value should be set instead
         $tests[] = array(array(), 123, array('default' => 123));
@@ -74,5 +74,4 @@ class IntTest extends BaseTypeTest
         $tests[] = array(new Property('12345'), 12345);
         return $tests;
     }
-
 }

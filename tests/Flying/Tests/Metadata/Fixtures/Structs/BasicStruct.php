@@ -14,7 +14,6 @@ use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
  */
 class BasicStruct extends StructStub implements MetadataTestcaseInterface
 {
-
     /**
      * Get array representation of expected results from parsing metadata of this class
      *
@@ -75,5 +74,4 @@ class BasicStruct extends StructStub implements MetadataTestcaseInterface
     {
         return null;
     }
-
 }

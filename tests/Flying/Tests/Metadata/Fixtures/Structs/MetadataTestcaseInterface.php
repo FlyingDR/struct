@@ -21,5 +21,4 @@ interface MetadataTestcaseInterface
      * @return string|array|null
      */
     public function getExpectedException();
-
 }

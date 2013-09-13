@@ -11,7 +11,7 @@ class Enum extends Property
      * Cached version of "values" configuration property
      * @var array
      */
-    protected $_values = array();
+    protected $values = array();
 
     /**
      * {@inheritdoc}
@@ -32,7 +32,7 @@ class Enum extends Property
         if (!parent::normalize($value)) {
             return false;
         }
-        if (!in_array($value, $this->_values, true)) {
+        if (!in_array($value, $this->values, true)) {
             return false;
         }
         return true;
@@ -67,12 +67,11 @@ class Enum extends Property
     {
         switch ($name) {
             case 'values':
-                $this->_values = $value;
+                $this->values = $value;
                 break;
             default:
                 parent::onConfigChange($name, $value, $merge);
                 break;
         }
     }
-
 }

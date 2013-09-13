@@ -15,7 +15,7 @@ class Property extends BaseProperty implements CallbackTrackingInterface
      * Available callback loggers
      * @var array
      */
-    private $_cbLogs = array();
+    private $cbLogs = array();
 
     /**
      * Set logger for defined method
@@ -26,7 +26,7 @@ class Property extends BaseProperty implements CallbackTrackingInterface
      */
     public function setCallbackLogger($method, CallbackLog $logger)
     {
-        $this->_cbLogs[$method] = $logger;
+        $this->cbLogs[$method] = $logger;
     }
 
     /**
@@ -38,9 +38,9 @@ class Property extends BaseProperty implements CallbackTrackingInterface
      */
     protected function logCallbackCall($method, array $args)
     {
-        if (array_key_exists($method, $this->_cbLogs)) {
+        if (array_key_exists($method, $this->cbLogs)) {
             /** @var $logger CallbackLog */
-            $logger = $this->_cbLogs[$method];
+            $logger = $this->cbLogs[$method];
             $logger->add($method, $args);
         }
     }
@@ -74,5 +74,4 @@ class Property extends BaseProperty implements CallbackTrackingInterface
         $this->logCallbackCall(__FUNCTION__, func_get_args());
         parent::onInvalidValue($value);
     }
-
 }

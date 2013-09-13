@@ -13,7 +13,6 @@ use Mockery;
 
 class StorageTest extends TestCaseUsingConfiguration
 {
-
     public function testBasicOperations()
     {
         $object = $this->getStorableMock();
@@ -145,5 +144,4 @@ class StorageTest extends TestCaseUsingConfiguration
             ->getMock();
         return $mock;
     }
-
 }

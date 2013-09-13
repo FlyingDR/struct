@@ -14,7 +14,7 @@ class CacheBackend implements BackendInterface
      * Cache to use as a storage
      * @var Cache
      */
-    protected $_cache;
+    protected $cache;
 
     /**
      * Load information by given key from storage
@@ -82,10 +82,9 @@ class CacheBackend implements BackendInterface
      */
     protected function getCache()
     {
-        if (!$this->_cache) {
-            $this->_cache = ConfigurationManager::getConfiguration()->getCache();
+        if (!$this->cache) {
+            $this->cache = ConfigurationManager::getConfiguration()->getCache();
         }
-        return $this->_cache;
+        return $this->cache;
     }
-
 }

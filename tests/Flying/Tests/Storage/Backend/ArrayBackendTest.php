@@ -7,7 +7,6 @@ use Flying\Struct\Storage\BackendInterface;
 
 class ArrayBackendTest extends BaseStorageBackendTest
 {
-
     /**
      * Get storage backend that needs to be tested
      *
@@ -17,5 +16,4 @@ class ArrayBackendTest extends BaseStorageBackendTest
     {
         return new ArrayBackend();
     }
-
 }

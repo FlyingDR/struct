@@ -7,7 +7,6 @@ use Flying\Tests\TestCase;
 
 class NamespacesMapTest extends TestCase
 {
-
     public function testBasicOperations()
     {
         $map = $this->getObject();
@@ -95,7 +94,10 @@ class NamespacesMapTest extends TestCase
     public function testSettingInvalidNamespace($ns, $alias = null)
     {
         $map = $this->getObject();
-        $this->setExpectedException('\InvalidArgumentException', 'Class namespace must be a string');
+        $this->setExpectedException(
+            '\InvalidArgumentException',
+            'Class namespace must be a string'
+        );
         $map->add($ns, $alias);
     }
 
@@ -117,5 +119,4 @@ class NamespacesMapTest extends TestCase
     {
         return new NamespacesMap($namespaces);
     }
-
 }

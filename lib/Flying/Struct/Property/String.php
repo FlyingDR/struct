@@ -7,8 +7,6 @@ namespace Flying\Struct\Property;
  */
 class String extends Property
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -69,5 +67,4 @@ class String extends Property
         }
         return true;
     }
-
 }

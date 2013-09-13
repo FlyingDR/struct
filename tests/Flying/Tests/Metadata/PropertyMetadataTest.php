@@ -6,7 +6,6 @@ use Flying\Struct\Metadata\PropertyMetadata;
 
 class PropertyMetadataTest extends BaseMetadataTest
 {
-
     /**
      * @return PropertyMetadata
      */
@@ -14,5 +13,4 @@ class PropertyMetadataTest extends BaseMetadataTest
     {
         return new PropertyMetadata();
     }
-
 }

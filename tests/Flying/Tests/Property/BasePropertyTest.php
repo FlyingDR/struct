@@ -11,17 +11,17 @@ abstract class BasePropertyTest extends TestCase
      * Class name of the property to test
      * @var string
      */
-    protected $_propertyClass = null;
+    protected $propertyClass = null;
     /**
      * Namespace of property class to test
      * @var string
      */
-    protected $_propertyNs = 'Flying\Struct\Property';
+    protected $propertyNs = 'Flying\Struct\Property';
     /**
      * Default configuration options for test
      * @var array
      */
-    protected $_defaultConfig = array(
+    protected $defaultConfig = array(
         'nullable' => false,
         'default'  => null,
     );
@@ -29,7 +29,7 @@ abstract class BasePropertyTest extends TestCase
      * Default property value
      * @var string
      */
-    protected $_defaultValue = 'default value';
+    protected $defaultValue = 'default value';
 
     /**
      * @dataProvider serializationDataProvider
@@ -51,11 +51,11 @@ abstract class BasePropertyTest extends TestCase
      */
     protected function getPropertyClass()
     {
-        $class = $this->_propertyClass;
+        $class = $this->propertyClass;
         if (!class_exists($class, true)) {
-            $class = trim($this->_propertyNs, '\\') . '\\' . trim($class, '\\');
+            $class = trim($this->propertyNs, '\\') . '\\' . trim($class, '\\');
             if (!class_exists($class, true)) {
-                $this->fail('Unable to find test property class: ' . $this->_propertyClass);
+                $this->fail('Unable to find test property class: ' . $this->propertyClass);
             }
         }
         return $class;
@@ -77,13 +77,12 @@ abstract class BasePropertyTest extends TestCase
         if (!is_array($config)) {
             $config = array();
         }
-        $defaults = $this->_defaultConfig;
-        $defaults['default'] = $this->_defaultValue;
+        $defaults = $this->defaultConfig;
+        $defaults['default'] = $this->defaultValue;
         $config = array_merge($defaults, $config);
         $property = new $class($value, $config);
         return $property;
     }
 
     abstract public function serializationDataProvider();
-
 }

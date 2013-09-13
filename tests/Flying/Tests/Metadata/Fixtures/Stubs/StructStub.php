@@ -10,7 +10,6 @@ use Flying\Struct\StructInterface;
  */
 class StructStub implements StructInterface
 {
-
     /**
      * Retrieve value of structure property with given name and return $default if there is no such property
      *
@@ -212,5 +211,4 @@ class StructStub implements StructInterface
     {
 
     }
-
 }

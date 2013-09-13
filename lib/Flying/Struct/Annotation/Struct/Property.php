@@ -20,12 +20,12 @@ class Property extends Annotation
      * Property type
      * @var string
      */
-    protected $_type;
+    protected $type;
     /**
      * Property configuration
      * @var array
      */
-    protected $_config = array();
+    protected $config = array();
 
     /**
      * {@inheritdoc}
@@ -33,14 +33,14 @@ class Property extends Annotation
     protected function parseValues(array &$values)
     {
         parent::parseValues($values);
-        $this->_type = $this->getDefaultType();
+        $this->type = $this->getDefaultType();
         if (array_key_exists('type', $values)) {
-            $this->_type = $values['type'];
+            $this->type = $values['type'];
             unset($values['type']);
         }
-        $this->_config = $values;
+        $this->config = $values;
         // Check if we got required properties
-        if ((!is_string($this->_type)) || (!strlen($this->_type))) {
+        if ((!is_string($this->type)) || (!strlen($this->type))) {
             throw new AnnotationException('Required property annotation is missed: type');
         }
     }
@@ -52,7 +52,7 @@ class Property extends Annotation
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
 
     /**
@@ -62,7 +62,7 @@ class Property extends Annotation
      */
     public function getConfig()
     {
-        return $this->_config;
+        return $this->config;
     }
 
     /**
@@ -76,5 +76,4 @@ class Property extends Annotation
         $type = array_pop($type);
         return ($type !== 'property') ? $type : null;
     }
-
 }

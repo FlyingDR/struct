@@ -13,12 +13,12 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
      * Namespaces for property classes
      * @var array
      */
-    protected $_nsProperty;
+    protected $nsProperty;
     /**
      * Namespaces for structure classes
      * @var array
      */
-    protected $_nsStruct;
+    protected $nsStruct;
 
     /**
      * Resolve given property type into property FQCN
@@ -28,11 +28,11 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
      */
     protected function resolvePropertyClass($class)
     {
-        if (!$this->_nsProperty) {
+        if (!$this->nsProperty) {
             $ns = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->getAll();
-            $this->_nsProperty = array_reverse($ns, true);
+            $this->nsProperty = array_reverse($ns, true);
         }
-        return ($this->resolveClass($class, $this->_nsProperty, 'Flying\Struct\Property\PropertyInterface'));
+        return ($this->resolveClass($class, $this->nsProperty, 'Flying\Struct\Property\PropertyInterface'));
     }
 
     /**
@@ -43,11 +43,11 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
      */
     protected function resolveStructClass($class)
     {
-        if (!$this->_nsStruct) {
+        if (!$this->nsStruct) {
             $ns = ConfigurationManager::getConfiguration()->getStructNamespacesMap()->getAll();
-            $this->_nsStruct = array_reverse($ns, true);
+            $this->nsStruct = array_reverse($ns, true);
         }
-        return ($this->resolveClass($class, $this->_nsStruct, 'Flying\Struct\StructInterface'));
+        return ($this->resolveClass($class, $this->nsStruct, 'Flying\Struct\StructInterface'));
     }
 
     /**
@@ -76,5 +76,4 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
         }
         return null;
     }
-
 }

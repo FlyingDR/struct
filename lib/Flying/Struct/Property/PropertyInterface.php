@@ -23,5 +23,4 @@ interface PropertyInterface extends SimplePropertyInterface
      * @return void
      */
     public function setValue($value);
-
 }

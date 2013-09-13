@@ -6,5 +6,4 @@ use Flying\Tests\Struct\Common\StructWithCollectionTest as CommonStructWithColle
 
 class StructWithCollectionTest extends CommonStructWithCollectionTest
 {
-
 }

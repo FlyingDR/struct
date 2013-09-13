@@ -4,16 +4,15 @@ namespace Flying\Tests\Property\Stubs;
 
 class ToString
 {
-    protected $_value;
+    protected $value;
 
     public function __construct($value)
     {
-        $this->_value = $value;
+        $this->value = $value;
     }
 
     public function toString()
     {
-        return $this->_value;
+        return $this->value;
     }
-
 }

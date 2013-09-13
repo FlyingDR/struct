@@ -13,7 +13,7 @@ class StructTest extends TestCase
     public function testInheritance()
     {
         $annotation = new Struct(array('name' => 'test', 'class' => 'test'));
-        $this->assertInstanceOf('\Flying\Struct\Annotation\Struct\Annotation', $annotation);
+        $this->assertInstanceOf('Flying\Struct\Annotation\Struct\Annotation', $annotation);
     }
 
     public function testBasicOperations()
@@ -32,7 +32,10 @@ class StructTest extends TestCase
 
     public function testMissedClass()
     {
-        $this->setExpectedException('\Doctrine\Common\Annotations\AnnotationException', 'Required property annotation is missed: class');
+        $this->setExpectedException(
+            'Doctrine\Common\Annotations\AnnotationException',
+            'Required property annotation is missed: class'
+        );
         new Struct(array('name' => 'test'));
     }
 

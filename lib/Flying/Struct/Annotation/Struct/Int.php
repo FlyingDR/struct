@@ -16,5 +16,4 @@ namespace Flying\Struct\Annotation\Struct;
  */
 class Int extends Property
 {
-
 }

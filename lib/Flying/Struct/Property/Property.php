@@ -15,17 +15,17 @@ class Property extends AbstractConfig implements PropertyInterface
      * Property value
      * @var mixed
      */
-    protected $_value;
+    protected $value;
     /**
      * TRUE to skip property change notification, FALSE otherwise
      * @var boolean
      */
-    protected $_skipNotify = false;
+    protected $skipNotify = false;
     /**
      * Cached value of "nullable" configuration option
      * @var boolean
      */
-    protected $_nullable = true;
+    protected $nullable = true;
 
     /**
      * Class constructor
@@ -38,8 +38,8 @@ class Property extends AbstractConfig implements PropertyInterface
     public function __construct($value = null, array $config = null)
     {
         // No change notification is required during object construction
-        $flag = $this->_skipNotify;
-        $this->_skipNotify = true;
+        $flag = $this->skipNotify;
+        $this->skipNotify = true;
         $this->bootstrapConfig();
         $this->setConfig($config);
         // We must be sure that property value is always valid
@@ -51,7 +51,7 @@ class Property extends AbstractConfig implements PropertyInterface
         } else {
             $this->reset();
         }
-        $this->_skipNotify = $flag;
+        $this->skipNotify = $flag;
     }
 
     /**
@@ -61,7 +61,7 @@ class Property extends AbstractConfig implements PropertyInterface
      */
     public function getValue()
     {
-        return ($this->_value);
+        return ($this->value);
     }
 
     /**
@@ -73,7 +73,7 @@ class Property extends AbstractConfig implements PropertyInterface
     public function setValue($value)
     {
         if ($this->normalize($value)) {
-            $this->_value = $value;
+            $this->value = $value;
             $this->onChange();
             return true;
         } else {
@@ -92,15 +92,15 @@ class Property extends AbstractConfig implements PropertyInterface
     {
         // No change notification should be made for reset,
         // property value should be set to its default
-        $flag = $this->_skipNotify;
-        $this->_skipNotify = true;
+        $flag = $this->skipNotify;
+        $this->skipNotify = true;
         $default = $this->getConfig('default');
         if ($this->normalize($default)) {
-            $this->_value = $default;
+            $this->value = $default;
         } else {
             throw new Exception('Default value for property class ' . get_class($this) . ' is not acceptable for property validation rules');
         }
-        $this->_skipNotify = $flag;
+        $this->skipNotify = $flag;
     }
 
     /**
@@ -110,7 +110,7 @@ class Property extends AbstractConfig implements PropertyInterface
      */
     protected function onChange()
     {
-        if (!$this->_skipNotify) {
+        if (!$this->skipNotify) {
             $owner = $this->getConfig('update_notify_listener');
             if ($owner instanceof UpdateNotifyListenerInterface) {
                 $owner->updateNotify($this);
@@ -137,7 +137,7 @@ class Property extends AbstractConfig implements PropertyInterface
      */
     protected function normalize(&$value)
     {
-        if ((($value === null)) && (!$this->_nullable)) {
+        if ((($value === null)) && (!$this->nullable)) {
             return false;
         }
         if ($value instanceof PropertyInterface) {
@@ -186,7 +186,7 @@ class Property extends AbstractConfig implements PropertyInterface
     {
         switch ($name) {
             case 'nullable':
-                $this->_nullable = $value;
+                $this->nullable = $value;
                 break;
         }
     }
@@ -233,11 +233,10 @@ class Property extends AbstractConfig implements PropertyInterface
         ) {
             throw new \InvalidArgumentException('Serialized property information has invalid format');
         }
-        $flag = $this->_skipNotify;
-        $this->_skipNotify = true;
+        $flag = $this->skipNotify;
+        $this->skipNotify = true;
         $this->setConfig($data['config']);
         $this->setValue($data['value']);
-        $this->_skipNotify = $flag;
+        $this->skipNotify = $flag;
     }
-
 }

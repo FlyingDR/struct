@@ -7,5 +7,4 @@ namespace Flying\Struct;
  */
 class Exception extends \Exception
 {
-
 }

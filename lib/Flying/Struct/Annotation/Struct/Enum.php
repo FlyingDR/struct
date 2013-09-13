@@ -15,5 +15,4 @@ namespace Flying\Struct\Annotation\Struct;
  */
 class Enum extends Property
 {
-
 }

@@ -12,7 +12,6 @@ use Flying\Struct\Property\Collection;
  */
 class StructWithCollection extends BasicStruct
 {
-
     /**
      * {@inheritdoc}
      */
@@ -22,5 +21,4 @@ class StructWithCollection extends BasicStruct
         $contents['collection'] = array(1, 2, 3);
         return $contents;
     }
-
 }

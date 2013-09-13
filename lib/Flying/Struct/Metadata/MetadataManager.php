@@ -15,22 +15,22 @@ class MetadataManager implements MetadataManagerInterface
      * Structures metadata parser
      * @var MetadataParserInterface
      */
-    protected $_parser;
+    protected $parser;
     /**
      * Structures metadata cache
      * @var Cache
      */
-    protected $_cache;
+    protected $cache;
     /**
      * Structures metadata
      * @var array
      */
-    protected $_metadata = array();
+    protected $metadata = array();
     /**
      * Prefix for cache entries for structure metadata
      * @var string
      */
-    protected $_cachePrefix = 'StructMetadata_';
+    protected $cachePrefix = 'StructMetadata_';
 
     /**
      * Get metadata parser
@@ -39,10 +39,10 @@ class MetadataManager implements MetadataManagerInterface
      */
     public function getParser()
     {
-        if (!$this->_parser) {
-            $this->_parser = ConfigurationManager::getConfiguration()->getMetadataParser();
+        if (!$this->parser) {
+            $this->parser = ConfigurationManager::getConfiguration()->getMetadataParser();
         }
-        return $this->_parser;
+        return $this->parser;
     }
 
     /**
@@ -53,7 +53,7 @@ class MetadataManager implements MetadataManagerInterface
      */
     public function setParser(MetadataParserInterface $parser)
     {
-        $this->_parser = $parser;
+        $this->parser = $parser;
         return $this;
     }
 
@@ -64,10 +64,10 @@ class MetadataManager implements MetadataManagerInterface
      */
     public function getCache()
     {
-        if (!$this->_cache) {
-            $this->_cache = ConfigurationManager::getConfiguration()->getCache();
+        if (!$this->cache) {
+            $this->cache = ConfigurationManager::getConfiguration()->getCache();
         }
-        return $this->_cache;
+        return $this->cache;
     }
 
     /**
@@ -78,7 +78,7 @@ class MetadataManager implements MetadataManagerInterface
      */
     public function setCache(Cache $cache)
     {
-        $this->_cache = $cache;
+        $this->cache = $cache;
         return $this;
     }
 
@@ -90,7 +90,7 @@ class MetadataManager implements MetadataManagerInterface
      */
     protected function getCacheKey($class)
     {
-        return $this->_cachePrefix . str_replace('\\', '_', $class);
+        return $this->cachePrefix . str_replace('\\', '_', $class);
     }
 
     /**
@@ -122,15 +122,15 @@ class MetadataManager implements MetadataManagerInterface
             throw new \InvalidArgumentException('Invalid structure information is given');
         }
         // Check local metadata storage - fastest possible way
-        if (array_key_exists($class, $this->_metadata)) {
-            return clone $this->_metadata[$class];
+        if (array_key_exists($class, $this->metadata)) {
+            return clone $this->metadata[$class];
         }
         // Check metadata cache
         $cacheKey = $this->getCacheKey($class);
         if ($this->getCache()->contains($cacheKey)) {
             $metadata = $this->getCache()->fetch($cacheKey);
             if ($metadata instanceof StructMetadata) {
-                $this->_metadata[$class] = $metadata;
+                $this->metadata[$class] = $metadata;
                 return clone $metadata;
             } else {
                 // Cache has incorrect or corrupted entry
@@ -140,12 +140,11 @@ class MetadataManager implements MetadataManagerInterface
         // Get metadata from parser
         $metadata = $this->getParser()->getMetadata($class);
         if ($metadata instanceof StructMetadata) {
-            $this->_metadata[$class] = $metadata;
+            $this->metadata[$class] = $metadata;
             $this->getCache()->save($cacheKey, $metadata);
             return clone $metadata;
         }
         // No metadata is found for structure
         return null;
     }
-
 }

@@ -20,37 +20,37 @@ class Struct extends AbstractConfig implements StructInterface
      * Structure contents
      * @var array
      */
-    protected $_struct;
+    protected $struct;
     /**
      * Initial contents for structure properties
      * @var array
      */
-    protected $_initialContents;
+    protected $initialContents;
     /**
      * TRUE to skip property change notification, FALSE otherwise
      * @var boolean
      */
-    protected $_skipNotify = false;
+    protected $skipNotify = false;
     /**
      * Structure size (for Countable interface)
      * @var int
      */
-    protected $_count = 0;
+    protected $count = 0;
     /**
      * Current index in structure (for Iterator interface)
      * @var int
      */
-    protected $_index = 0;
+    protected $index = 0;
     /**
      * Structure metadata
      * @var StructMetadata
      */
-    protected $_metadata = null;
+    protected $metadata = null;
     /**
      * Parent structure or NULL if this is top-level structure
      * @var Struct
      */
-    protected $_parent = null;
+    protected $parent = null;
 
     /**
      * Class constructor
@@ -62,14 +62,14 @@ class Struct extends AbstractConfig implements StructInterface
     public function __construct($contents = null, $config = null)
     {
         // No change notification is required during object construction
-        $flag = $this->_skipNotify;
-        $this->_skipNotify = true;
+        $flag = $this->skipNotify;
+        $this->skipNotify = true;
         $this->setConfig($config);
         if ($contents !== null) {
             $this->setInitialContents($contents);
         }
         $this->createStruct($this->getMetadata());
-        $this->_skipNotify = $flag;
+        $this->skipNotify = $flag;
     }
 
     /**
@@ -84,10 +84,10 @@ class Struct extends AbstractConfig implements StructInterface
             'update_notify_listener' => $this,
         );
         /** @var $property Property */
-        foreach ($this->_struct as $name => $property) {
+        foreach ($this->struct as $name => $property) {
             $property = clone $property;
             $property->setConfig($config);
-            $this->_struct[$name] = $property;
+            $this->struct[$name] = $property;
         }
     }
 
@@ -99,7 +99,7 @@ class Struct extends AbstractConfig implements StructInterface
      */
     protected function getMetadata()
     {
-        if (!$this->_metadata) {
+        if (!$this->metadata) {
             /** @var $metadata StructMetadata */
             $metadata = $this->getConfig('metadata');
             if (!$metadata instanceof StructMetadata) {
@@ -110,9 +110,9 @@ class Struct extends AbstractConfig implements StructInterface
                     throw new Exception('No metadata information is found for structure: ' . get_class($this));
                 }
             }
-            $this->_metadata = $metadata;
+            $this->metadata = $metadata;
         }
-        return $this->_metadata;
+        return $this->metadata;
     }
 
     /**
@@ -124,13 +124,13 @@ class Struct extends AbstractConfig implements StructInterface
      */
     protected function getInitialContents($name = null)
     {
-        if (!is_array($this->_initialContents)) {
-            $this->_initialContents = array();
+        if (!is_array($this->initialContents)) {
+            $this->initialContents = array();
         }
         if ($name !== null) {
-            return (array_key_exists($name, $this->_initialContents)) ? $this->_initialContents[$name] : null;
+            return (array_key_exists($name, $this->initialContents)) ? $this->initialContents[$name] : null;
         } else {
-            return $this->_initialContents;
+            return $this->initialContents;
         }
     }
 
@@ -143,12 +143,12 @@ class Struct extends AbstractConfig implements StructInterface
     protected function setInitialContents($contents)
     {
         if (is_array($contents)) {
-            $this->_initialContents = $contents;
+            $this->initialContents = $contents;
         } elseif (is_object($contents)) {
-            $this->_initialContents = $this->convertToArray($contents);
+            $this->initialContents = $this->convertToArray($contents);
         }
-        if (!is_array($this->_initialContents)) {
-            $this->_initialContents = array();
+        if (!is_array($this->initialContents)) {
+            $this->initialContents = array();
         }
     }
 
@@ -196,7 +196,7 @@ class Struct extends AbstractConfig implements StructInterface
             'parent_structure'       => $this,
             'update_notify_listener' => $this,
         );
-        $this->_struct = array();
+        $this->struct = array();
         /** @var $property MetadataInterface */
         foreach ($metadata->getProperties() as $name => $property) {
             $class = $property->getClass();
@@ -211,9 +211,9 @@ class Struct extends AbstractConfig implements StructInterface
             if ((!$instance instanceof PropertyInterface) && (!$instance instanceof StructInterface)) {
                 throw new Exception('Invalid class "' . $class . '" for structure property: ' . $name);
             }
-            $this->_struct[$name] = $instance;
+            $this->struct[$name] = $instance;
         }
-        $this->_count = sizeof($this->_struct);
+        $this->count = sizeof($this->struct);
         $this->rewind();
     }
 
@@ -227,8 +227,8 @@ class Struct extends AbstractConfig implements StructInterface
     public function get($name, $default = null)
     {
         $result = $default;
-        if (array_key_exists($name, $this->_struct)) {
-            $property = $this->_struct[$name];
+        if (array_key_exists($name, $this->struct)) {
+            $property = $this->struct[$name];
             if ($property instanceof ComplexPropertyInterface) {
                 $result = $property;
             } elseif ($property instanceof PropertyInterface) {
@@ -249,7 +249,7 @@ class Struct extends AbstractConfig implements StructInterface
     public function getProperty($name)
     {
         if ($this->__isset($name)) {
-            return $this->_struct[$name];
+            return $this->struct[$name];
         }
         return null;
     }
@@ -291,11 +291,11 @@ class Struct extends AbstractConfig implements StructInterface
     {
         $values = (is_scalar($name)) ? array($name => $value) : $name;
         foreach ($values as $k => $v) {
-            if (!array_key_exists($k, $this->_struct)) {
+            if (!array_key_exists($k, $this->struct)) {
                 $this->setMissed($k, $v);
                 continue;
             }
-            $property = $this->_struct[$k];
+            $property = $this->struct[$k];
             if ($property instanceof PropertyInterface) {
                 $property->setValue($v);
             } elseif ($property instanceof StructInterface) {
@@ -350,13 +350,13 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function reset()
     {
-        $flag = $this->_skipNotify;
-        $this->_skipNotify = true;
+        $flag = $this->skipNotify;
+        $this->skipNotify = true;
         /** @var $property PropertyInterface */
-        foreach ($this->_struct as $property) {
+        foreach ($this->struct as $property) {
             $property->reset();
         }
-        $this->_skipNotify = $flag;
+        $this->skipNotify = $flag;
         $this->rewind();
     }
 
@@ -368,7 +368,7 @@ class Struct extends AbstractConfig implements StructInterface
     public function toArray()
     {
         $array = array();
-        foreach ($this->_struct as $key => $value) {
+        foreach ($this->struct as $key => $value) {
             if ($value instanceof ComplexPropertyInterface) {
                 $array[$key] = $value->toArray();
             } elseif ($value instanceof PropertyInterface) {
@@ -386,7 +386,7 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function updateNotify(SimplePropertyInterface $property)
     {
-        if (!$this->_skipNotify) {
+        if (!$this->skipNotify) {
             $owner = $this->getConfig('update_notify_listener');
             if ($owner instanceof UpdateNotifyListenerInterface) {
                 $owner->updateNotify($property);
@@ -496,10 +496,10 @@ class Struct extends AbstractConfig implements StructInterface
     {
         switch ($name) {
             case 'metadata':
-                $this->_metadata = $value;
+                $this->metadata = $value;
                 break;
             case 'parent_structure':
-                $this->_parent = $value;
+                $this->parent = $value;
                 break;
         }
         parent::onConfigChange($name, $value, $merge);
@@ -513,7 +513,7 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function __isset($name)
     {
-        return (array_key_exists($name, $this->_struct));
+        return (array_key_exists($name, $this->struct));
     }
 
     /**
@@ -526,9 +526,9 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function __unset($name)
     {
-        if (array_key_exists($name, $this->_struct)) {
+        if (array_key_exists($name, $this->struct)) {
             /** @var $property PropertyInterface */
-            $property = $this->_struct[$name];
+            $property = $this->struct[$name];
             $property->reset();
         }
     }
@@ -540,7 +540,7 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function count()
     {
-        return ($this->_count);
+        return ($this->count);
     }
 
     /**
@@ -550,7 +550,7 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function current()
     {
-        return ($this->get(key($this->_struct)));
+        return ($this->get(key($this->struct)));
     }
 
     /**
@@ -560,7 +560,7 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function key()
     {
-        return (key($this->_struct));
+        return (key($this->struct));
     }
 
     /**
@@ -570,8 +570,8 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function next()
     {
-        next($this->_struct);
-        $this->_index++;
+        next($this->struct);
+        $this->index++;
     }
 
     /**
@@ -581,8 +581,8 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function rewind()
     {
-        reset($this->_struct);
-        $this->_index = 0;
+        reset($this->struct);
+        $this->index = 0;
     }
 
     /**
@@ -592,7 +592,7 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function valid()
     {
-        return ($this->_index < $this->_count);
+        return ($this->index < $this->count);
     }
 
     /**
@@ -602,7 +602,7 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function hasChildren()
     {
-        return ($this->_struct[key($this->_struct)] instanceof StructInterface);
+        return ($this->struct[key($this->struct)] instanceof StructInterface);
     }
 
     /**
@@ -612,7 +612,7 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function getChildren()
     {
-        return ($this->_struct[key($this->_struct)]);
+        return ($this->struct[key($this->struct)]);
     }
 
     /**
@@ -691,12 +691,11 @@ class Struct extends AbstractConfig implements StructInterface
         ) {
             throw new \InvalidArgumentException('Serialized structure information has invalid format');
         }
-        $flag = $this->_skipNotify;
-        $this->_skipNotify = true;
+        $flag = $this->skipNotify;
+        $this->skipNotify = true;
         $this->setConfig('metadata', $data['metadata']);
         $this->createStruct();
         $this->set($data['struct']);
-        $this->_skipNotify = $flag;
+        $this->skipNotify = $flag;
     }
-
 }

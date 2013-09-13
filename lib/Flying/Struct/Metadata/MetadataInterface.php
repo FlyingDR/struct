@@ -7,7 +7,6 @@ namespace Flying\Struct\Metadata;
  */
 interface MetadataInterface extends \Serializable
 {
-
     /**
      * Get property name
      *
@@ -67,5 +66,4 @@ interface MetadataInterface extends \Serializable
      * @return string
      */
     public function getHash();
-
 }

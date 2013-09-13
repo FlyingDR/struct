@@ -15,17 +15,17 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
      * Namespace for fixtures structures
      * @var string
      */
-    protected $_fixturesNs = 'Flying\Tests\Struct\Fixtures';
+    protected $fixturesNs = 'Flying\Tests\Struct\Fixtures';
     /**
      * Name of fixture class to test
      * @var string
      */
-    protected $_fixtureClass = null;
+    protected $fixtureClass = null;
 
     public function setUp()
     {
         parent::setUp();
-        ConfigurationManager::getConfiguration()->getStructNamespacesMap()->add($this->_fixturesNs, 'fixtures');
+        ConfigurationManager::getConfiguration()->getStructNamespacesMap()->add($this->fixturesNs, 'fixtures');
     }
 
     public function testCountableInterface()
@@ -127,9 +127,8 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
      */
     protected function getTestStruct($contents = null, $config = null)
     {
-        $class = $this->getFixtureClass($this->_fixtureClass);
+        $class = $this->getFixtureClass($this->fixtureClass);
         $struct = new $class($contents, $config);
         return $struct;
     }
-
 }

@@ -11,8 +11,7 @@ use Flying\Tests\TestCaseUsingConfiguration;
  */
 abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
 {
-
-    protected $_annotationFixtures = array(
+    protected $annotationFixtures = array(
         'BasicStruct',
         'StructWithChild',
         'CustomPropertiesTest',
@@ -37,7 +36,7 @@ abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
     public function getAnnotationFixtures()
     {
         $fixtures = array();
-        foreach ($this->_annotationFixtures as $class) {
+        foreach ($this->annotationFixtures as $class) {
             $fixtures[] = array($class);
         }
         return $fixtures;
@@ -65,5 +64,4 @@ abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
         $this->fail('Unable to find fixture class: ' . $class);
         return null;
     }
-
 }

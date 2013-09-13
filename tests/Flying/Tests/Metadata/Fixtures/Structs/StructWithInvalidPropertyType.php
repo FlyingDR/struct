@@ -11,7 +11,6 @@ use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
  */
 class StructWithInvalidPropertyType extends StructStub implements MetadataTestcaseInterface
 {
-
     /**
      * Get array representation of expected results from parsing metadata of this class
      *
@@ -31,5 +30,4 @@ class StructWithInvalidPropertyType extends StructStub implements MetadataTestca
     {
         return array('Flying\Struct\Exception', 'Unable to resolve structure property class for type: unknown');
     }
-
 }

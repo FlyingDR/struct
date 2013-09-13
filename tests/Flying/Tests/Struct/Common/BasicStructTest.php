@@ -20,7 +20,7 @@ abstract class BasicStructTest extends BaseStructTest
      * Name of fixture class to test
      * @var string
      */
-    protected $_fixtureClass = 'Flying\Tests\Struct\Fixtures\BasicStruct';
+    protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\BasicStruct';
 
     public function testStructureInterfaces()
     {
@@ -223,7 +223,7 @@ abstract class BasicStructTest extends BaseStructTest
     {
         $mock = Mockery::mock('Flying\Struct\Common\UpdateNotifyListenerInterface')
             ->shouldReceive('updateNotify')->once()
-            ->with(Mockery::type('\Flying\Struct\Common\SimplePropertyInterface'))
+            ->with(Mockery::type('Flying\Struct\Common\SimplePropertyInterface'))
             ->getMock();
         $struct = $this->getTestStruct(null, array(
             'update_notify_listener' => $mock,
@@ -316,5 +316,4 @@ abstract class BasicStructTest extends BaseStructTest
             $this->assertNotEquals($value, $clone->get($name));
         }
     }
-
 }

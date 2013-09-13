@@ -14,7 +14,6 @@ namespace Flying\Tests\Storage\Struct\Fixtures;
  */
 class ChildStruct extends TestStruct
 {
-
     /**
      * {@inheritdoc}
      */
@@ -26,5 +25,4 @@ class ChildStruct extends TestStruct
             'z' => 'string',
         );
     }
-
 }

@@ -16,7 +16,6 @@ namespace Flying\Tests\Struct\Fixtures;
  */
 class MultiLevelStruct extends TestStruct
 {
-
     /**
      * {@inheritdoc}
      */
@@ -31,5 +30,4 @@ class MultiLevelStruct extends TestStruct
         $contents['child'] = $child->getExpectedContents();
         return ($contents);
     }
-
 }

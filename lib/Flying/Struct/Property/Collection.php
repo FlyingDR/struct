@@ -16,12 +16,12 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      * Collection elements
      * @var array
      */
-    protected $_elements = array();
+    protected $elements = array();
     /**
      * Cached value of "allowed" configuration option
      * @var array
      */
-    protected $_allowed;
+    protected $allowed;
 
     /**
      * {@inheritdoc}
@@ -29,7 +29,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function getValue()
     {
-        return $this->_elements;
+        return $this->elements;
     }
 
     /**
@@ -55,7 +55,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
             $this->onInvalidValue($value);
             return false;
         } else {
-            $this->_elements = $elements;
+            $this->elements = $elements;
             $this->onChange();
             return true;
         }
@@ -69,8 +69,8 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function get($key)
     {
-        if (array_key_exists($key, $this->_elements)) {
-            return $this->_elements[$key];
+        if (array_key_exists($key, $this->elements)) {
+            return $this->elements[$key];
         }
         return null;
     }
@@ -85,7 +85,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     public function set($key, $element)
     {
         if ($this->normalize($element)) {
-            $this->_elements[$key] = $element;
+            $this->elements[$key] = $element;
             $this->onChange();
         } else {
             $this->onInvalidValue($element, $key);
@@ -101,7 +101,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     public function add($element)
     {
         if ($this->normalize($element)) {
-            $this->_elements[] = $element;
+            $this->elements[] = $element;
             $this->onChange();
         } else {
             $this->onInvalidValue($element);
@@ -120,13 +120,13 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
         if ($this->normalize($element)) {
             // contains() and other methods are not used here
             // to avoid performance penalty from multiple calls to normalize()
-            if (in_array($element, $this->_elements, true)) {
+            if (in_array($element, $this->elements, true)) {
                 // Copy from removeElement()
                 $changed = false;
                 do {
-                    $key = array_search($element, $this->_elements, true);
+                    $key = array_search($element, $this->elements, true);
                     if ($key !== false) {
-                        unset($this->_elements[$key]);
+                        unset($this->elements[$key]);
                         $changed = true;
                     }
                 } while ($key !== false);
@@ -135,7 +135,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                 }
             } else {
                 // Copy from add()
-                $this->_elements[] = $element;
+                $this->elements[] = $element;
                 $this->onChange();
             }
         } else {
@@ -151,9 +151,9 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function remove($key)
     {
-        if (isset($this->_elements[$key]) || array_key_exists($key, $this->_elements)) {
-            $removed = $this->_elements[$key];
-            unset($this->_elements[$key]);
+        if (isset($this->elements[$key]) || array_key_exists($key, $this->elements)) {
+            $removed = $this->elements[$key];
+            unset($this->elements[$key]);
             $this->onChange();
             return $removed;
         }
@@ -174,9 +174,9 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
             return $changed;
         }
         do {
-            $key = array_search($element, $this->_elements, true);
+            $key = array_search($element, $this->elements, true);
             if ($key !== false) {
-                unset($this->_elements[$key]);
+                unset($this->elements[$key]);
                 $changed = true;
             }
         } while ($key !== false);
@@ -194,7 +194,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function containsKey($key)
     {
-        return isset($this->_elements[$key]) || array_key_exists($key, $this->_elements);
+        return isset($this->elements[$key]) || array_key_exists($key, $this->elements);
     }
 
     /**
@@ -208,7 +208,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
         if (!$this->normalize($element)) {
             return false;
         }
-        return in_array($element, $this->_elements, true);
+        return in_array($element, $this->elements, true);
     }
 
     /**
@@ -222,7 +222,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
         if (!$this->normalize($element)) {
             return false;
         }
-        return array_search($element, $this->_elements, true);
+        return array_search($element, $this->elements, true);
     }
 
     /**
@@ -232,7 +232,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function getKeys()
     {
-        return array_keys($this->_elements);
+        return array_keys($this->elements);
     }
 
     /**
@@ -242,7 +242,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function getValues()
     {
-        return array_values($this->_elements);
+        return array_values($this->elements);
     }
 
     /**
@@ -252,7 +252,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function isEmpty()
     {
-        return !$this->_elements;
+        return !$this->elements;
     }
 
     /**
@@ -262,7 +262,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function clear()
     {
-        $this->_elements = array();
+        $this->elements = array();
         $this->onChange();
     }
 
@@ -271,7 +271,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function count()
     {
-        return sizeof($this->_elements);
+        return sizeof($this->elements);
     }
 
     /**
@@ -279,7 +279,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->_elements);
+        return new \ArrayIterator($this->elements);
     }
 
     /**
@@ -323,7 +323,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function toArray()
     {
-        return $this->_elements;
+        return $this->elements;
     }
 
     /**
@@ -350,7 +350,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
         if (!parent::normalize($value)) {
             return false;
         }
-        $allowed = $this->_allowed;
+        $allowed = $this->allowed;
         if ((is_array($allowed)) && (!in_array($value, $allowed, true))) {
             return false;
         } elseif ((is_callable($allowed)) && (!$allowed($value))) {
@@ -406,7 +406,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     {
         switch ($name) {
             case 'allowed':
-                $this->_allowed = $value;
+                $this->allowed = $value;
                 break;
             default:
                 parent::onConfigChange($name, $value, $merge);
@@ -421,8 +421,8 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     {
         // No change notification should be made for reset,
         // property value should be set to its default
-        $flag = $this->_skipNotify;
-        $this->_skipNotify = true;
+        $flag = $this->skipNotify;
+        $this->skipNotify = true;
         $default = $this->getConfig('default');
         foreach ($default as $k => $v) {
             if (!$this->normalize($v, $k)) {
@@ -430,8 +430,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
             }
             $default[$k] = $v;
         }
-        $this->_elements = $default;
-        $this->_skipNotify = $flag;
+        $this->elements = $default;
+        $this->skipNotify = $flag;
     }
-
 }

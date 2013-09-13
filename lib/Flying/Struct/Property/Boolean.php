@@ -7,7 +7,6 @@ namespace Flying\Struct\Property;
  */
 class Boolean extends Property
 {
-
     /**
      * {@inheritdoc}
      */
@@ -25,5 +24,4 @@ class Boolean extends Property
         $value = (boolean)$value;
         return true;
     }
-
 }

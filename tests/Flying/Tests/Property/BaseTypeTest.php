@@ -9,13 +9,13 @@ abstract class BaseTypeTest extends BasePropertyTest
      * Each entry is: array($value, $expectedResult, $config)
      * @var array
      */
-    protected $_valueTests = array();
+    protected $valueTests = array();
     /**
      * Serialization tests
      * Each entry is: array($value, $expectedResult, $config)
      * @var array
      */
-    protected $_serializationTests = array();
+    protected $serializationTests = array();
 
     /**
      * @dataProvider getValueTests
@@ -61,7 +61,7 @@ abstract class BaseTypeTest extends BasePropertyTest
 
     public function getValueTests()
     {
-        return $this->_valueTests;
+        return $this->valueTests;
     }
 
     public function testAcceptableNullValue()
@@ -80,16 +80,15 @@ abstract class BaseTypeTest extends BasePropertyTest
         $property = $this->getTestProperty(null, array(
             'nullable' => false,
         ));
-        $this->assertEquals($property->getValue(), $this->_defaultValue);
+        $this->assertEquals($property->getValue(), $this->defaultValue);
     }
 
     public function serializationDataProvider()
     {
         $tests = array();
-        foreach ($this->_serializationTests as $test) {
-            $tests[] = array($test, $test, $this->_defaultConfig);
+        foreach ($this->serializationTests as $test) {
+            $tests[] = array($test, $test, $this->defaultConfig);
         }
         return $tests;
     }
-
 }

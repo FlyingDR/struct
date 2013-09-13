@@ -26,7 +26,6 @@ use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
  */
 class InlineStructDefinition extends StructStub implements MetadataTestcaseInterface
 {
-
     /**
      * Get array representation of expected results from parsing metadata of this class
      *
@@ -148,5 +147,4 @@ class InlineStructDefinition extends StructStub implements MetadataTestcaseInter
     {
         return null;
     }
-
 }

@@ -296,8 +296,14 @@ class CollectionTest extends TestCase
      * @param array $config
      * @dataProvider dataProviderValueNormalizationCallback
      */
-    public function testValueNormalizationCallback($method, array $args, array $expected = null, $checkKeys = false, $value = null, $config = null)
-    {
+    public function testValueNormalizationCallback(
+        $method,
+        array $args,
+        array $expected = null,
+        $checkKeys = false,
+        $value = null,
+        $config = null
+    ) {
         $collection = new Collection($value, $config);
         $logger = new CallbackLog();
         $collection->setCallbackLogger('normalize', $logger);
@@ -445,5 +451,4 @@ class CollectionTest extends TestCase
             array('reset', array(), null, false),
         );
     }
-
 }

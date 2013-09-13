@@ -7,7 +7,6 @@ use Flying\Tests\TestCase;
 
 class UnacceptableValueTest extends TestCase
 {
-
     public function testNullValueToNullableProperty()
     {
         $property = new PropertyForUnacceptableValues(null, array(
@@ -32,5 +31,4 @@ class UnacceptableValueTest extends TestCase
         ));
         $this->assertEquals('value', $property->getValue());
     }
-
 }

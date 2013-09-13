@@ -9,7 +9,6 @@ use Flying\Struct\ConfigurationManager;
  */
 interface StorageInterface
 {
-
     /**
      * Register given object in storage
      *
@@ -87,5 +86,4 @@ interface StorageInterface
      * @return $this
      */
     public function flush();
-
 }

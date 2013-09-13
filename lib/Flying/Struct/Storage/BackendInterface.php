@@ -7,7 +7,6 @@ namespace Flying\Struct\Storage;
  */
 interface BackendInterface
 {
-
     /**
      * Load information by given key from storage
      *
@@ -47,5 +46,4 @@ interface BackendInterface
      * @return void
      */
     public function clear();
-
 }

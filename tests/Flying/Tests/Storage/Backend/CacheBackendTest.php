@@ -7,7 +7,6 @@ use Flying\Struct\Storage\CacheBackend;
 
 class CacheBackendTest extends BaseStorageBackendTest
 {
-
     public function testClearingBackend()
     {
         // Cache backend doesn't have support for cache clearing
@@ -22,5 +21,4 @@ class CacheBackendTest extends BaseStorageBackendTest
     {
         return new CacheBackend();
     }
-
 }

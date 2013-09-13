@@ -21,12 +21,12 @@ class AnnotationParser extends AbstractMetadataParser
      * Annotations reader
      * @var Reader
      */
-    protected $_reader;
+    protected $reader;
     /**
      * Namespaces for annotations autoloading
      * @var array
      */
-    protected $_namespaces = array();
+    protected $namespaces = array();
 
     /**
      * Get annotations reader
@@ -35,16 +35,16 @@ class AnnotationParser extends AbstractMetadataParser
      */
     public function getReader()
     {
-        if (!$this->_reader) {
-            $this->_reader = new SimpleAnnotationReader();
+        if (!$this->reader) {
+            $this->reader = new SimpleAnnotationReader();
             $namespaces = ConfigurationManager::getConfiguration()->getAnnotationNamespacesMap()->getAll();
             foreach ($namespaces as $ns) {
-                $this->_reader->addNamespace($ns);
+                $this->reader->addNamespace($ns);
             }
-            $this->_namespaces = array_reverse($namespaces, true);
+            $this->namespaces = array_reverse($namespaces, true);
             AnnotationRegistry::registerLoader(array($this, 'loadClass'));
         }
-        return $this->_reader;
+        return $this->reader;
     }
 
     /**
@@ -55,7 +55,7 @@ class AnnotationParser extends AbstractMetadataParser
      */
     public function setReader(Reader $reader)
     {
-        $this->_reader = $reader;
+        $this->reader = $reader;
         return $this;
     }
 
@@ -71,7 +71,7 @@ class AnnotationParser extends AbstractMetadataParser
             return true;
         }
         $class = ucfirst(trim($class, '\\'));
-        foreach ($this->_namespaces as $ns) {
+        foreach ($this->namespaces as $ns) {
             $fqcn = $ns . '\\' . $class;
             if (class_exists($fqcn, true)) {
                 return true;
@@ -147,5 +147,4 @@ class AnnotationParser extends AbstractMetadataParser
             throw new Exception('Unknown structure annotation type');
         }
     }
-
 }

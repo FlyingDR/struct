@@ -13,7 +13,7 @@ abstract class TestStruct extends Struct implements CallbackTrackingInterface
      * Available callback loggers
      * @var array
      */
-    private $_cbLogs = array();
+    private $cbLogs = array();
 
     /**
      * Set logger for defined method
@@ -24,7 +24,7 @@ abstract class TestStruct extends Struct implements CallbackTrackingInterface
      */
     public function setCallbackLogger($method, CallbackLog $logger)
     {
-        $this->_cbLogs[$method] = $logger;
+        $this->cbLogs[$method] = $logger;
     }
 
     /**
@@ -36,9 +36,9 @@ abstract class TestStruct extends Struct implements CallbackTrackingInterface
      */
     protected function logCallbackCall($method, array $args)
     {
-        if (array_key_exists($method, $this->_cbLogs)) {
+        if (array_key_exists($method, $this->cbLogs)) {
             /** @var $logger CallbackLog */
-            $logger = $this->_cbLogs[$method];
+            $logger = $this->cbLogs[$method];
             $logger->add($method, $args);
         }
     }
@@ -85,5 +85,4 @@ abstract class TestStruct extends Struct implements CallbackTrackingInterface
      * @return array
      */
     abstract public function getExpectedContents();
-
 }

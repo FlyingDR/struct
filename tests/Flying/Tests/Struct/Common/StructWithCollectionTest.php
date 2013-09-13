@@ -14,7 +14,7 @@ abstract class StructWithCollectionTest extends BaseStructTest
      * Name of fixture class to test
      * @var string
      */
-    protected $_fixtureClass = 'Flying\Tests\Struct\Fixtures\StructWithCollection';
+    protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\StructWithCollection';
 
     public function testCreation()
     {
@@ -53,7 +53,7 @@ abstract class StructWithCollectionTest extends BaseStructTest
     public function testCollectionAccess()
     {
         $struct = $this->getTestStruct();
-        $this->assertInstanceOf('\Flying\Struct\Property\Collection', $struct->collection);
+        $this->assertInstanceOf('Flying\Struct\Property\Collection', $struct->collection);
     }
 
     public function testArrayAccess()
@@ -66,5 +66,4 @@ abstract class StructWithCollectionTest extends BaseStructTest
         /** @noinspection PhpUndefinedMethodInspection */
         $this->assertEquals(array(1, 2, 3, 4, 5), $struct->collection->toArray());
     }
-
 }

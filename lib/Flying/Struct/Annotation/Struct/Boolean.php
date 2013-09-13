@@ -14,5 +14,4 @@ namespace Flying\Struct\Annotation\Struct;
  */
 class Boolean extends Property
 {
-
 }

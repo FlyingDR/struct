@@ -4,16 +4,15 @@ namespace Flying\Tests\Property\Stubs;
 
 class ToArray
 {
-    protected $_value;
+    protected $value;
 
     public function __construct(array $value)
     {
-        $this->_value = $value;
+        $this->value = $value;
     }
 
     public function toArray()
     {
-        return $this->_value;
+        return $this->value;
     }
-
 }

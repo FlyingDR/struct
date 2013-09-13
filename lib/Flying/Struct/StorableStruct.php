@@ -16,17 +16,17 @@ class StorableStruct extends Struct implements StorableInterface
      * Structures storage
      * @var Storage
      */
-    protected $_storage = null;
+    protected $storage = null;
     /**
      * Storage key for this structure
      * @var string
      */
-    protected $_storageKey = null;
+    protected $storageKey = null;
     /**
      * TRUE if structure is already marked as "dirty" into storage
      * @var boolean
      */
-    protected $_markedAsDirty = false;
+    protected $markedAsDirty = false;
 
     /**
      * Class constructor
@@ -40,25 +40,25 @@ class StorableStruct extends Struct implements StorableInterface
         // Structure should be initialized with its stored contents
         parent::__construct(null, $config);
         // No change notification is required during object construction
-        $flag = $this->_skipNotify;
-        $this->_skipNotify = true;
+        $flag = $this->skipNotify;
+        $this->skipNotify = true;
         if (is_object($contents)) {
             $contents = $this->convertToArray($contents);
         }
         if (is_array($contents)) {
             $this->set($contents);
         }
-        $this->_skipNotify = $flag;
+        $this->skipNotify = $flag;
     }
 
     public function __clone()
     {
         parent::__clone();
         // Register newly cloned object into storage
-        if (!$this->_parent) {
+        if (!$this->parent) {
             $this->getStorage()->register($this);
             // If structure had some changes before cloning - its cloned version should also be marked as "dirty"
-            if ($this->_markedAsDirty) {
+            if ($this->markedAsDirty) {
                 $this->getStorage()->markAsDirty($this);
             }
         }
@@ -72,14 +72,14 @@ class StorableStruct extends Struct implements StorableInterface
     public function getStorageKey()
     {
         // Child structures should not be stored separately
-        if ($this->_parent) {
+        if ($this->parent) {
             return null;
         }
-        if (!$this->_storageKey) {
+        if (!$this->storageKey) {
             $class = str_replace('\\', '_', get_class($this));
-            $this->_storageKey = $class . '_' . $this->getMetadata()->getHash();
+            $this->storageKey = $class . '_' . $this->getMetadata()->getHash();
         }
-        return $this->_storageKey;
+        return $this->storageKey;
     }
 
     /**
@@ -100,7 +100,7 @@ class StorableStruct extends Struct implements StorableInterface
      */
     protected function getStorage()
     {
-        if (!$this->_storage) {
+        if (!$this->storage) {
             /** @var $storage StorageInterface */
             $storage = $this->getConfig('storage');
             if (!$storage instanceof StorageInterface) {
@@ -111,9 +111,9 @@ class StorableStruct extends Struct implements StorableInterface
                     throw new Exception('No storage is available');
                 }
             }
-            $this->_storage = $storage;
+            $this->storage = $storage;
         }
-        return $this->_storage;
+        return $this->storage;
     }
 
     /**
@@ -125,13 +125,13 @@ class StorableStruct extends Struct implements StorableInterface
      */
     protected function getInitialContents($name = null)
     {
-        if (!is_array($this->_initialContents)) {
+        if (!is_array($this->initialContents)) {
             // Initial contents for structure are taken from storage
             $contents = $this->getStorage()->load($this->getStorageKey());
             if (!is_array($contents)) {
                 $contents = array();
             }
-            $this->_initialContents = $contents;
+            $this->initialContents = $contents;
         }
         return parent::getInitialContents($name);
     }
@@ -158,9 +158,9 @@ class StorableStruct extends Struct implements StorableInterface
     {
         parent::createStruct($metadata);
         // Register ourselves into storage, but only top-level structure should be stored
-        if (!$this->_parent) {
+        if (!$this->parent) {
             $this->getStorage()->register($this);
-            $this->_markedAsDirty = false;
+            $this->markedAsDirty = false;
         }
     }
 
@@ -233,16 +233,16 @@ class StorableStruct extends Struct implements StorableInterface
     {
         switch ($name) {
             case 'storage':
-                $this->_storage = $value;
+                $this->storage = $value;
                 break;
             case 'configuration':
             case 'metadata':
                 // Since storage key depends on structure's metadata -
                 // it should be reset upon metadata change
-                $this->_storageKey = null;
+                $this->storageKey = null;
                 break;
             case 'parent_structure':
-                $this->_parent = $value;
+                $this->parent = $value;
                 break;
         }
         parent::onConfigChange($name, $value, $merge);
@@ -256,12 +256,11 @@ class StorableStruct extends Struct implements StorableInterface
      */
     protected function onChange($name)
     {
-        if ($this->_parent) {
-            $this->_parent->onChange($name);
-        } elseif (!$this->_markedAsDirty) {
+        if ($this->parent) {
+            $this->parent->onChange($name);
+        } elseif (!$this->markedAsDirty) {
             $this->getStorage()->markAsDirty($this);
-            $this->_markedAsDirty = true;
+            $this->markedAsDirty = true;
         }
     }
-
 }

@@ -17,5 +17,4 @@ use Doctrine\Common\Annotations\AnnotationException;
  */
 class Collection extends Property
 {
-
 }

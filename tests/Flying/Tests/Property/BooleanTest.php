@@ -11,17 +11,17 @@ class BooleanTest extends BaseTypeTest
      * Class name of the property to test
      * @var string
      */
-    protected $_propertyClass = 'Boolean';
+    protected $propertyClass = 'Boolean';
     /**
      * Default property value
      * @var string
      */
-    protected $_defaultValue = true;
+    protected $defaultValue = true;
     /**
      * Value validation tests
      * @var array
      */
-    protected $_valueTests = array(
+    protected $valueTests = array(
         array(true, true),
         array(false, false),
         array(1, true),
@@ -37,17 +37,16 @@ class BooleanTest extends BaseTypeTest
      * Serialization tests
      * @var array
      */
-    protected $_serializationTests = array(
+    protected $serializationTests = array(
         true,
         false,
     );
 
     public function getValueTests()
     {
-        $tests = $this->_valueTests;
+        $tests = $this->valueTests;
         $tests[] = array(new \ArrayObject(), true);
         $tests[] = array(new Property(false), false);
         return $tests;
     }
-
 }

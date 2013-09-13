@@ -23,42 +23,42 @@ class Configuration
      * Cache for structures information
      * @var Cache
      */
-    protected $_cache;
+    protected $cache;
     /**
      * Namespaces map for structure classes
      * @var NamespacesMap
      */
-    protected $_structNsMap;
+    protected $structNsMap;
     /**
      * Namespaces map for property classes
      * @var NamespacesMap
      */
-    protected $_propertyNsMap;
+    protected $propertyNsMap;
     /**
      * Namespaces map for annotation classes
      * @var NamespacesMap
      */
-    protected $_annotationNsMap;
+    protected $annotationNsMap;
     /**
      * Structures metadata manager
      * @var MetadataManagerInterface
      */
-    protected $_metadataManager;
+    protected $metadataManager;
     /**
      * Structures metadata parser
      * @var MetadataParserInterface
      */
-    protected $_metadataParser;
+    protected $metadataParser;
     /**
      * Structures storage manager
      * @var StorageInterface
      */
-    protected $_storage;
+    protected $storage;
     /**
      * Backend for structures storage
      * @var BackendInterface
      */
-    protected $_storageBackend;
+    protected $storageBackend;
 
     /**
      * Get cache for structures information
@@ -67,10 +67,10 @@ class Configuration
      */
     public function getCache()
     {
-        if (!$this->_cache) {
-            $this->_cache = new ArrayCache();
+        if (!$this->cache) {
+            $this->cache = new ArrayCache();
         }
-        return $this->_cache;
+        return $this->cache;
     }
 
     /**
@@ -81,7 +81,7 @@ class Configuration
      */
     public function setCache(Cache $cache)
     {
-        $this->_cache = $cache;
+        $this->cache = $cache;
         return $this;
     }
 
@@ -92,11 +92,11 @@ class Configuration
      */
     public function getStructNamespacesMap()
     {
-        if (!$this->_structNsMap) {
-            $this->_structNsMap = new NamespacesMap();
-            $this->_structNsMap->add('Flying\Struct', 'default');
+        if (!$this->structNsMap) {
+            $this->structNsMap = new NamespacesMap();
+            $this->structNsMap->add('Flying\Struct', 'default');
         }
-        return $this->_structNsMap;
+        return $this->structNsMap;
     }
 
     /**
@@ -106,11 +106,11 @@ class Configuration
      */
     public function getPropertyNamespacesMap()
     {
-        if (!$this->_propertyNsMap) {
-            $this->_propertyNsMap = new NamespacesMap();
-            $this->_propertyNsMap->add('Flying\Struct\Property', 'default');
+        if (!$this->propertyNsMap) {
+            $this->propertyNsMap = new NamespacesMap();
+            $this->propertyNsMap->add('Flying\Struct\Property', 'default');
         }
-        return $this->_propertyNsMap;
+        return $this->propertyNsMap;
     }
 
     /**
@@ -120,11 +120,11 @@ class Configuration
      */
     public function getAnnotationNamespacesMap()
     {
-        if (!$this->_annotationNsMap) {
-            $this->_annotationNsMap = new NamespacesMap();
-            $this->_annotationNsMap->add('Flying\Struct\Annotation', 'default');
+        if (!$this->annotationNsMap) {
+            $this->annotationNsMap = new NamespacesMap();
+            $this->annotationNsMap->add('Flying\Struct\Annotation', 'default');
         }
-        return $this->_annotationNsMap;
+        return $this->annotationNsMap;
     }
 
     /**
@@ -134,10 +134,10 @@ class Configuration
      */
     public function getMetadataManager()
     {
-        if (!$this->_metadataManager) {
-            $this->_metadataManager = new MetadataManager();
+        if (!$this->metadataManager) {
+            $this->metadataManager = new MetadataManager();
         }
-        return $this->_metadataManager;
+        return $this->metadataManager;
     }
 
     /**
@@ -148,7 +148,7 @@ class Configuration
      */
     public function setMetadataManager(MetadataManagerInterface $manager)
     {
-        $this->_metadataManager = $manager;
+        $this->metadataManager = $manager;
         return $this;
     }
 
@@ -159,10 +159,10 @@ class Configuration
      */
     public function getMetadataParser()
     {
-        if (!$this->_metadataParser) {
-            $this->_metadataParser = new AnnotationParser();
+        if (!$this->metadataParser) {
+            $this->metadataParser = new AnnotationParser();
         }
-        return $this->_metadataParser;
+        return $this->metadataParser;
     }
 
     /**
@@ -173,7 +173,7 @@ class Configuration
      */
     public function setMetadataParser(MetadataParserInterface $parser)
     {
-        $this->_metadataParser = $parser;
+        $this->metadataParser = $parser;
         return $this;
     }
 
@@ -184,10 +184,10 @@ class Configuration
      */
     public function getStorage()
     {
-        if (!$this->_storage) {
-            $this->_storage = new Storage();
+        if (!$this->storage) {
+            $this->storage = new Storage();
         }
-        return $this->_storage;
+        return $this->storage;
     }
 
     /**
@@ -198,7 +198,7 @@ class Configuration
      */
     public function setStorage(StorageInterface $storage)
     {
-        $this->_storage = $storage;
+        $this->storage = $storage;
         return $this;
     }
 
@@ -209,10 +209,10 @@ class Configuration
      */
     public function getStorageBackend()
     {
-        if (!$this->_storageBackend) {
-            $this->_storageBackend = new ArrayBackend();
+        if (!$this->storageBackend) {
+            $this->storageBackend = new ArrayBackend();
         }
-        return $this->_storageBackend;
+        return $this->storageBackend;
     }
 
     /**
@@ -223,8 +223,7 @@ class Configuration
      */
     public function setStorageBackend(BackendInterface $backend)
     {
-        $this->_storageBackend = $backend;
+        $this->storageBackend = $backend;
         return $this;
     }
-
 }

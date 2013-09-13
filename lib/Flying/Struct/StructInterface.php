@@ -10,7 +10,6 @@ use Flying\Struct\Common\UpdateNotifyListenerInterface;
  */
 interface StructInterface extends \RecursiveIterator, ComplexPropertyInterface, UpdateNotifyListenerInterface
 {
-
     /**
      * Retrieve value of structure property with given name and return $default if there is no such property
      *
@@ -29,5 +28,4 @@ interface StructInterface extends \RecursiveIterator, ComplexPropertyInterface, 
      * @return void
      */
     public function set($name, $value = null);
-
 }

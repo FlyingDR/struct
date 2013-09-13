@@ -12,7 +12,6 @@ use Flying\Struct\ConfigurationManager;
  */
 class InheritanceTestStructB extends InheritanceTestStructA
 {
-
     /**
      * Get array representation of expected results from parsing metadata of this class
      *
@@ -61,5 +60,4 @@ class InheritanceTestStructB extends InheritanceTestStructA
     {
         return null;
     }
-
 }

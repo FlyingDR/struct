@@ -7,20 +7,20 @@ use Flying\Tests\TestCaseUsingConfiguration;
 
 abstract class BaseStorageBackendTest extends TestCaseUsingConfiguration
 {
-    protected $_testKey = 'test';
-    protected $_testContents = 'some contents';
+    protected $testKey = 'test';
+    protected $testContents = 'some contents';
 
     public function testBasicOperations()
     {
         $backend = $this->getTestBackend();
-        $this->assertFalse($backend->has($this->_testKey));
-        $this->assertNull($backend->load($this->_testKey));
-        $backend->save($this->_testKey, $this->_testContents);
-        $this->assertTrue($backend->has($this->_testKey));
-        $this->assertEquals($this->_testContents, $backend->load($this->_testKey));
-        $backend->remove($this->_testKey);
-        $this->assertFalse($backend->has($this->_testKey));
-        $this->assertNull($backend->load($this->_testKey));
+        $this->assertFalse($backend->has($this->testKey));
+        $this->assertNull($backend->load($this->testKey));
+        $backend->save($this->testKey, $this->testContents);
+        $this->assertTrue($backend->has($this->testKey));
+        $this->assertEquals($this->testContents, $backend->load($this->testKey));
+        $backend->remove($this->testKey);
+        $this->assertFalse($backend->has($this->testKey));
+        $this->assertNull($backend->load($this->testKey));
     }
 
     public function testClearingBackend()

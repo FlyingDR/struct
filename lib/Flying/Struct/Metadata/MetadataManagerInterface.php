@@ -9,7 +9,6 @@ use Flying\Struct\StructInterface;
  */
 interface MetadataManagerInterface
 {
-
     /**
      * Get structure metadata information for given structure
      *
@@ -18,5 +17,4 @@ interface MetadataManagerInterface
      * @return StructMetadata|null
      */
     public function getMetadata($struct);
-
 }

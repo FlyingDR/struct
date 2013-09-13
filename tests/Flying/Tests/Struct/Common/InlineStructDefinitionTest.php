@@ -13,12 +13,11 @@ abstract class InlineStructDefinitionTest extends BaseStructTest
      * Name of fixture class to test
      * @var string
      */
-    protected $_fixtureClass = 'Flying\Tests\Struct\Fixtures\InlineStructDefinition';
+    protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\InlineStructDefinition';
 
     public function testCreation()
     {
         $struct = $this->getTestStruct();
         $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
     }
-
 }

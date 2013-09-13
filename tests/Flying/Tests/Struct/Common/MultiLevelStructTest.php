@@ -15,7 +15,7 @@ abstract class MultiLevelStructTest extends BaseStructTest
      * Name of fixture class to test
      * @var string
      */
-    protected $_fixtureClass = 'Flying\Tests\Struct\Fixtures\MultiLevelStruct';
+    protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\MultiLevelStruct';
 
     public function testCreation()
     {
@@ -82,7 +82,7 @@ abstract class MultiLevelStructTest extends BaseStructTest
         $struct = $this->getTestStruct();
         $m1 = Mockery::mock('Flying\Struct\Common\UpdateNotifyListenerInterface')
             ->shouldReceive('updateNotify')->once()
-            ->with(Mockery::type('\Flying\Struct\Common\SimplePropertyInterface'))
+            ->with(Mockery::type('Flying\Struct\Common\SimplePropertyInterface'))
             ->getMock();
         $struct->setConfig('update_notify_listener', $m1);
         $m2 = clone($m1);
@@ -125,5 +125,4 @@ abstract class MultiLevelStructTest extends BaseStructTest
             }
         }
     }
-
 }

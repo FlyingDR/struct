@@ -18,17 +18,17 @@ class Struct extends Annotation
      * Class name of structure property
      * @var string
      */
-    protected $_class;
+    protected $class;
     /**
      * Inline structure properties
      * @var array
      */
-    protected $_properties = array();
+    protected $properties = array();
     /**
      * Property configuration
      * @var array
      */
-    protected $_config = array();
+    protected $config = array();
 
     /**
      * {@inheritdoc}
@@ -37,22 +37,22 @@ class Struct extends Annotation
     {
         parent::parseValues($values);
         if (array_key_exists('class', $values)) {
-            $this->_class = $values['class'];
+            $this->class = $values['class'];
             unset($values['class']);
         }
         if ((array_key_exists('value', $values)) && (is_array($values['value']))) {
-            $this->_properties = $values['value'];
+            $this->properties = $values['value'];
             unset($values['value']);
         }
-        $this->_config = $values;
-        foreach ($this->_properties as $p) {
+        $this->config = $values;
+        foreach ($this->properties as $p) {
             if (!$p instanceof Annotation) {
                 throw new AnnotationException('Inline structure property definition should be valid annotation');
             }
         }
         // Check if we got required properties
-        if ((!is_string($this->_class)) || (!strlen($this->_class))) {
-            if (!sizeof($this->_properties)) {
+        if ((!is_string($this->class)) || (!strlen($this->class))) {
+            if (!sizeof($this->properties)) {
                 // We should have either explicitly defined structure properties or structure class name
                 throw new AnnotationException('Required property annotation is missed: class');
             }
@@ -66,7 +66,7 @@ class Struct extends Annotation
      */
     public function getClass()
     {
-        return $this->_class;
+        return $this->class;
     }
 
     /**
@@ -76,7 +76,7 @@ class Struct extends Annotation
      */
     public function getProperties()
     {
-        return $this->_properties;
+        return $this->properties;
     }
 
     /**
@@ -86,7 +86,6 @@ class Struct extends Annotation
      */
     public function getConfig()
     {
-        return $this->_config;
+        return $this->config;
     }
-
 }

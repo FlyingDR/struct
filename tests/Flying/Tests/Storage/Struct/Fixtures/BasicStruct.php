@@ -16,7 +16,6 @@ namespace Flying\Tests\Storage\Struct\Fixtures;
  */
 class BasicStruct extends TestStruct
 {
-
     /**
      * {@inheritdoc}
      */
@@ -29,5 +28,4 @@ class BasicStruct extends TestStruct
             'fourth' => 'some value',
         ));
     }
-
 }

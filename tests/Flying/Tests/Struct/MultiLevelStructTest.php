@@ -6,5 +6,4 @@ use Flying\Tests\Struct\Common\MultiLevelStructTest as CommonMultiLevelStructTes
 
 class MultiLevelStructTest extends CommonMultiLevelStructTest
 {
-
 }

@@ -7,12 +7,10 @@ namespace Flying\Struct\Common;
  */
 interface SimplePropertyInterface extends \Serializable
 {
-
     /**
      * Reset property to its default state
      *
      * @return void
      */
     public function reset();
-
 }

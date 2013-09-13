@@ -7,8 +7,8 @@ use Flying\Tests\TestCase;
 
 class PropertyTest extends TestCase
 {
-    protected $_propertyNamespace = 'Flying\Struct\Annotation\Struct';
-    protected $_typesMap = array(
+    protected $propertyNamespace = 'Flying\Struct\Annotation\Struct';
+    protected $typesMap = array(
         'Boolean'    => 'boolean',
         'Int'        => 'int',
         'String'     => 'string',
@@ -38,13 +38,19 @@ class PropertyTest extends TestCase
 
     public function testMissedName()
     {
-        $this->setExpectedException('\Doctrine\Common\Annotations\AnnotationException', 'Required property annotation is missed: name');
+        $this->setExpectedException(
+            'Doctrine\Common\Annotations\AnnotationException',
+            'Required property annotation is missed: name'
+        );
         new Property(array());
     }
 
     public function testMissedType()
     {
-        $this->setExpectedException('\Doctrine\Common\Annotations\AnnotationException', 'Required property annotation is missed: type');
+        $this->setExpectedException(
+            'Doctrine\Common\Annotations\AnnotationException',
+            'Required property annotation is missed: type'
+        );
         new Property(array(
             'name' => 'test',
         ));
@@ -52,15 +58,14 @@ class PropertyTest extends TestCase
 
     public function testTypeAnnotations()
     {
-        foreach ($this->_typesMap as $class => $type) {
-            $class = trim($this->_propertyNamespace, '\\') . '\\' . $class;
+        foreach ($this->typesMap as $class => $type) {
+            $class = trim($this->propertyNamespace, '\\') . '\\' . $class;
             /** @var $annotation Property */
             $annotation = new $class(array(
                 'name' => 'test',
             ));
-            $this->assertInstanceOf(trim($this->_propertyNamespace, '\\') . '\\Property', $annotation);
+            $this->assertInstanceOf(trim($this->propertyNamespace, '\\') . '\\Property', $annotation);
             $this->assertEquals($type, $annotation->getType());
         }
     }
-
 }

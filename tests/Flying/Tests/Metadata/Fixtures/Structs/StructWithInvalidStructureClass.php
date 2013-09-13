@@ -11,7 +11,6 @@ use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
  */
 class StructWithInvalidStructureClass extends StructStub implements MetadataTestcaseInterface
 {
-
     /**
      * Get array representation of expected results from parsing metadata of this class
      *
@@ -31,5 +30,4 @@ class StructWithInvalidStructureClass extends StructStub implements MetadataTest
     {
         return array('Flying\Struct\Exception', 'Unable to resolve structure class: UnavailableStruct');
     }
-
 }

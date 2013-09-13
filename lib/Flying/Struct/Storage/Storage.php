@@ -14,17 +14,17 @@ class Storage implements StorageInterface
      * List of stored objects
      * @var array
      */
-    protected $_storage = array();
+    protected $storage = array();
     /**
      * List of objects marked as "dirty"
      * @var array
      */
-    protected $_dirty = array();
+    protected $dirty = array();
     /**
      * Storage backend
      * @var BackendInterface
      */
-    protected $_backend;
+    protected $backend;
 
     /**
      * Register given object in storage
@@ -35,7 +35,7 @@ class Storage implements StorageInterface
     public function register(StorableInterface $object)
     {
         $hash = spl_object_hash($object);
-        $this->_storage[$hash] = $object;
+        $this->storage[$hash] = $object;
         return $this;
     }
 
@@ -48,7 +48,7 @@ class Storage implements StorageInterface
     public function has(StorableInterface $object)
     {
         $hash = spl_object_hash($object);
-        return array_key_exists($hash, $this->_storage);
+        return array_key_exists($hash, $this->storage);
     }
 
     /**
@@ -60,7 +60,7 @@ class Storage implements StorageInterface
     public function remove(StorableInterface $object)
     {
         $hash = spl_object_hash($object);
-        unset($this->_storage[$hash]);
+        unset($this->storage[$hash]);
         return $this;
     }
 
@@ -89,7 +89,7 @@ class Storage implements StorageInterface
     public function markAsDirty(StorableInterface $object)
     {
         $hash = spl_object_hash($object);
-        $this->_dirty[$hash] = true;
+        $this->dirty[$hash] = true;
         return $this;
     }
 
@@ -102,7 +102,7 @@ class Storage implements StorageInterface
     public function markAsNotDirty(StorableInterface $object)
     {
         $hash = spl_object_hash($object);
-        unset($this->_dirty[$hash]);
+        unset($this->dirty[$hash]);
         return $this;
     }
 
@@ -115,7 +115,7 @@ class Storage implements StorageInterface
     public function isDirty(StorableInterface $object)
     {
         $hash = spl_object_hash($object);
-        return array_key_exists($hash, $this->_dirty);
+        return array_key_exists($hash, $this->dirty);
     }
 
     /**
@@ -125,10 +125,10 @@ class Storage implements StorageInterface
      */
     public function getBackend()
     {
-        if (!$this->_backend) {
-            $this->_backend = ConfigurationManager::getConfiguration()->getStorageBackend();
+        if (!$this->backend) {
+            $this->backend = ConfigurationManager::getConfiguration()->getStorageBackend();
         }
-        return $this->_backend;
+        return $this->backend;
     }
 
     /**
@@ -139,7 +139,7 @@ class Storage implements StorageInterface
      */
     public function setBackend(BackendInterface $backend)
     {
-        $this->_backend = $backend;
+        $this->backend = $backend;
         return $this;
     }
 
@@ -154,9 +154,9 @@ class Storage implements StorageInterface
         $backend = $this->getBackend();
         $storedKeys = array();
         /** @var $object StorableInterface */
-        foreach ($this->_storage as $hash => $object) {
+        foreach ($this->storage as $hash => $object) {
             $key = $object->getStorageKey();
-            if (($backend->has($key)) && (!array_key_exists($hash, $this->_dirty))) {
+            if (($backend->has($key)) && (!array_key_exists($hash, $this->dirty))) {
                 continue;
             }
             if (in_array($key, $storedKeys)) {
@@ -165,8 +165,7 @@ class Storage implements StorageInterface
             $backend->save($key, $object->toStorage());
             $storedKeys[] = $key;
         }
-        $this->_dirty = array();
+        $this->dirty = array();
         return $this;
     }
-
 }

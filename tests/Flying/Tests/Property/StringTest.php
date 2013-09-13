@@ -12,17 +12,17 @@ class StringTest extends BaseTypeTest
      * Class name of the property to test
      * @var string
      */
-    protected $_propertyClass = 'String';
+    protected $propertyClass = 'String';
     /**
      * Default property value
      * @var string
      */
-    protected $_defaultValue = 'default value';
+    protected $defaultValue = 'default value';
     /**
      * Value validation tests
      * @var array
      */
-    protected $_valueTests = array(
+    protected $valueTests = array(
         array(true, '1'),
         array(false, ''),
 
@@ -42,7 +42,7 @@ class StringTest extends BaseTypeTest
      * Serialization tests
      * @var array
      */
-    protected $_serializationTests = array(
+    protected $serializationTests = array(
         '',
         'some text',
         'some long text for property value',
@@ -50,7 +50,7 @@ class StringTest extends BaseTypeTest
 
     public function getValueTests()
     {
-        $tests = $this->_valueTests;
+        $tests = $this->valueTests;
         $tests[] = array(array(), 'test', array('default' => 'test'));
         $tests[] = array(new \ArrayObject(), 'test', array('default' => 'test'));
         $tests[] = array(new Property('abc'), 'abc');
@@ -59,5 +59,4 @@ class StringTest extends BaseTypeTest
         $tests[] = array(new UsToString('another test string'), 'another test string');
         return $tests;
     }
-
 }

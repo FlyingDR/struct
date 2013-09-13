@@ -11,7 +11,7 @@ class ArrayBackend implements BackendInterface
      * Storage contents
      * @var array
      */
-    protected $_storage = array();
+    protected $storage = array();
 
     /**
      * Load information by given key from storage
@@ -21,8 +21,8 @@ class ArrayBackend implements BackendInterface
      */
     public function load($key)
     {
-        if (array_key_exists($key, $this->_storage)) {
-            return $this->_storage[$key];
+        if (array_key_exists($key, $this->storage)) {
+            return $this->storage[$key];
         }
         return null;
     }
@@ -36,7 +36,7 @@ class ArrayBackend implements BackendInterface
      */
     public function save($key, $contents)
     {
-        $this->_storage[$key] = $contents;
+        $this->storage[$key] = $contents;
     }
 
     /**
@@ -47,7 +47,7 @@ class ArrayBackend implements BackendInterface
      */
     public function has($key)
     {
-        return array_key_exists($key, $this->_storage);
+        return array_key_exists($key, $this->storage);
     }
 
     /**
@@ -58,7 +58,7 @@ class ArrayBackend implements BackendInterface
      */
     public function remove($key)
     {
-        unset($this->_storage[$key]);
+        unset($this->storage[$key]);
     }
 
     /**
@@ -68,7 +68,6 @@ class ArrayBackend implements BackendInterface
      */
     public function clear()
     {
-        $this->_storage = array();
+        $this->storage = array();
     }
-
 }

@@ -13,7 +13,7 @@ class StructMetadata extends PropertyMetadata
      * Structure properties
      * @var array
      */
-    protected $_properties = array();
+    protected $properties = array();
 
     /**
      * Class constructor
@@ -40,7 +40,7 @@ class StructMetadata extends PropertyMetadata
      */
     public function hasProperty($name)
     {
-        return (array_key_exists($name, $this->_properties));
+        return (array_key_exists($name, $this->properties));
     }
 
     /**
@@ -52,10 +52,10 @@ class StructMetadata extends PropertyMetadata
      */
     public function getProperty($name)
     {
-        if (!array_key_exists($name, $this->_properties)) {
+        if (!array_key_exists($name, $this->properties)) {
             throw new Exception('No metadata is available for property: ' . $name);
         }
-        return ($this->_properties[$name]);
+        return ($this->properties[$name]);
     }
 
     /**
@@ -65,7 +65,7 @@ class StructMetadata extends PropertyMetadata
      */
     public function getProperties()
     {
-        return ($this->_properties);
+        return ($this->properties);
     }
 
     /**
@@ -76,8 +76,8 @@ class StructMetadata extends PropertyMetadata
      */
     public function addProperty(MetadataInterface $metadata)
     {
-        $this->_properties[$metadata->getName()] = $metadata;
-        $this->_hash = null;
+        $this->properties[$metadata->getName()] = $metadata;
+        $this->hash = null;
         return $this;
     }
 
@@ -104,8 +104,8 @@ class StructMetadata extends PropertyMetadata
      */
     public function removeProperty($name)
     {
-        unset($this->_properties[$name]);
-        $this->_hash = null;
+        unset($this->properties[$name]);
+        $this->hash = null;
         return $this;
     }
 
@@ -116,8 +116,8 @@ class StructMetadata extends PropertyMetadata
      */
     public function clearProperties()
     {
-        $this->_properties = array();
-        $this->_hash = null;
+        $this->properties = array();
+        $this->hash = null;
     }
 
     /**
@@ -161,7 +161,7 @@ class StructMetadata extends PropertyMetadata
             $this->setProperties($array['properties']);
         }
         if (array_key_exists('hash', $array)) {
-            $this->_hash = $array['hash'];
+            $this->hash = $array['hash'];
         }
     }
 
@@ -189,7 +189,7 @@ class StructMetadata extends PropertyMetadata
      */
     public function getHash()
     {
-        if (!$this->_hash) {
+        if (!$this->hash) {
             $hash = array(
                 $this->getName(),
                 $this->getClass(),
@@ -199,9 +199,8 @@ class StructMetadata extends PropertyMetadata
             foreach ($this->getProperties() as $property) {
                 $hash[] = $property->getHash();
             }
-            $this->_hash = sha1(join('|', $hash));
+            $this->hash = sha1(join('|', $hash));
         }
-        return $this->_hash;
+        return $this->hash;
     }
-
 }

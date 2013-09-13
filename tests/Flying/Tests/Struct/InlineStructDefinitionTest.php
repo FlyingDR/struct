@@ -6,5 +6,4 @@ use Flying\Tests\Struct\Common\InlineStructDefinitionTest as CommonInlineStructD
 
 class InlineStructDefinitionTest extends CommonInlineStructDefinitionTest
 {
-
 }

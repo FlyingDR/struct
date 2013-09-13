@@ -10,5 +10,4 @@ use Flying\Struct\Annotation\Struct\Property;
  */
 class Custom extends Property
 {
-
 }

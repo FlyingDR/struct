@@ -15,5 +15,4 @@ interface CallbackTrackingInterface
      * @return void
      */
     public function setCallbackLogger($method, CallbackLog $logger);
-
 }

@@ -13,7 +13,7 @@ class NamespacesMap
      * List of registered namespaces
      * @var array
      */
-    protected $_namespaces = array();
+    protected $namespaces = array();
 
     /**
      * Class constructor
@@ -22,7 +22,7 @@ class NamespacesMap
      */
     public function __construct($namespaces = null)
     {
-        $this->_namespaces = array();
+        $this->namespaces = array();
         if ($namespaces) {
             $this->add($namespaces);
         }
@@ -40,7 +40,7 @@ class NamespacesMap
         if (!$this->has($alias)) {
             throw new Exception('Class namespace with alias "' . $alias . '" is not registered');
         }
-        return ($this->_namespaces[$alias]);
+        return ($this->namespaces[$alias]);
     }
 
     /**
@@ -50,7 +50,7 @@ class NamespacesMap
      */
     public function getAll()
     {
-        return ($this->_namespaces);
+        return ($this->namespaces);
     }
 
     /**
@@ -61,7 +61,7 @@ class NamespacesMap
      */
     public function has($alias)
     {
-        return (array_key_exists($alias, $this->_namespaces));
+        return (array_key_exists($alias, $this->namespaces));
     }
 
     /**
@@ -75,7 +75,11 @@ class NamespacesMap
     public function add($namespace, $alias = null)
     {
         if (!is_array($namespace)) {
-            $namespace = ($namespace !== null) ? (($alias !== null) ? array($alias => $namespace) : array($namespace)) : array();
+            if ($namespace !== null) {
+                $namespace = ($alias !== null) ? array($alias => $namespace) : array($namespace);
+            } else {
+                $namespace = array();
+            }
         }
         foreach ($namespace as $alias => $ns) {
             if ((!is_string($ns)) || (!strlen($ns))) {
@@ -85,7 +89,7 @@ class NamespacesMap
                 $alias = mb_strtolower(str_replace('\\', '_', $ns));
             }
             $ns = trim($ns, '\\');
-            $this->_namespaces[$alias] = $ns;
+            $this->namespaces[$alias] = $ns;
         }
         return ($this);
     }
@@ -98,8 +102,7 @@ class NamespacesMap
      */
     public function remove($alias)
     {
-        unset($this->_namespaces[$alias]);
+        unset($this->namespaces[$alias]);
         return ($this);
     }
-
 }

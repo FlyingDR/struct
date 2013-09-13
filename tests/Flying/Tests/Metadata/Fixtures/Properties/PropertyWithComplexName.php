@@ -9,6 +9,4 @@ use Flying\Struct\Property\Property;
  */
 class PropertyWithComplexName extends Property
 {
-
-
 }

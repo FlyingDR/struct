@@ -22,5 +22,4 @@ class PropertyForUnacceptableValues extends BaseProperty
         }
         return ($value === 'value');
     }
-
 }

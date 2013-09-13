@@ -7,7 +7,6 @@ namespace Flying\Struct\Storage;
  */
 interface StorableInterface
 {
-
     /**
      * Get key to use in structures storage
      *
@@ -21,5 +20,4 @@ interface StorableInterface
      * @return mixed
      */
     public function toStorage();
-
 }

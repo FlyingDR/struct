@@ -11,12 +11,12 @@ class EnumTest extends BaseTypeTest
      * Class name of the property to test
      * @var string
      */
-    protected $_propertyClass = 'Enum';
+    protected $propertyClass = 'Enum';
     /**
      * Default configuration options for test
      * @var array
      */
-    protected $_defaultConfig = array(
+    protected $defaultConfig = array(
         'nullable' => false,
         'default'  => 'a',
         'values'   => array('a', 'b', 'c'),
@@ -25,12 +25,12 @@ class EnumTest extends BaseTypeTest
      * Default property value
      * @var string
      */
-    protected $_defaultValue = 'a';
+    protected $defaultValue = 'a';
     /**
      * Value validation tests
      * @var array
      */
-    protected $_valueTests = array(
+    protected $valueTests = array(
         array('a', 'a', array('default' => 'b', 'values' => array('a', 'b', 'c'))),
         array(null, 'b', array('default' => 'b', 'values' => array('a', 'b', 'c'))),
         array('x', 'b', array('default' => 'b', 'values' => array('a', 'b', 'c'))),
@@ -42,13 +42,13 @@ class EnumTest extends BaseTypeTest
      * Serialization tests
      * @var array
      */
-    protected $_serializationTests = array(
+    protected $serializationTests = array(
         'a',
     );
 
     public function getValueTests()
     {
-        $tests = $this->_valueTests;
+        $tests = $this->valueTests;
         $tests[] = array(new \ArrayObject(), 3, array('default' => 3, 'values' => array(1, 2, 3)));
         $tests[] = array(new Property(1), 1, array('default' => 3, 'values' => array(1, 2, 3)));
         $tests[] = array(1, 1, array('default' => 3, 'values' => new ToArray(array(1, 2, 3))));
@@ -59,5 +59,4 @@ class EnumTest extends BaseTypeTest
     {
         // This test is not needed for enum property
     }
-
 }

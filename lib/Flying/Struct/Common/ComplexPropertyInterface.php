@@ -7,12 +7,10 @@ namespace Flying\Struct\Common;
  */
 interface ComplexPropertyInterface extends \Countable, \ArrayAccess, SimplePropertyInterface
 {
-
     /**
      * Get structure contents as associative array
      *
      * @return array
      */
     public function toArray();
-
 }
