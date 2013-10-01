@@ -11,8 +11,9 @@ class CollectionTest extends TestCase
 {
     /**
      * @param array $value
-     * @param int $expected
+     * @param int   $expected
      * @param array $config
+     *
      * @dataProvider dataProviderCountableInterface
      */
     public function testCountableInterface($value, $expected, $config = null)
@@ -177,12 +178,12 @@ class CollectionTest extends TestCase
     public function testPassingNullValuesAsElements()
     {
         $collection = new Collection(array(null), array(
-            'nullable' => true,
-        ));
+                                                       'nullable' => true,
+                                                  ));
         $this->assertEquals(array(null), $collection->toArray());
         $collection = new Collection(array(null), array(
-            'nullable' => false,
-        ));
+                                                       'nullable' => false,
+                                                  ));
         $this->assertEquals(array(), $collection->toArray());
     }
 
@@ -218,14 +219,14 @@ class CollectionTest extends TestCase
 
     public function dataProviderAllowedValuesLimitation()
     {
-        $values = array();
-        $values[] = array(range(0, 10));
-        $values[] = array(
-            function ($v) {
-                return ((is_int($v)) && ($v >= 0) && ($v <= 10));
-            }
+        $range = range(0, 10);
+        $cb = function ($v) {
+            return ((is_int($v)) && ($v >= 0) && ($v <= 10));
+        };
+        return array(
+            array($range),
+            array($cb),
         );
-        return $values;
     }
 
     /**
@@ -288,12 +289,13 @@ class CollectionTest extends TestCase
     }
 
     /**
-     * @param string $method
-     * @param array $args
-     * @param array $expected
+     * @param string  $method
+     * @param array   $args
+     * @param array   $expected
      * @param boolean $checkKeys
-     * @param array $value
-     * @param array $config
+     * @param array   $value
+     * @param array   $config
+     *
      * @dataProvider dataProviderValueNormalizationCallback
      */
     public function testValueNormalizationCallback(
@@ -326,7 +328,11 @@ class CollectionTest extends TestCase
             }
         }
         if (sizeof($log)) {
-            $this->fail('Callback is expected to be called ' . sizeof($expected) . ' times, but was called ' . (sizeof($expected) + sizeof($log)) . ' times');
+            $this->fail(
+                'Callback is expected to be called ' . sizeof($expected) . ' times, but was called ' . (sizeof(
+                        $expected
+                    ) + sizeof($log)) . ' times'
+            );
         }
     }
 
@@ -354,10 +360,11 @@ class CollectionTest extends TestCase
 
     /**
      * @param string $method
-     * @param array $args
-     * @param int $times
-     * @param array $value
-     * @param array $config
+     * @param array  $args
+     * @param int    $times
+     * @param array  $value
+     * @param array  $config
+     *
      * @dataProvider dataProviderOnChangeCallback
      */
     public function testOnChangeCallback($method, array $args, $times = 1, $value = null, $config = null)
@@ -399,10 +406,11 @@ class CollectionTest extends TestCase
     }
 
     /**
-     * @param string $method
-     * @param array $args
-     * @param array $value
+     * @param string  $method
+     * @param array   $args
+     * @param array   $value
      * @param boolean $calledOnInvalid
+     *
      * @dataProvider dataProviderOnInvalidValueCallback
      */
     public function testOnInvalidValueCallback($method, array $args, $value = null, $calledOnInvalid = true)
