@@ -11,18 +11,20 @@ use Flying\Tests\TestCaseUsingConfiguration;
  */
 abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
 {
-    protected $annotationFixtures = array(
-        'BasicStruct',
-        'StructWithChild',
-        'CustomPropertiesTest',
-        'CustomAnnotationsTest',
-        'ComplexStructure',
-        'StructWithInvalidPropertyType',
-        'StructWithInvalidStructureClass',
-        'StructWithNonStructureClass',
-        'InheritanceTestStructB',
-        'InlineStructDefinition',
-    );
+    protected $annotationFixtures
+        = array(
+            'BasicStruct',
+            'StructWithChild',
+            'CustomPropertiesTest',
+            'CustomAnnotationsTest',
+            'ComplexStructure',
+            'StructWithInvalidPropertyType',
+            'StructWithInvalidStructureClass',
+            'StructWithNonStructureClass',
+            'InheritanceTestStructB',
+            'InlineStructDefinition',
+            'StructInheritedFromAbstract',
+        );
 
     public function setUp()
     {
@@ -46,6 +48,7 @@ abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
      * Get FQCN for given fixture class
      *
      * @param string $class
+     *
      * @return string
      */
     protected function getFixtureClass($class)

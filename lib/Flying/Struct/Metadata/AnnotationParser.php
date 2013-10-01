@@ -19,11 +19,13 @@ class AnnotationParser extends AbstractMetadataParser
 {
     /**
      * Annotations reader
+     *
      * @var Reader
      */
     protected $reader;
     /**
      * Namespaces for annotations autoloading
+     *
      * @var array
      */
     protected $namespaces = array();
@@ -51,6 +53,7 @@ class AnnotationParser extends AbstractMetadataParser
      * Set annotations reader to use for parsing structure annotations
      *
      * @param Reader $reader
+     *
      * @return $this
      */
     public function setReader(Reader $reader)
@@ -63,6 +66,7 @@ class AnnotationParser extends AbstractMetadataParser
      * Load annotation class
      *
      * @param string $class
+     *
      * @return boolean
      */
     public function loadClass($class)
@@ -84,6 +88,7 @@ class AnnotationParser extends AbstractMetadataParser
      * Get structure metadata information for given class
      *
      * @param string $class  Structure class name to parse metadata from
+     *
      * @throws Exception
      * @return StructMetadata
      */
@@ -91,7 +96,7 @@ class AnnotationParser extends AbstractMetadataParser
     {
         $reflection = new \ReflectionClass($class);
         $parent = $reflection->getParentClass();
-        if (($parent instanceof \ReflectionClass) && ($parent->isInstantiable())) {
+        if (($parent instanceof \ReflectionClass) && ($parent->implementsInterface('Flying\Struct\StructInterface'))) {
             $metadata = $this->getMetadata($parent->getName());
         } else {
             $metadata = new StructMetadata();
@@ -109,6 +114,7 @@ class AnnotationParser extends AbstractMetadataParser
      * Convert given structure annotation into structure metadata
      *
      * @param Annotation $annotation    Structure annotation to convert
+     *
      * @return PropertyMetadata
      * @throws Exception
      */
