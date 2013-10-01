@@ -8,20 +8,78 @@ tools:
     php_code_coverage:
         enabled: true
         test_command: phpunit -c phpunit.xml.dist
+
     php_code_sniffer:
         enabled: true
         config:
-            standard: PSR2
+            standard: custom
+            sniffs:
+                # Rule set is more or less a copy of PSR-2 coding standard
+                pear:
+                    functions:
+                        # This sniff is disabled against PSR-2
+                        function_call_signature_sniff: false
+
+                generic:
+                    white_space:
+                        disallow_tab_indent_sniff: true
+                        scope_indent_sniff: true
+                    control_structures:
+                        inline_control_structure_sniff: true
+                    files:
+                        byte_order_mark_sniff: true
+                        line_endings_sniff: true
+                        line_length_sniff: false
+                    formatting:
+                        disallow_multiple_statements_sniff: true
+                    functions:
+                        function_call_argument_spacing_sniff: true
+                    naming_conventions:
+                        camel_caps_function_name_sniff: true
+                        upper_case_constant_name_sniff: true
+                    php:
+                        disallow_short_open_tag_sniff: true
+                        lower_case_constant_sniff: true
+                squiz:
+                    classes:
+                        valid_class_name_sniff: true
+                    control_structures:
+                        control_signature_sniff: true
+                        for_each_loop_declaration_sniff: true
+                        for_loop_declaration_sniff: true
+                        lowercase_declaration_sniff: true
+                    functions:
+                        function_declaration_sniff: true
+                        lowercase_function_keywords_sniff: true
+                        multi_line_function_declaration_sniff: true
+                    php:
+                        non_executable_code_sniff: false
+                    scope:
+                        method_scope_sniff: true
+                    white_space:
+                        scope_closing_brace_sniff: true
+                        scope_keyword_spacing_sniff: true
+                        superfluous_whitespace_sniff: true
+                zend:
+                    files:
+                        closing_tag_sniff: true
+
     php_cpd:
         enabled: true
+        excluded_dirs: [vendor, tests]
+
     php_loc:
         enabled: true
         excluded_dirs: [vendor, tests]
+
     php_mess_detector:
         enabled: true
+
     php_pdepend:
         enabled: true
         excluded_dirs: [vendor]
+
     php_analyzer:
-        enabled: true
+        enabled: false
+
     sensiolabs_security_checker: true
