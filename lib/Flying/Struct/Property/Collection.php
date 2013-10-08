@@ -351,7 +351,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
             return false;
         }
         $allowed = $this->allowed;
-        if ((is_callable($allowed)) && (!$allowed($value))) {
+        if ((is_callable($allowed)) && (!call_user_func($allowed, $value))) {
             return false;
         } elseif ((is_string($allowed)) && ((!is_object($value)) || (!$value instanceof $allowed))) {
             return false;
