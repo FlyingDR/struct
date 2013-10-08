@@ -351,9 +351,11 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
             return false;
         }
         $allowed = $this->allowed;
-        if ((is_array($allowed)) && (!in_array($value, $allowed, true))) {
+        if ((is_callable($allowed)) && (!$allowed($value))) {
             return false;
-        } elseif ((is_callable($allowed)) && (!$allowed($value))) {
+        } elseif ((is_string($allowed)) && ((!is_object($value)) || (!$value instanceof $allowed))) {
+            return false;
+        } elseif ((is_array($allowed)) && (!is_callable($allowed)) && (!in_array($value, $allowed, true))) {
             return false;
         }
         return true;
@@ -388,7 +390,13 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                 }
                 break;
             case 'allowed':
-                if (($value !== null) && (!is_array($value)) && (!is_callable($value))) {
+                if ((is_string($value)) && (method_exists($this, $value))) {
+                    $value = array($this, $value);
+                }
+                $valid = (($value === null) || (is_array($value)) || (is_callable($value))
+                    || ((is_string($value))
+                        && (class_exists($value))));
+                if (!$valid) {
                     throw new \InvalidArgumentException('List of allowed values for collection should be either array or callable');
                 }
                 break;

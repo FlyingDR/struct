@@ -3,7 +3,9 @@
 namespace Flying\Tests\Property;
 
 use Flying\Tests\Property\Fixtures\Collection;
+use Flying\Tests\Property\Fixtures\CollectionWithCustomValidator;
 use Flying\Tests\Property\Stubs\ToArray;
+use Flying\Tests\Struct\Fixtures\BasicStruct;
 use Flying\Tests\TestCase;
 use Flying\Tests\Tools\CallbackLog;
 
@@ -227,6 +229,48 @@ class CollectionTest extends TestCase
             array($range),
             array($cb),
         );
+    }
+
+    /**
+     * @param array $allowed
+     * @param mixed $value
+     * @param boolean $valid
+     * @dataProvider dataProviderVariousKindsOfAllowedValuesValidator
+     */
+    public function testVariousKindsOfAllowedValuesValidator($allowed, $value, $valid)
+    {
+        $collection = new Collection(null, array('allowed' => $allowed));
+        $collection->add($value);
+        $this->assertEquals($collection->count(), ($valid) ? 1 : 0);
+    }
+
+    public function dataProviderVariousKindsOfAllowedValuesValidator()
+    {
+        return array(
+            array(array(1, 2, 3), 1, true),
+            array(array(1, 2, 3), 123, false),
+            array(array('x', 'y', 'z'), 'x', true),
+            array(array('x', 'y', 'z'), 'xyz', false),
+            array(array(true, false), false, true),
+            array(array(true, false), null, false),
+            array(array(true, false), 1, false),
+            array('\DateTime', new \DateTime(), true),
+            array('\DateTime', new \ArrayObject(), false),
+            array('Flying\Struct\Struct', new BasicStruct(), true),
+        );
+    }
+
+    public function testCustomValidatorAsClassMethod()
+    {
+        $collection = new CollectionWithCustomValidator(null, array('allowed' => 'validate'));
+        $collection->add(12);
+        $collection->add('abc');
+        $collection->add(true);
+        $this->assertEquals(0, $collection->count());
+        $collection->add(5);
+        $collection->add(10);
+        $collection->add(15);
+        $this->assertEquals(3, $collection->count());
     }
 
     /**
