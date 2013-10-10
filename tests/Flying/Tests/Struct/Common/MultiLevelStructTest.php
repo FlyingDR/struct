@@ -3,7 +3,6 @@
 namespace Flying\Tests\Struct\Common;
 
 use Flying\Struct\Common\ComplexPropertyInterface;
-use Flying\Tests\Struct\Fixtures\MultiLevelStruct;
 use Mockery;
 
 /**
@@ -13,6 +12,7 @@ abstract class MultiLevelStructTest extends BaseStructTest
 {
     /**
      * Name of fixture class to test
+     *
      * @var string
      */
     protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\MultiLevelStruct';
@@ -54,11 +54,13 @@ abstract class MultiLevelStructTest extends BaseStructTest
     public function testSettingMultipleChildStructureProperties()
     {
         $struct = $this->getTestStruct();
-        $struct->child->set(array(
-            'x' => true,
-            'y' => 777,
-            'z' => 'test string',
-        ));
+        $struct->child->set(
+            array(
+                 'x' => true,
+                 'y' => 777,
+                 'z' => 'test string',
+            )
+        );
         $this->assertTrue($struct->child->x);
         $this->assertEquals(777, $struct->child->y);
         $this->assertEquals('test string', $struct->child->z);
@@ -104,16 +106,18 @@ abstract class MultiLevelStructTest extends BaseStructTest
                 $this->assertEquals($value, $clone->get($name));
             }
         }
-        $clone->set(array(
-            'b'     => false,
-            'i'     => 345,
-            's'     => 'changed',
-            'child' => array(
-                'x' => true,
-                'y' => 777,
-                'z' => 'modified',
-            ),
-        ));
+        $clone->set(
+            array(
+                 'b'     => false,
+                 'i'     => 345,
+                 's'     => 'changed',
+                 'child' => array(
+                     'x' => true,
+                     'y' => 777,
+                     'z' => 'modified',
+                 ),
+            )
+        );
         foreach ($struct as $name => $value) {
             if ($value instanceof ComplexPropertyInterface) {
                 $cloned = $clone->get($name);

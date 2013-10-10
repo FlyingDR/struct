@@ -2,8 +2,6 @@
 
 namespace Flying\Struct\Annotation\Struct;
 
-use Doctrine\Common\Annotations\AnnotationException;
-
 /**
  * @Annotation
  * @Target({"CLASS", "ANNOTATION"})

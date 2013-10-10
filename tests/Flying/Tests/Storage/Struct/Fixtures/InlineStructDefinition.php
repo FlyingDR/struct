@@ -2,8 +2,6 @@
 
 namespace Flying\Tests\Storage\Struct\Fixtures;
 
-use Flying\Struct\ConfigurationManager;
-
 /**
  * Fixture class with inline structure definition
  *

@@ -3,7 +3,6 @@
 namespace Flying\Struct\Storage;
 
 use Flying\Struct\ConfigurationManager;
-use Flying\Struct\Storage\StorableInterface;
 
 /**
  * Objects storage container
@@ -12,16 +11,19 @@ class Storage implements StorageInterface
 {
     /**
      * List of stored objects
+     *
      * @var array
      */
     protected $storage = array();
     /**
      * List of objects marked as "dirty"
+     *
      * @var array
      */
     protected $dirty = array();
     /**
      * Storage backend
+     *
      * @var BackendInterface
      */
     protected $backend;
@@ -67,7 +69,7 @@ class Storage implements StorageInterface
     /**
      * Load contents of given object from storage
      *
-     * @param string $key   Storage key
+     * @param string $key Storage key
      * @return mixed
      */
     public function load($key)
@@ -160,7 +162,8 @@ class Storage implements StorageInterface
                 continue;
             }
             if (in_array($key, $storedKeys)) {
-                throw new \RuntimeException('Multiple objects with same storage key "' . $key . '" are requested to be stored');
+                throw new \RuntimeException('Multiple objects with same storage key "' . $key
+                    . '" are requested to be stored');
             }
             $backend->save($key, $object->toStorage());
             $storedKeys[] = $key;

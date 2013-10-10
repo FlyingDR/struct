@@ -3,7 +3,6 @@
 namespace Flying\Tests\Struct\Common;
 
 use Flying\Struct\Common\ComplexPropertyInterface;
-use Flying\Tests\Struct\Fixtures\StructWithCollection;
 
 /**
  * @method \Flying\Tests\Struct\Fixtures\StructWithCollection getTestStruct($contents = null, $config = null)
@@ -12,6 +11,7 @@ abstract class StructWithCollectionTest extends BaseStructTest
 {
     /**
      * Name of fixture class to test
+     *
      * @var string
      */
     protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\StructWithCollection';
@@ -36,9 +36,12 @@ abstract class StructWithCollectionTest extends BaseStructTest
         $expected = array();
         $temp = $struct->getExpectedContents();
         // Don't walk recursively to avoid converting collection into list of its values
-        array_walk($temp, function ($v, $k) use (&$expected) {
-            $expected[] = array($k, $v);
-        });
+        array_walk(
+            $temp,
+            function ($v, $k) use (&$expected) {
+                $expected[] = array($k, $v);
+            }
+        );
         $actual = array();
         $iterator = new \RecursiveIteratorIterator($struct);
         foreach ($iterator as $key => $value) {

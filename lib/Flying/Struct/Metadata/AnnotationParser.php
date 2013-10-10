@@ -2,7 +2,6 @@
 
 namespace Flying\Struct\Metadata;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
@@ -87,7 +86,7 @@ class AnnotationParser extends AbstractMetadataParser
     /**
      * Get structure metadata information for given class
      *
-     * @param string $class  Structure class name to parse metadata from
+     * @param string $class Structure class name to parse metadata from
      *
      * @throws Exception
      * @return StructMetadata
@@ -113,7 +112,7 @@ class AnnotationParser extends AbstractMetadataParser
     /**
      * Convert given structure annotation into structure metadata
      *
-     * @param Annotation $annotation    Structure annotation to convert
+     * @param Annotation $annotation Structure annotation to convert
      *
      * @return PropertyMetadata
      * @throws Exception

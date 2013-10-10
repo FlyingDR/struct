@@ -2,8 +2,6 @@
 
 namespace Flying\Struct\Storage;
 
-use Flying\Struct\ConfigurationManager;
-
 /**
  * Interface for objects storage containers
  */
@@ -36,7 +34,7 @@ interface StorageInterface
     /**
      * Load contents of given object from storage
      *
-     * @param string $key   Storage key
+     * @param string $key Storage key
      * @return mixed
      */
     public function load($key);

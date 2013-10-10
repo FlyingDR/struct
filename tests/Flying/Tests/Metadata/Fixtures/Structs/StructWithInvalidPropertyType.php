@@ -2,8 +2,6 @@
 
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
-use Flying\Struct\ConfigurationManager;
-use Flying\Tests\Metadata\Fixtures\Structs\MetadataTestcaseInterface;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**

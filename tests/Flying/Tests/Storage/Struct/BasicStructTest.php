@@ -4,7 +4,6 @@ namespace Flying\Tests\Storage\Struct;
 
 use Flying\Struct\ConfigurationManager;
 use Flying\Struct\Storage\Storage;
-use Flying\Tests\Storage\Struct\Fixtures\BasicStruct;
 use Flying\Tests\Struct\Common\BasicStructTest as CommonBasicStructTest;
 
 /**
@@ -14,11 +13,13 @@ class BasicStructTest extends CommonBasicStructTest
 {
     /**
      * Namespace for fixtures structures
+     *
      * @var string
      */
     protected $fixturesNs = 'Flying\Tests\Storage\Struct\Fixtures';
     /**
      * Name of fixture class to test
+     *
      * @var string
      */
     protected $fixtureClass = 'Flying\Tests\Storage\Struct\Fixtures\BasicStruct';
@@ -41,9 +42,12 @@ class BasicStructTest extends CommonBasicStructTest
     public function testExplicitStorageSetting()
     {
         $storage = new Storage();
-        $struct = $this->getTestStruct(null, array(
-            'storage' => $storage,
-        ));
+        $struct = $this->getTestStruct(
+            null,
+            array(
+                 'storage' => $storage,
+            )
+        );
         $this->assertNotEquals($struct->getConfig('storage'), ConfigurationManager::getConfiguration()->getStorage());
         $this->assertTrue($storage->has($struct));
         $this->assertFalse(ConfigurationManager::getConfiguration()->getStorage()->has($struct));

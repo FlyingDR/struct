@@ -3,7 +3,6 @@
 namespace Flying\Tests\Struct\Common;
 
 use Flying\Struct\Configuration;
-use Flying\Struct\ConfigurationManager;
 use Flying\Struct\Metadata\PropertyMetadata;
 use Flying\Struct\Metadata\StructMetadata;
 use Flying\Struct\Struct;
@@ -18,6 +17,7 @@ abstract class BasicStructTest extends BaseStructTest
 {
     /**
      * Name of fixture class to test
+     *
      * @var string
      */
     protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\BasicStruct';
@@ -150,12 +150,15 @@ abstract class BasicStructTest extends BaseStructTest
             'unknown' => 'value',
         );
         $struct->set($modifications);
-        $this->assertEquals(array(
-            'first'  => false,
-            'second' => 123,
-            'third'  => 'something',
-            'fourth' => 'test',
-        ), $struct->toArray());
+        $this->assertEquals(
+            array(
+                 'first'  => false,
+                 'second' => 123,
+                 'third'  => 'something',
+                 'fourth' => 'test',
+            ),
+            $struct->toArray()
+        );
     }
 
     public function testStructureReset()
@@ -169,12 +172,15 @@ abstract class BasicStructTest extends BaseStructTest
             'unknown' => 'value',
         );
         $struct->set($modifications);
-        $this->assertEquals(array(
-            'first'  => false,
-            'second' => 123,
-            'third'  => 'something',
-            'fourth' => 'test',
-        ), $struct->toArray());
+        $this->assertEquals(
+            array(
+                 'first'  => false,
+                 'second' => 123,
+                 'third'  => 'something',
+                 'fourth' => 'test',
+            ),
+            $struct->toArray()
+        );
         $struct->reset();
         $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
     }
@@ -225,9 +231,12 @@ abstract class BasicStructTest extends BaseStructTest
             ->shouldReceive('updateNotify')->once()
             ->with(Mockery::type('Flying\Struct\Common\SimplePropertyInterface'))
             ->getMock();
-        $struct = $this->getTestStruct(null, array(
-            'update_notify_listener' => $mock,
-        ));
+        $struct = $this->getTestStruct(
+            null,
+            array(
+                 'update_notify_listener' => $mock,
+            )
+        );
         $struct->set('first', true);
         $struct->set('unavailable', false);
     }
@@ -290,13 +299,16 @@ abstract class BasicStructTest extends BaseStructTest
         $metadata->addProperty(new PropertyMetadata('b', 'Flying\Struct\Property\Boolean', array('default' => false)));
         $metadata->addProperty(new PropertyMetadata('c', 'Flying\Struct\Property\String', array('default' => 'test')));
         $struct = new Struct(null, array(
-            'metadata' => $metadata,
-        ));
-        $this->assertEquals(array(
-            'a' => 123,
-            'b' => false,
-            'c' => 'test',
-        ), $struct->toArray());
+                                        'metadata' => $metadata,
+                                   ));
+        $this->assertEquals(
+            array(
+                 'a' => 123,
+                 'b' => false,
+                 'c' => 'test',
+            ),
+            $struct->toArray()
+        );
     }
 
     public function testCloning()
@@ -306,12 +318,14 @@ abstract class BasicStructTest extends BaseStructTest
         foreach ($struct as $name => $value) {
             $this->assertEquals($value, $clone->get($name));
         }
-        $clone->set(array(
-            'first'  => false,
-            'second' => 77,
-            'third'  => 'modified',
-            'fourth' => 'another value',
-        ));
+        $clone->set(
+            array(
+                 'first'  => false,
+                 'second' => 77,
+                 'third'  => 'modified',
+                 'fourth' => 'another value',
+            )
+        );
         foreach ($struct as $name => $value) {
             $this->assertNotEquals($value, $clone->get($name));
         }
