@@ -6,10 +6,10 @@ namespace Flying\Struct\Annotation\Struct;
  * @Annotation
  * @Target({"CLASS", "ANNOTATION"})
  * @Attributes({
- * @Attribute("name", required=true, type="string"),
- * @Attribute("type", required=false, type="string"),
- * @Attribute("default", required=false, type="mixed"),
- * @Attribute("nullable", required=false, type="boolean")
+ *      @Attribute("name", required=true, type="string"),
+ *      @Attribute("type", required=false, type="string"),
+ *      @Attribute("default", required=false, type="mixed"),
+ *      @Attribute("nullable", required=false, type="boolean")
  * })
  */
 class Boolean extends Property

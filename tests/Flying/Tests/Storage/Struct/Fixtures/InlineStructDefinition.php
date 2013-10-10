@@ -11,12 +11,12 @@ namespace Flying\Tests\Storage\Struct\Fixtures;
  * @Struct\Property(name="generic_property", type="string", default="some value"),
  * @Struct\Struct(name="child_struct_with_explicit_class", class="BasicStruct"),
  * @Struct\Struct(name="child_struct_with_inline_definition", {
- * @Struct\Boolean(name="a"),
- * @Struct\Int(name="b"),
- * @Struct\String(name="c"),
- * @Struct\Struct(name="s", {
- * @Struct\Int(name="min", default=0),
- * @Struct\Int(name="max", default=100)
+ *      @Struct\Boolean(name="a"),
+ *      @Struct\Int(name="b"),
+ *      @Struct\String(name="c"),
+ *      @Struct\Struct(name="s", {
+ *          @Struct\Int(name="min", default=0),
+ *          @Struct\Int(name="max", default=100)
  *     })
  * })
  */

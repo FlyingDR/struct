@@ -8,21 +8,23 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Annotation
  * @Target({"CLASS", "ANNOTATION"})
  * @Attributes({
- * @Attribute("name", required=true, type="string"),
- * @Attribute("type", required=false, type="string"),
- * @Attribute("default", required=false, type="mixed"),
- * @Attribute("nullable", required=false, type="boolean")
+ *      @Attribute("name", required=true, type="string"),
+ *      @Attribute("type", required=false, type="string"),
+ *      @Attribute("default", required=false, type="mixed"),
+ *      @Attribute("nullable", required=false, type="boolean")
  * })
  */
 class Property extends Annotation
 {
     /**
      * Property type
+     *
      * @var string
      */
     protected $type;
     /**
      * Property configuration
+     *
      * @var array
      */
     protected $config = array();

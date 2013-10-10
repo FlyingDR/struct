@@ -8,24 +8,27 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Annotation
  * @Target({"CLASS", "ANNOTATION"})
  * @Attributes({
- * @Attribute("name", required=true, type="string"),
- * @Attribute("class", required=false, type="string"),
+ *      @Attribute("name", required=true, type="string"),
+ *      @Attribute("class", required=false, type="string"),
  * })
  */
 class Struct extends Annotation
 {
     /**
      * Class name of structure property
+     *
      * @var string
      */
     protected $class;
     /**
      * Inline structure properties
+     *
      * @var array
      */
     protected $properties = array();
     /**
      * Property configuration
+     *
      * @var array
      */
     protected $config = array();
