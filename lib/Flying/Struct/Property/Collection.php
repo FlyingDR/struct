@@ -390,14 +390,37 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                 }
                 break;
             case 'allowed':
-                if ((is_string($value)) && (method_exists($this, $value))) {
-                    $value = array($this, $value);
+                $valid = false;
+                if (($value === null) || (is_callable($value))) {
+                    // Explicitly defined validator or empty validator
+                    $valid = true;
+                } elseif ((is_array($value)) && (sizeof($value) == 1) && (isset($value[0])) && (is_string($value[0]))) {
+                    // This is probably validator defined through annotation's "allowed" parameter
+                    $v = $value[0];
+                    if (class_exists($v)) {
+                        // Class name for validation
+                        $value = $v;
+                        $valid = true;
+                    } elseif (method_exists($this, $v)) {
+                        // Name of validation method
+                        $value = array($this, $v);
+                        $valid = true;
+                    }
+                } elseif (is_string($value)) {
+                    if (class_exists($value)) {
+                        // Explicitly given class name for validation
+                        $valid = true;
+                    } elseif (method_exists($this, $value)) {
+                        // Explicitly given name of validation method
+                        $value = array($this, $value);
+                        $valid = true;
+                    }
+                } elseif (is_array($value)) {
+                    // Explicitly given list of valid values
+                    $valid = true;
                 }
-                $valid = (($value === null) || (is_array($value)) || (is_callable($value))
-                    || ((is_string($value))
-                        && (class_exists($value))));
                 if (!$valid) {
-                    throw new \InvalidArgumentException('List of allowed values for collection should be either array or callable');
+                    throw new \InvalidArgumentException('Unable to recognize given validator for collection');
                 }
                 break;
             default:
