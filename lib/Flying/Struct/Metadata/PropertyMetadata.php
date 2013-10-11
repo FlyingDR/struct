@@ -148,7 +148,7 @@ class PropertyMetadata implements MetadataInterface
      */
     public function unserialize($serialized)
     {
-        $array = @unserialize($serialized);
+        $array = unserialize($serialized);
         if (!is_array($array)) {
             return;
         }

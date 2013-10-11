@@ -225,7 +225,7 @@ class Property extends AbstractConfig implements PropertyInterface
      */
     public function unserialize($data)
     {
-        $data = @unserialize($data);
+        $data = unserialize($data);
         if ((!is_array($data)) ||
             (!array_key_exists('value', $data)) ||
             (!array_key_exists('config', $data)) ||

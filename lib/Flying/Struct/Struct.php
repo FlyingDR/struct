@@ -682,7 +682,7 @@ class Struct extends AbstractConfig implements StructInterface
      */
     public function unserialize($data)
     {
-        $data = @unserialize($data);
+        $data = unserialize($data);
         if ((!is_array($data)) ||
             (!array_key_exists('metadata', $data)) ||
             (!$data['metadata'] instanceof StructMetadata) ||

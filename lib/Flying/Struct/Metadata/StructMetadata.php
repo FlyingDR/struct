@@ -143,7 +143,7 @@ class StructMetadata extends PropertyMetadata
      */
     public function unserialize($serialized)
     {
-        $array = @unserialize($serialized);
+        $array = unserialize($serialized);
         if (!is_array($array)) {
             return;
         }
