@@ -133,7 +133,11 @@ class PropertyMetadata implements MetadataInterface
      */
     public function serialize()
     {
-        return (serialize($this->toArray()));
+        return (serialize(array(
+             'name'   => $this->getName(),
+             'class'  => $this->getClass(),
+             'config' => $this->getConfig(),
+        )));
     }
 
     /**
@@ -156,9 +160,6 @@ class PropertyMetadata implements MetadataInterface
         }
         if (array_key_exists('config', $array)) {
             $this->setConfig($array['config']);
-        }
-        if (array_key_exists('hash', $array)) {
-            $this->hash = $array['hash'];
         }
     }
 

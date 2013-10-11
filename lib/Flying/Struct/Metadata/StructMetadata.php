@@ -132,7 +132,6 @@ class StructMetadata extends PropertyMetadata
             'class'      => $this->getClass(),
             'config'     => $this->getConfig(),
             'properties' => $this->getProperties(),
-            'hash'       => $this->getHash(),
         )));
     }
 
@@ -159,9 +158,6 @@ class StructMetadata extends PropertyMetadata
         }
         if (array_key_exists('properties', $array)) {
             $this->setProperties($array['properties']);
-        }
-        if (array_key_exists('hash', $array)) {
-            $this->hash = $array['hash'];
         }
     }
 
