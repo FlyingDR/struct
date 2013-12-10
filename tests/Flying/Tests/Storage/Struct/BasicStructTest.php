@@ -83,4 +83,14 @@ class BasicStructTest extends CommonBasicStructTest
         $s3 = $this->getTestStruct();
         $this->assertEquals($modified, $s3->fourth);
     }
+    
+    public function testStructureShouldBeMarkedAsDirtyUponDirectChangeOfItsProperty()
+    {
+        $struct = $this->getTestStruct();
+        $storage = ConfigurationManager::getConfiguration()->getStorage();
+        $this->assertFalse($storage->isDirty($struct));
+        $property = $struct->getProperty('fourth');
+        $property->setValue('modified value');
+        $this->assertTrue($storage->isDirty($struct));
+    }
 }

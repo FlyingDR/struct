@@ -33,7 +33,8 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
             ->with(Mockery::type($this->fixtureClass))->andReturn(Mockery::self())->getMock();
         $storage->shouldReceive('markAsDirty')->once()->ordered()
             ->with(Mockery::type($this->fixtureClass))->andReturn(Mockery::self())->getMock();
-        $this->getTestStruct(array(
+        ConfigurationManager::getConfiguration()->setStorage($storage);
+        $struct = $this->getTestStruct(array(
             'b'     => false,
             'i'     => 777,
             's'     => 'something',
@@ -42,7 +43,8 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
                 'y' => 888,
                 'z' => 'child',
             ),
-        ), array('storage' => $storage));
+        ));
+        $struct->child->x = false;
     }
 
     public function testChildStructureModificationsShouldMarkWholeStructureAsDirtyInStorage()

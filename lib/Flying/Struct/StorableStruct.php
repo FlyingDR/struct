@@ -2,6 +2,7 @@
 
 namespace Flying\Struct;
 
+use Flying\Struct\Common\SimplePropertyInterface;
 use Flying\Struct\Metadata\StructMetadata;
 use Flying\Struct\Storage\StorableInterface;
 use Flying\Struct\Storage\Storage;
@@ -55,7 +56,7 @@ class StorableStruct extends Struct implements StorableInterface
     {
         parent::__clone();
         // Register newly cloned object into storage
-        if (!$this->parent) {
+        if ($this->getStorageKey()) {
             $this->getStorage()->register($this);
             // If structure had some changes before cloning - its cloned version should also be marked as "dirty"
             if ($this->markedAsDirty) {
@@ -163,7 +164,7 @@ class StorableStruct extends Struct implements StorableInterface
     {
         parent::createStruct($metadata);
         // Register ourselves into storage, but only top-level structure should be stored
-        if (!$this->parent) {
+        if ($this->getStorageKey()) {
             $this->getStorage()->register($this);
             $this->markedAsDirty = false;
         }
@@ -254,18 +255,14 @@ class StorableStruct extends Struct implements StorableInterface
     }
 
     /**
-     * Structure properties change event handler
-     *
-     * @param string $name  Name of changed property
-     * @return void
+     * {@inheritdoc}
      */
-    protected function onChange($name)
+    public function updateNotify(SimplePropertyInterface $property)
     {
-        if ($this->parent) {
-            $this->parent->onChange($name);
-        } elseif (!$this->markedAsDirty) {
+        parent::updateNotify($property);
+        if ((!$this->markedAsDirty) && ($this->getStorageKey())) {
             $this->getStorage()->markAsDirty($this);
             $this->markedAsDirty = true;
-        }
+        }        
     }
 }
