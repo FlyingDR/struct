@@ -4,6 +4,7 @@ namespace Flying\Tests\Storage\Struct;
 
 use Flying\Struct\ConfigurationManager;
 use Flying\Tests\Struct\Common\MultiLevelStructTest as CommonMultiLevelStructTest;
+use Mockery;
 
 /**
  * @method \Flying\Tests\Storage\Struct\Fixtures\MultiLevelStruct getTestStruct($contents = null, $config = null)
@@ -12,20 +13,36 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
 {
     /**
      * Namespace for fixtures structures
+     *
      * @var string
      */
     protected $fixturesNs = 'Flying\Tests\Storage\Struct\Fixtures';
     /**
      * Name of fixture class to test
+     *
      * @var string
      */
     protected $fixtureClass = 'Flying\Tests\Storage\Struct\Fixtures\MultiLevelStruct';
 
-    public function testChildStructureShouldNotRegisterItselfIntoStorage()
+    public function testChildStructureShouldNotCommunicateWithStorage()
     {
-        $struct = $this->getTestStruct();
-        $storage = ConfigurationManager::getConfiguration()->getStorage();
-        $this->assertFalse($storage->has($struct->child));
+        $storage = Mockery::mock('Flying\Struct\Storage\StorageInterface');
+        $storage->shouldReceive('load')->once()->ordered()
+            ->with('/^' . str_replace('\\', '_', $this->fixtureClass) . '/')->andReturnNull()->getMock();
+        $storage->shouldReceive('register')->once()->ordered()
+            ->with(Mockery::type($this->fixtureClass))->andReturn(Mockery::self())->getMock();
+        $storage->shouldReceive('markAsDirty')->once()->ordered()
+            ->with(Mockery::type($this->fixtureClass))->andReturn(Mockery::self())->getMock();
+        $this->getTestStruct(array(
+            'b'     => false,
+            'i'     => 777,
+            's'     => 'something',
+            'child' => array(
+                'x' => true,
+                'y' => 888,
+                'z' => 'child',
+            ),
+        ), array('storage' => $storage));
     }
 
     public function testChildStructureModificationsShouldMarkWholeStructureAsDirtyInStorage()
