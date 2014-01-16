@@ -14,11 +14,13 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
 {
     /**
      * Collection elements
+     *
      * @var array
      */
     protected $elements = array();
     /**
      * Cached value of "allowed" configuration option
+     *
      * @var array
      */
     protected $allowed;
@@ -64,7 +66,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * Gets the element at the specified key/index.
      *
-     * @param string|integer $key   The key/index of the element to retrieve.
+     * @param string|integer $key The key/index of the element to retrieve.
      * @return mixed
      */
     public function get($key)
@@ -78,8 +80,8 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * Sets an element in the collection at the specified key/index.
      *
-     * @param string|integer $key     The key/index of the element to set.
-     * @param mixed $element          The element to set.
+     * @param string|integer $key The key/index of the element to set.
+     * @param mixed $element      The element to set.
      * @return void
      */
     public function set($key, $element)
@@ -95,7 +97,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * Adds an element at the end of the collection.
      *
-     * @param mixed $element      The element to add.
+     * @param mixed $element The element to add.
      * @return void
      */
     public function add($element)
@@ -112,7 +114,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      * Toggle given element in collection.
      * Adds element in collection if it is missed, removes if it is available
      *
-     * @param mixed $element      The element to toggle.
+     * @param mixed $element The element to toggle.
      * @return void
      */
     public function toggle($element)
@@ -146,7 +148,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * Removes the element at the specified index from the collection.
      *
-     * @param string|integer $key   The kex/index of the element to remove.
+     * @param string|integer $key The kex/index of the element to remove.
      * @return mixed                The removed element or NULL, if the collection did not contain the element.
      */
     public function remove($key)
@@ -163,7 +165,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * Removes the specified element from the collection, if it is found.
      *
-     * @param mixed $element    The element to remove.
+     * @param mixed $element The element to remove.
      * @return boolean          TRUE if this collection contained the specified element, FALSE otherwise.
      */
     public function removeElement($element)
@@ -189,7 +191,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * Checks whether the collection contains an element with the specified key/index.
      *
-     * @param string|integer $key   The key/index to check for.
+     * @param string|integer $key The key/index to check for.
      * @return boolean
      */
     public function containsKey($key)
@@ -214,7 +216,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * Gets the index/key of a given element.
      *
-     * @param mixed $element        The element to search for.
+     * @param mixed $element The element to search for.
      * @return int|string|boolean   The key/index of the element or FALSE if the element was not found.
      */
     public function indexOf($element)
@@ -329,8 +331,8 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * Invalid value setting handler
      *
-     * @param mixed $value      Invalid value given to property
-     * @param int|string $key   OPTIONAL Key of this value
+     * @param mixed $value    Invalid value given to property
+     * @param int|string $key OPTIONAL Key of this value
      * @return void
      */
     protected function onInvalidValue($value, $key = null)
@@ -341,8 +343,8 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * Normalize given value to make it compatible with property requirements
      *
-     * @param mixed $value      Given property value (passed by reference)
-     * @param int|string $key   OPTIONAL Key for given value in a case if multiple values are given
+     * @param mixed $value    Given property value (passed by reference)
+     * @param int|string $key OPTIONAL Key for given value in a case if multiple values are given
      * @return mixed            TRUE if value can be accepted, FALSE otherwise
      */
     protected function normalize(&$value, $key = null)

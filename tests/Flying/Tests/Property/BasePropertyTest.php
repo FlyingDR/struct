@@ -9,16 +9,19 @@ abstract class BasePropertyTest extends TestCase
 {
     /**
      * Class name of the property to test
+     *
      * @var string
      */
     protected $propertyClass = null;
     /**
      * Namespace of property class to test
+     *
      * @var string
      */
     protected $propertyNs = 'Flying\Struct\Property';
     /**
      * Default configuration options for test
+     *
      * @var array
      */
     protected $defaultConfig = array(
@@ -27,6 +30,7 @@ abstract class BasePropertyTest extends TestCase
     );
     /**
      * Default property value
+     *
      * @var string
      */
     protected $defaultValue = 'default value';

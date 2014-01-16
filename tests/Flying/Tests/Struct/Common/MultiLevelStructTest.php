@@ -56,9 +56,9 @@ abstract class MultiLevelStructTest extends BaseStructTest
         $struct = $this->getTestStruct();
         $struct->child->set(
             array(
-                 'x' => true,
-                 'y' => 777,
-                 'z' => 'test string',
+                'x' => true,
+                'y' => 777,
+                'z' => 'test string',
             )
         );
         $this->assertTrue($struct->child->x);
@@ -108,14 +108,14 @@ abstract class MultiLevelStructTest extends BaseStructTest
         }
         $clone->set(
             array(
-                 'b'     => false,
-                 'i'     => 345,
-                 's'     => 'changed',
-                 'child' => array(
-                     'x' => true,
-                     'y' => 777,
-                     'z' => 'modified',
-                 ),
+                'b'     => false,
+                'i'     => 345,
+                's'     => 'changed',
+                'child' => array(
+                    'x' => true,
+                    'y' => 777,
+                    'z' => 'modified',
+                ),
             )
         );
         foreach ($struct as $name => $value) {

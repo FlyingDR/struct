@@ -13,7 +13,7 @@ class CollectionTest extends TestCase
 {
     /**
      * @param array $value
-     * @param int   $expected
+     * @param int $expected
      * @param array $config
      *
      * @dataProvider dataProviderCountableInterface
@@ -180,12 +180,12 @@ class CollectionTest extends TestCase
     public function testPassingNullValuesAsElements()
     {
         $collection = new Collection(array(null), array(
-                                                       'nullable' => true,
-                                                  ));
+            'nullable' => true,
+        ));
         $this->assertEquals(array(null), $collection->toArray());
         $collection = new Collection(array(null), array(
-                                                       'nullable' => false,
-                                                  ));
+            'nullable' => false,
+        ));
         $this->assertEquals(array(), $collection->toArray());
     }
 
@@ -335,12 +335,12 @@ class CollectionTest extends TestCase
     }
 
     /**
-     * @param string  $method
-     * @param array   $args
-     * @param array   $expected
+     * @param string $method
+     * @param array $args
+     * @param array $expected
      * @param boolean $checkKeys
-     * @param array   $value
-     * @param array   $config
+     * @param array $value
+     * @param array $config
      *
      * @dataProvider dataProviderValueNormalizationCallback
      */
@@ -406,10 +406,10 @@ class CollectionTest extends TestCase
 
     /**
      * @param string $method
-     * @param array  $args
-     * @param int    $times
-     * @param array  $value
-     * @param array  $config
+     * @param array $args
+     * @param int $times
+     * @param array $value
+     * @param array $config
      *
      * @dataProvider dataProviderOnChangeCallback
      */
@@ -452,9 +452,9 @@ class CollectionTest extends TestCase
     }
 
     /**
-     * @param string  $method
-     * @param array   $args
-     * @param array   $value
+     * @param string $method
+     * @param array $args
+     * @param array $value
      * @param boolean $calledOnInvalid
      *
      * @dataProvider dataProviderOnInvalidValueCallback

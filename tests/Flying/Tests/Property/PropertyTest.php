@@ -10,6 +10,7 @@ class PropertyTest extends BasePropertyTest
 {
     /**
      * Class name of the property to test
+     *
      * @var string
      */
     protected $propertyClass = 'Flying\Tests\Property\Fixtures\Property';

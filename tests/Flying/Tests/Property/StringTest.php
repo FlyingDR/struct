@@ -10,16 +10,19 @@ class StringTest extends BaseTypeTest
 {
     /**
      * Class name of the property to test
+     *
      * @var string
      */
     protected $propertyClass = 'String';
     /**
      * Default property value
+     *
      * @var string
      */
     protected $defaultValue = 'default value';
     /**
      * Value validation tests
+     *
      * @var array
      */
     protected $valueTests = array(
@@ -40,6 +43,7 @@ class StringTest extends BaseTypeTest
     );
     /**
      * Serialization tests
+     *
      * @var array
      */
     protected $serializationTests = array(

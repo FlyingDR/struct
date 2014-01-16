@@ -9,6 +9,7 @@ class Enum extends Property
 {
     /**
      * Cached version of "values" configuration property
+     *
      * @var array
      */
     protected $values = array();

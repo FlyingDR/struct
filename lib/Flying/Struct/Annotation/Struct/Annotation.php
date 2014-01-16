@@ -11,6 +11,7 @@ abstract class Annotation
 {
     /**
      * Name of structure property
+     *
      * @var string
      */
     protected $name;

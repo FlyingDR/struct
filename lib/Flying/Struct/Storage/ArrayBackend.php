@@ -9,6 +9,7 @@ class ArrayBackend implements BackendInterface
 {
     /**
      * Storage contents
+     *
      * @var array
      */
     protected $storage = array();

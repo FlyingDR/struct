@@ -13,21 +13,25 @@ class MetadataManager implements MetadataManagerInterface
 {
     /**
      * Structures metadata parser
+     *
      * @var MetadataParserInterface
      */
     protected $parser;
     /**
      * Structures metadata cache
+     *
      * @var Cache
      */
     protected $cache;
     /**
      * Structures metadata
+     *
      * @var array
      */
     protected $metadata = array();
     /**
      * Prefix for cache entries for structure metadata
+     *
      * @var string
      */
     protected $cachePrefix = 'StructMetadata_';

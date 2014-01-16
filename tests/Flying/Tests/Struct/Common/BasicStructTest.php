@@ -152,10 +152,10 @@ abstract class BasicStructTest extends BaseStructTest
         $struct->set($modifications);
         $this->assertEquals(
             array(
-                 'first'  => false,
-                 'second' => 123,
-                 'third'  => 'something',
-                 'fourth' => 'test',
+                'first'  => false,
+                'second' => 123,
+                'third'  => 'something',
+                'fourth' => 'test',
             ),
             $struct->toArray()
         );
@@ -174,10 +174,10 @@ abstract class BasicStructTest extends BaseStructTest
         $struct->set($modifications);
         $this->assertEquals(
             array(
-                 'first'  => false,
-                 'second' => 123,
-                 'third'  => 'something',
-                 'fourth' => 'test',
+                'first'  => false,
+                'second' => 123,
+                'third'  => 'something',
+                'fourth' => 'test',
             ),
             $struct->toArray()
         );
@@ -234,7 +234,7 @@ abstract class BasicStructTest extends BaseStructTest
         $struct = $this->getTestStruct(
             null,
             array(
-                 'update_notify_listener' => $mock,
+                'update_notify_listener' => $mock,
             )
         );
         $struct->set('first', true);
@@ -299,13 +299,13 @@ abstract class BasicStructTest extends BaseStructTest
         $metadata->addProperty(new PropertyMetadata('b', 'Flying\Struct\Property\Boolean', array('default' => false)));
         $metadata->addProperty(new PropertyMetadata('c', 'Flying\Struct\Property\String', array('default' => 'test')));
         $struct = new Struct(null, array(
-                                        'metadata' => $metadata,
-                                   ));
+            'metadata' => $metadata,
+        ));
         $this->assertEquals(
             array(
-                 'a' => 123,
-                 'b' => false,
-                 'c' => 'test',
+                'a' => 123,
+                'b' => false,
+                'c' => 'test',
             ),
             $struct->toArray()
         );
@@ -320,10 +320,10 @@ abstract class BasicStructTest extends BaseStructTest
         }
         $clone->set(
             array(
-                 'first'  => false,
-                 'second' => 77,
-                 'third'  => 'modified',
-                 'fourth' => 'another value',
+                'first'  => false,
+                'second' => 77,
+                'third'  => 'modified',
+                'fourth' => 'another value',
             )
         );
         foreach ($struct as $name => $value) {

@@ -13,6 +13,7 @@ class Property extends BaseProperty implements CallbackTrackingInterface
 {
     /**
      * Available callback loggers
+     *
      * @var array
      */
     private $cbLogs = array();
@@ -20,7 +21,7 @@ class Property extends BaseProperty implements CallbackTrackingInterface
     /**
      * Set logger for defined method
      *
-     * @param string $method        Method name
+     * @param string $method Method name
      * @param CallbackLog $logger
      * @return void
      */
@@ -32,8 +33,8 @@ class Property extends BaseProperty implements CallbackTrackingInterface
     /**
      * Log call to callback
      *
-     * @param string $method    Method name
-     * @param array $args       Method call arguments
+     * @param string $method Method name
+     * @param array $args    Method call arguments
      * @return void
      */
     protected function logCallbackCall($method, array $args)
@@ -48,7 +49,7 @@ class Property extends BaseProperty implements CallbackTrackingInterface
     /**
      * Normalize given value to make it compatible with property requirements
      *
-     * @param mixed $value  Given property value (passed by reference)
+     * @param mixed $value Given property value (passed by reference)
      * @return mixed        TRUE if value can be accepted, FALSE otherwise
      */
     protected function normalize(&$value)

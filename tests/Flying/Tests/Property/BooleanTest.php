@@ -9,16 +9,19 @@ class BooleanTest extends BaseTypeTest
 {
     /**
      * Class name of the property to test
+     *
      * @var string
      */
     protected $propertyClass = 'Boolean';
     /**
      * Default property value
+     *
      * @var string
      */
     protected $defaultValue = true;
     /**
      * Value validation tests
+     *
      * @var array
      */
     protected $valueTests = array(
@@ -35,6 +38,7 @@ class BooleanTest extends BaseTypeTest
     );
     /**
      * Serialization tests
+     *
      * @var array
      */
     protected $serializationTests = array(

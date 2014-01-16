@@ -12,6 +12,7 @@ class CacheBackend implements BackendInterface
 {
     /**
      * Cache to use as a storage
+     *
      * @var Cache
      */
     protected $cache;

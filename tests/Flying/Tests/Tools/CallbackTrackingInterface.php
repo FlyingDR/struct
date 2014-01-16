@@ -10,7 +10,7 @@ interface CallbackTrackingInterface
     /**
      * Set logger for defined method
      *
-     * @param string $method        Method name
+     * @param string $method Method name
      * @param CallbackLog $logger
      * @return void
      */

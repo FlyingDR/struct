@@ -7,12 +7,14 @@ abstract class BaseTypeTest extends BasePropertyTest
     /**
      * Value validation tests
      * Each entry is: array($value, $expectedResult, $config)
+     *
      * @var array
      */
     protected $valueTests = array();
     /**
      * Serialization tests
      * Each entry is: array($value, $expectedResult, $config)
+     *
      * @var array
      */
     protected $serializationTests = array();

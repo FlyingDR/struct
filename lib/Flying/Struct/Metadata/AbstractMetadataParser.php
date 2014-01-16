@@ -11,11 +11,13 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
 {
     /**
      * Namespaces for property classes
+     *
      * @var array
      */
     protected $nsProperty;
     /**
      * Namespaces for structure classes
+     *
      * @var array
      */
     protected $nsStruct;
@@ -23,7 +25,7 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
     /**
      * Resolve given property type into property FQCN
      *
-     * @param string $class     Structure property class
+     * @param string $class Structure property class
      * @return string|null
      */
     protected function resolvePropertyClass($class)
@@ -38,7 +40,7 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
     /**
      * Resolve given structure class into structure FQCN
      *
-     * @param string $class     Structure class
+     * @param string $class Structure class
      * @return string|null
      */
     protected function resolveStructClass($class)
@@ -53,9 +55,9 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
     /**
      * Resolve given class into FQCN class and check if it supports given namespace
      *
-     * @param string $class         Class name to resolve
-     * @param array $namespaces     List of namespace to use to expand given class name
-     * @param string $interface     OPTIONAL Interface, class must implement
+     * @param string $class     Class name to resolve
+     * @param array $namespaces List of namespace to use to expand given class name
+     * @param string $interface OPTIONAL Interface, class must implement
      * @return string|null
      */
     protected function resolveClass($class, array $namespaces, $interface = null)

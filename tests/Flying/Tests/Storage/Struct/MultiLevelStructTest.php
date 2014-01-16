@@ -3,6 +3,7 @@
 namespace Flying\Tests\Storage\Struct;
 
 use Flying\Struct\ConfigurationManager;
+use Flying\Struct\Storage\StorageInterface;
 use Flying\Tests\Struct\Common\MultiLevelStructTest as CommonMultiLevelStructTest;
 use Mockery;
 
@@ -33,6 +34,7 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
             ->with(Mockery::type($this->fixtureClass))->andReturn(Mockery::self())->getMock();
         $storage->shouldReceive('markAsDirty')->once()->ordered()
             ->with(Mockery::type($this->fixtureClass))->andReturn(Mockery::self())->getMock();
+        /** @var $storage StorageInterface */
         ConfigurationManager::getConfiguration()->setStorage($storage);
         $struct = $this->getTestStruct(array(
             'b'     => false,

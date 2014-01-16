@@ -13,11 +13,13 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
 {
     /**
      * Namespace for fixtures structures
+     *
      * @var string
      */
     protected $fixturesNs = 'Flying\Tests\Struct\Fixtures';
     /**
      * Name of fixture class to test
+     *
      * @var string
      */
     protected $fixtureClass = null;
@@ -121,8 +123,8 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
     }
 
     /**
-     * @param array|object $contents    OPTIONAL Contents to initialize structure with
-     * @param array|object $config      OPTIONAL Configuration for this structure
+     * @param array|object $contents OPTIONAL Contents to initialize structure with
+     * @param array|object $config   OPTIONAL Configuration for this structure
      * @return TestStruct
      */
     protected function getTestStruct($contents = null, $config = null)

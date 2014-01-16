@@ -13,8 +13,8 @@ interface StructInterface extends \RecursiveIterator, ComplexPropertyInterface, 
     /**
      * Retrieve value of structure property with given name and return $default if there is no such property
      *
-     * @param string $name      Structure property name to get value of
-     * @param mixed $default    OPTIONAL Default value to return in a case if property is not available
+     * @param string $name   Structure property name to get value of
+     * @param mixed $default OPTIONAL Default value to return in a case if property is not available
      * @return mixed
      */
     public function get($name, $default = null);

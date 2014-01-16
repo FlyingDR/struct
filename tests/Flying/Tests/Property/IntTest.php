@@ -9,16 +9,19 @@ class IntTest extends BaseTypeTest
 {
     /**
      * Class name of the property to test
+     *
      * @var string
      */
     protected $propertyClass = 'Int';
     /**
      * Default property value
+     *
      * @var string
      */
     protected $defaultValue = 12345;
     /**
      * Value validation tests
+     *
      * @var array
      */
     protected $valueTests = array(
@@ -54,6 +57,7 @@ class IntTest extends BaseTypeTest
     );
     /**
      * Serialization tests
+     *
      * @var array
      */
     protected $serializationTests = array(

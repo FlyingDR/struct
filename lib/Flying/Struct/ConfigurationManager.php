@@ -13,6 +13,7 @@ class ConfigurationManager
 {
     /**
      * Structures configuration
+     *
      * @var Configuration
      */
     private static $configuration;

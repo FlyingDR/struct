@@ -15,16 +15,19 @@ class StorableStruct extends Struct implements StorableInterface
 {
     /**
      * Structures storage
+     *
      * @var Storage
      */
     protected $storage = null;
     /**
      * Storage key for this structure
+     *
      * @var string
      */
     protected $storageKey = null;
     /**
      * TRUE if structure is already marked as "dirty" into storage
+     *
      * @var boolean
      */
     protected $markedAsDirty = false;
@@ -32,8 +35,8 @@ class StorableStruct extends Struct implements StorableInterface
     /**
      * Class constructor
      *
-     * @param array|object $contents    OPTIONAL Contents to initialize structure with
-     * @param array|object $config      OPTIONAL Configuration for this structure
+     * @param array|object $contents OPTIONAL Contents to initialize structure with
+     * @param array|object $config   OPTIONAL Configuration for this structure
      * @return StorableStruct
      */
     public function __construct($contents = null, $config = null)
@@ -186,7 +189,7 @@ class StorableStruct extends Struct implements StorableInterface
     /**
      * Perform "lazy initialization" of configuration option with given name
      *
-     * @param string $name          Configuration option name
+     * @param string $name Configuration option name
      * @return mixed
      */
     protected function lazyConfigInit($name)
@@ -206,8 +209,8 @@ class StorableStruct extends Struct implements StorableInterface
     /**
      * Check that given value of configuration option is valid
      *
-     * @param string $name          Configuration option name
-     * @param mixed $value          Option value (passed by reference)
+     * @param string $name Configuration option name
+     * @param mixed $value Option value (passed by reference)
      * @throws \InvalidArgumentException
      * @return boolean
      */
@@ -263,6 +266,6 @@ class StorableStruct extends Struct implements StorableInterface
         if ((!$this->markedAsDirty) && ($this->getStorageKey())) {
             $this->getStorage()->markAsDirty($this);
             $this->markedAsDirty = true;
-        }        
+        }
     }
 }

@@ -9,11 +9,13 @@ class EnumTest extends BaseTypeTest
 {
     /**
      * Class name of the property to test
+     *
      * @var string
      */
     protected $propertyClass = 'Enum';
     /**
      * Default configuration options for test
+     *
      * @var array
      */
     protected $defaultConfig = array(
@@ -23,11 +25,13 @@ class EnumTest extends BaseTypeTest
     );
     /**
      * Default property value
+     *
      * @var string
      */
     protected $defaultValue = 'a';
     /**
      * Value validation tests
+     *
      * @var array
      */
     protected $valueTests = array(
@@ -40,6 +44,7 @@ class EnumTest extends BaseTypeTest
     );
     /**
      * Serialization tests
+     *
      * @var array
      */
     protected $serializationTests = array(

@@ -18,36 +18,43 @@ class Struct extends AbstractConfig implements StructInterface
 {
     /**
      * Structure contents
+     *
      * @var array
      */
     protected $struct;
     /**
      * Initial contents for structure properties
+     *
      * @var array
      */
     protected $initialContents;
     /**
      * TRUE to skip property change notification, FALSE otherwise
+     *
      * @var boolean
      */
     protected $skipNotify = false;
     /**
      * Structure size (for Countable interface)
+     *
      * @var int
      */
     protected $count = 0;
     /**
      * Current index in structure (for Iterator interface)
+     *
      * @var int
      */
     protected $index = 0;
     /**
      * Structure metadata
+     *
      * @var StructMetadata
      */
     protected $metadata = null;
     /**
      * Parent structure or NULL if this is top-level structure
+     *
      * @var Struct
      */
     protected $parent = null;
@@ -55,8 +62,8 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Class constructor
      *
-     * @param array|object $contents    OPTIONAL Contents to initialize structure with
-     * @param array|object $config      OPTIONAL Configuration for this structure
+     * @param array|object $contents OPTIONAL Contents to initialize structure with
+     * @param array|object $config   OPTIONAL Configuration for this structure
      * @return Struct
      */
     public function __construct($contents = null, $config = null)
@@ -155,7 +162,7 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Attempt to convert given structure contents to array
      *
-     * @param mixed $contents     Value to convert to array
+     * @param mixed $contents Value to convert to array
      * @return array
      */
     protected function convertToArray($contents)
@@ -220,8 +227,8 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Retrieve value of structure property with given name and return $default if there is no such property
      *
-     * @param string $name      Structure property name to get value of
-     * @param mixed $default    OPTIONAL Default value to return in a case if property is not available
+     * @param string $name   Structure property name to get value of
+     * @param mixed $default OPTIONAL Default value to return in a case if property is not available
      * @return mixed
      */
     public function get($name, $default = null)
@@ -257,8 +264,8 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Handle get requests for missed structure properties
      *
-     * @param string $name      Requested structure property name
-     * @param mixed $default    Given default value
+     * @param string $name   Requested structure property name
+     * @param mixed $default Given default value
      * @return mixed
      */
     protected function getMissed($name, $default)
@@ -309,8 +316,8 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Magic function for setting structure property value
      *
-     * @param string $name      Structure property name to set value of
-     * @param mixed $value      New value for this property
+     * @param string $name Structure property name to set value of
+     * @param mixed $value New value for this property
      * @return void
      */
     public function __set($name, $value)
@@ -321,8 +328,8 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Handle set requests for missed structure properties
      *
-     * @param string $name    Structure property name to set
-     * @param mixed $value    Given value for the property
+     * @param string $name Structure property name to set
+     * @param mixed $value Given value for the property
      * @return void
      */
     protected function setMissed($name, $value)
@@ -334,7 +341,7 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Structure properties change event handler
      *
-     * @param string $name  Name of changed property
+     * @param string $name Name of changed property
      * @return void
      */
     protected function onChange($name)
@@ -414,7 +421,7 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Perform "lazy initialization" of configuration option with given name
      *
-     * @param string $name          Configuration option name
+     * @param string $name Configuration option name
      * @return mixed
      */
     protected function lazyConfigInit($name)
@@ -439,8 +446,8 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Check that given value of configuration option is valid
      *
-     * @param string $name          Configuration option name
-     * @param mixed $value          Option value (passed by reference)
+     * @param string $name Configuration option name
+     * @param mixed $value Option value (passed by reference)
      * @throws \InvalidArgumentException
      * @return boolean
      */
@@ -676,7 +683,7 @@ class Struct extends AbstractConfig implements StructInterface
     /**
      * Implementation of Serializable interface
      *
-     * @param array $data   Serialized object data
+     * @param array $data Serialized object data
      * @throws \InvalidArgumentException
      * @return void
      */

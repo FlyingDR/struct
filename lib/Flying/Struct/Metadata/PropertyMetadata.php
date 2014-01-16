@@ -9,21 +9,25 @@ class PropertyMetadata implements MetadataInterface
 {
     /**
      * Property name
+     *
      * @var string
      */
     protected $name;
     /**
      * Class name for property object
+     *
      * @var string
      */
     protected $class;
     /**
      * Hash for property object
+     *
      * @var string
      */
     protected $hash;
     /**
      * Configuration options for property object
+     *
      * @var array
      */
     protected $config = array();
@@ -31,9 +35,9 @@ class PropertyMetadata implements MetadataInterface
     /**
      * Class constructor
      *
-     * @param string $name      OPTIONAL Property name
-     * @param string $class     OPTIONAL Class name for property object
-     * @param array $config     OPTIONAL Configuration options for property object
+     * @param string $name  OPTIONAL Property name
+     * @param string $class OPTIONAL Class name for property object
+     * @param array $config OPTIONAL Configuration options for property object
      * @return PropertyMetadata
      */
     public function __construct($name = null, $class = null, $config = null)
@@ -134,9 +138,9 @@ class PropertyMetadata implements MetadataInterface
     public function serialize()
     {
         return (serialize(array(
-             'name'   => $this->getName(),
-             'class'  => $this->getClass(),
-             'config' => $this->getConfig(),
+            'name'   => $this->getName(),
+            'class'  => $this->getClass(),
+            'config' => $this->getConfig(),
         )));
     }
 

@@ -13,8 +13,8 @@ class StructStub implements StructInterface
     /**
      * Retrieve value of structure property with given name and return $default if there is no such property
      *
-     * @param string $name      Structure property name to get value of
-     * @param mixed $default    OPTIONAL Default value to return in a case if property is not available
+     * @param string $name   Structure property name to get value of
+     * @param mixed $default OPTIONAL Default value to return in a case if property is not available
      * @return mixed
      */
     public function get($name, $default = null)
@@ -193,7 +193,7 @@ class StructStub implements StructInterface
     /**
      * Implementation of Serializable interface
      *
-     * @param array $data   Serialized object data
+     * @param array $data Serialized object data
      * @return void
      */
     public function unserialize($data)

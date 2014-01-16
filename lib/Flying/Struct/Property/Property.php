@@ -13,16 +13,19 @@ class Property extends AbstractConfig implements PropertyInterface
 {
     /**
      * Property value
+     *
      * @var mixed
      */
     protected $value;
     /**
      * TRUE to skip property change notification, FALSE otherwise
+     *
      * @var boolean
      */
     protected $skipNotify = false;
     /**
      * Cached value of "nullable" configuration option
+     *
      * @var boolean
      */
     protected $nullable = true;
@@ -30,8 +33,8 @@ class Property extends AbstractConfig implements PropertyInterface
     /**
      * Class constructor
      *
-     * @param mixed $value      OPTIONAL Property value
-     * @param array $config     OPTIONAL Configuration options for this property
+     * @param mixed $value  OPTIONAL Property value
+     * @param array $config OPTIONAL Configuration options for this property
      * @throws Exception
      * @return Property
      */
@@ -132,7 +135,7 @@ class Property extends AbstractConfig implements PropertyInterface
     /**
      * Normalize given value to make it compatible with property requirements
      *
-     * @param mixed $value  Given property value (passed by reference)
+     * @param mixed $value Given property value (passed by reference)
      * @return mixed        TRUE if value can be accepted, FALSE otherwise
      */
     protected function normalize(&$value)
@@ -219,7 +222,7 @@ class Property extends AbstractConfig implements PropertyInterface
     /**
      * Implementation of Serializable interface
      *
-     * @param array $data   Serialized object data
+     * @param array $data Serialized object data
      * @throws \InvalidArgumentException
      * @return void
      */

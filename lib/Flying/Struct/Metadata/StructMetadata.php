@@ -11,6 +11,7 @@ class StructMetadata extends PropertyMetadata
 {
     /**
      * Structure properties
+     *
      * @var array
      */
     protected $properties = array();
@@ -18,10 +19,10 @@ class StructMetadata extends PropertyMetadata
     /**
      * Class constructor
      *
-     * @param string $name          OPTIONAL Property name
-     * @param string $class         OPTIONAL Class name for property object
-     * @param array $config         OPTIONAL Configuration options for property object
-     * @param array $properties     OPTIONAL Structure properties
+     * @param string $name      OPTIONAL Property name
+     * @param string $class     OPTIONAL Class name for property object
+     * @param array $config     OPTIONAL Configuration options for property object
+     * @param array $properties OPTIONAL Structure properties
      * @return StructMetadata
      */
     public function __construct($name = null, $class = null, $config = null, $properties = null)
@@ -35,7 +36,7 @@ class StructMetadata extends PropertyMetadata
     /**
      * Check if structure property with given name is available
      *
-     * @param string $name  Property name
+     * @param string $name Property name
      * @return boolean
      */
     public function hasProperty($name)
@@ -46,7 +47,7 @@ class StructMetadata extends PropertyMetadata
     /**
      * Get metadata for structure property with given name
      *
-     * @param string $name  Property name
+     * @param string $name Property name
      * @throws Exception
      * @return MetadataInterface
      */
@@ -71,7 +72,7 @@ class StructMetadata extends PropertyMetadata
     /**
      * Add given metadata as structure property
      *
-     * @param MetadataInterface $metadata   Property metadata
+     * @param MetadataInterface $metadata Property metadata
      * @return $this
      */
     public function addProperty(MetadataInterface $metadata)
@@ -99,7 +100,7 @@ class StructMetadata extends PropertyMetadata
     /**
      * Remove structure property with given name
      *
-     * @param string $name      Property name
+     * @param string $name Property name
      * @return $this
      */
     public function removeProperty($name)

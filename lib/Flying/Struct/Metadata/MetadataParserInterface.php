@@ -10,7 +10,7 @@ interface MetadataParserInterface
     /**
      * Get structure metadata information for given class
      *
-     * @param string $class     Structure class name to get metadata for
+     * @param string $class Structure class name to get metadata for
      * @return StructMetadata
      */
     public function getMetadata($class);

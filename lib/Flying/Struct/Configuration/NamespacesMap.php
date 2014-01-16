@@ -11,6 +11,7 @@ class NamespacesMap
 {
     /**
      * List of registered namespaces
+     *
      * @var array
      */
     protected $namespaces = array();
@@ -18,7 +19,7 @@ class NamespacesMap
     /**
      * Class constructor
      *
-     * @param array|string $namespaces  OPTIONAL Namespaces to register
+     * @param array|string $namespaces OPTIONAL Namespaces to register
      */
     public function __construct($namespaces = null)
     {
@@ -31,7 +32,7 @@ class NamespacesMap
     /**
      * Get registered namespace by given alias
      *
-     * @param string $alias     Namespace alias
+     * @param string $alias Namespace alias
      * @throws Exception
      * @return string
      */
@@ -56,7 +57,7 @@ class NamespacesMap
     /**
      * Check if namespace with given alias is registered
      *
-     * @param string $alias     Namespace alias
+     * @param string $alias Namespace alias
      * @return boolean
      */
     public function has($alias)
@@ -67,8 +68,8 @@ class NamespacesMap
     /**
      * Register class namespace
      *
-     * @param string|array $namespace     Class namespace
-     * @param string $alias               OPTIONAL Namespace alias
+     * @param string|array $namespace Class namespace
+     * @param string $alias           OPTIONAL Namespace alias
      * @throws \InvalidArgumentException
      * @return $this
      */
@@ -97,7 +98,7 @@ class NamespacesMap
     /**
      * Remove namespace with given alias from list of registered namespaces
      *
-     * @param string $alias         Namespace alias
+     * @param string $alias Namespace alias
      * @return $this
      */
     public function remove($alias)
