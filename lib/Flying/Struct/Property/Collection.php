@@ -405,6 +405,9 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                         // Name of validation method
                         $value = array($this, $v);
                         $valid = true;
+                    } else {
+                        // Explicitly given list of valid values
+                        $valid = true;
                     }
                 } elseif (is_string($value)) {
                     if (class_exists($value)) {

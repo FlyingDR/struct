@@ -249,6 +249,8 @@ class CollectionTest extends TestCase
         return array(
             array(array(1, 2, 3), 1, true),
             array(array(1, 2, 3), 123, false),
+            array(array('x'), 'x', true),
+            array(array('x'), 'y', false),
             array(array('x', 'y', 'z'), 'x', true),
             array(array('x', 'y', 'z'), 'xyz', false),
             array(array(true, false), false, true),
