@@ -2,10 +2,11 @@
 
 namespace Flying\Tests\Storage\Struct;
 
+use Flying\Tests\Storage\Struct\Fixtures\StructWithCollection;
 use Flying\Tests\Struct\Common\StructWithCollectionTest as CommonStructWithCollectionTest;
 
 /**
- * @method \Flying\Tests\Storage\Struct\Fixtures\StructWithCollection getTestStruct($contents = null, $config = null)
+ * @method StructWithCollection getTestStruct($contents = null, $config = null)
  */
 class StructWithCollectionTest extends CommonStructWithCollectionTest
 {

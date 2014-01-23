@@ -3,9 +3,10 @@
 namespace Flying\Tests\Struct\Common;
 
 use Flying\Struct\Common\ComplexPropertyInterface;
+use Flying\Tests\Struct\Fixtures\StructWithCollection;
 
 /**
- * @method \Flying\Tests\Struct\Fixtures\StructWithCollection getTestStruct($contents = null, $config = null)
+ * @method StructWithCollection getTestStruct($contents = null, $config = null)
  */
 abstract class StructWithCollectionTest extends BaseStructTest
 {

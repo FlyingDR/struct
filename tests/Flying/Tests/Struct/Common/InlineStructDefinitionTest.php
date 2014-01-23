@@ -2,10 +2,11 @@
 
 namespace Flying\Tests\Struct\Common;
 
+use Flying\Tests\Struct\Fixtures\InlineStructDefinition;
 use Mockery;
 
 /**
- * @method \Flying\Tests\Struct\Fixtures\InlineStructDefinition getTestStruct($contents = null, $config = null)
+ * @method InlineStructDefinition getTestStruct($contents = null, $config = null)
  */
 abstract class InlineStructDefinitionTest extends BaseStructTest
 {

@@ -4,10 +4,11 @@ namespace Flying\Tests\Storage\Struct;
 
 use Flying\Struct\ConfigurationManager;
 use Flying\Struct\Storage\Storage;
+use Flying\Tests\Storage\Struct\Fixtures\BasicStruct;
 use Flying\Tests\Struct\Common\BasicStructTest as CommonBasicStructTest;
 
 /**
- * @method \Flying\Tests\Storage\Struct\Fixtures\BasicStruct getTestStruct($contents = null, $config = null)
+ * @method BasicStruct getTestStruct($contents = null, $config = null)
  */
 class BasicStructTest extends CommonBasicStructTest
 {

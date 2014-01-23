@@ -4,11 +4,12 @@ namespace Flying\Tests\Storage\Struct;
 
 use Flying\Struct\ConfigurationManager;
 use Flying\Struct\Storage\StorageInterface;
+use Flying\Tests\Storage\Struct\Fixtures\MultiLevelStruct;
 use Flying\Tests\Struct\Common\MultiLevelStructTest as CommonMultiLevelStructTest;
 use Mockery;
 
 /**
- * @method \Flying\Tests\Storage\Struct\Fixtures\MultiLevelStruct getTestStruct($contents = null, $config = null)
+ * @method MultiLevelStruct getTestStruct($contents = null, $config = null)
  */
 class MultiLevelStructTest extends CommonMultiLevelStructTest
 {

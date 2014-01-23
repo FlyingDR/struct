@@ -3,10 +3,11 @@
 namespace Flying\Tests\Struct\Common;
 
 use Flying\Struct\Common\ComplexPropertyInterface;
+use Flying\Tests\Struct\Fixtures\MultiLevelStruct;
 use Mockery;
 
 /**
- * @method \Flying\Tests\Struct\Fixtures\MultiLevelStruct getTestStruct($contents = null, $config = null)
+ * @method MultiLevelStruct getTestStruct($contents = null, $config = null)
  */
 abstract class MultiLevelStructTest extends BaseStructTest
 {

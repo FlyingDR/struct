@@ -11,7 +11,7 @@ use Flying\Tests\Tools\CallbackLog;
 use Mockery;
 
 /**
- * @method \Flying\Tests\Struct\Fixtures\BasicStruct getTestStruct($contents = null, $config = null)
+ * @method BasicStruct getTestStruct($contents = null, $config = null)
  */
 abstract class BasicStructTest extends BaseStructTest
 {

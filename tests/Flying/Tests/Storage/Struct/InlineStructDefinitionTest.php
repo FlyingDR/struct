@@ -2,10 +2,11 @@
 
 namespace Flying\Tests\Storage\Struct;
 
+use Flying\Tests\Storage\Struct\Fixtures\InlineStructDefinition;
 use Flying\Tests\Struct\Common\InlineStructDefinitionTest as CommonInlineStructDefinitionTest;
 
 /**
- * @method \Flying\Tests\Storage\Struct\Fixtures\InlineStructDefinition getTestStruct($contents = null, $config = null)
+ * @method InlineStructDefinition getTestStruct($contents = null, $config = null)
  */
 class InlineStructDefinitionTest extends CommonInlineStructDefinitionTest
 {
