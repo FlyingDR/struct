@@ -7,6 +7,7 @@ use Flying\Struct\Common\ComplexPropertyInterface;
 use Flying\Struct\Common\SimplePropertyInterface;
 use Flying\Struct\Common\UpdateNotifyListenerInterface;
 use Flying\Struct\Metadata\MetadataInterface;
+use Flying\Struct\Metadata\MetadataModificationInterface;
 use Flying\Struct\Metadata\StructMetadata;
 use Flying\Struct\Property\Property;
 use Flying\Struct\Property\PropertyInterface;
@@ -14,7 +15,7 @@ use Flying\Struct\Property\PropertyInterface;
 /**
  * Base implementation of structure class
  */
-class Struct extends AbstractConfig implements StructInterface
+class Struct extends AbstractConfig implements StructInterface, MetadataModificationInterface
 {
     /**
      * Structure contents
@@ -120,6 +121,16 @@ class Struct extends AbstractConfig implements StructInterface
             $this->metadata = $metadata;
         }
         return $this->metadata;
+    }
+
+    /**
+     * Modify metadata for this structure after it was parsed by MetadataManager
+     *
+     * @param StructMetadata $metadata
+     */
+    public static function modifyMetadata(StructMetadata $metadata)
+    {
+
     }
 
     /**

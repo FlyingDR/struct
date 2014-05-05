@@ -24,6 +24,7 @@ abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
             'InheritanceTestStructB',
             'InlineStructDefinition',
             'StructInheritedFromAbstract',
+            'StructWithMetadataModifications',
         );
 
     public function setUp()

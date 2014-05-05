@@ -42,6 +42,11 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
         }
         $metadata->setClass($class);
         $this->parseMetadata($reflection, $metadata);
+        $reflection = new \ReflectionClass($class);
+        if ($reflection->implementsInterface('Flying\Struct\Metadata\MetadataModificationInterface')) {
+            /** @var $class MetadataModificationInterface */
+            $class::modifyMetadata($metadata);
+        }
         return $metadata;
     }
 
