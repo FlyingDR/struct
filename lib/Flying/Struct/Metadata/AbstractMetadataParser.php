@@ -3,6 +3,7 @@
 namespace Flying\Struct\Metadata;
 
 use Flying\Struct\ConfigurationManager;
+use Flying\Struct\Exception;
 
 /**
  * Base implementation of structures metadata parser
@@ -21,6 +22,37 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
      * @var array
      */
     protected $nsStruct;
+
+    /**
+     * Get structure metadata information for given class
+     *
+     * @param string $class Structure class name to parse metadata from
+     *
+     * @throws Exception
+     * @return StructMetadata
+     */
+    public function getMetadata($class)
+    {
+        $reflection = new \ReflectionClass($class);
+        $parent = $reflection->getParentClass();
+        if (($parent instanceof \ReflectionClass) && ($parent->implementsInterface('Flying\Struct\StructInterface'))) {
+            $metadata = $this->getMetadata($parent->getName());
+        } else {
+            $metadata = new StructMetadata();
+        }
+        $metadata->setClass($class);
+        $this->parseMetadata($reflection, $metadata);
+        return $metadata;
+    }
+
+    /**
+     * Actual implementation of structure metadata parsing
+     *
+     * @param \ReflectionClass $reflection
+     * @param StructMetadata $metadata
+     * @return void
+     */
+    abstract protected function parseMetadata(\ReflectionClass $reflection, StructMetadata $metadata);
 
     /**
      * Resolve given property type into property FQCN

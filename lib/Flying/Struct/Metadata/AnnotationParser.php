@@ -84,29 +84,15 @@ class AnnotationParser extends AbstractMetadataParser
     }
 
     /**
-     * Get structure metadata information for given class
-     *
-     * @param string $class Structure class name to parse metadata from
-     *
-     * @throws Exception
-     * @return StructMetadata
+     * {@inheritdoc}
      */
-    public function getMetadata($class)
+    protected function parseMetadata(\ReflectionClass $reflection, StructMetadata $metadata)
     {
-        $reflection = new \ReflectionClass($class);
-        $parent = $reflection->getParentClass();
-        if (($parent instanceof \ReflectionClass) && ($parent->implementsInterface('Flying\Struct\StructInterface'))) {
-            $metadata = $this->getMetadata($parent->getName());
-        } else {
-            $metadata = new StructMetadata();
-        }
-        $metadata->setClass($class);
         $reader = $this->getReader();
         $annotations = $reader->getClassAnnotations($reflection);
         foreach ($annotations as $annotation) {
             $metadata->addProperty($this->convertToMetadata($annotation));
         }
-        return $metadata;
     }
 
     /**
