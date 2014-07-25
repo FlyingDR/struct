@@ -81,11 +81,27 @@ abstract class BasePropertyTest extends TestCase
         if (!is_array($config)) {
             $config = array();
         }
-        $defaults = $this->defaultConfig;
-        $defaults['default'] = $this->defaultValue;
+        $defaults = $this->getDefaultConfig();
+        $defaults['default'] = $this->getDefaultValue();
         $config = array_merge($defaults, $config);
         $property = new $class($value, $config);
         return $property;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDefaultConfig()
+    {
+        return $this->defaultConfig;
     }
 
     abstract public function serializationDataProvider();

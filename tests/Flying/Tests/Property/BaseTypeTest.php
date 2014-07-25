@@ -82,14 +82,14 @@ abstract class BaseTypeTest extends BasePropertyTest
         $property = $this->getTestProperty(null, array(
             'nullable' => false,
         ));
-        $this->assertEquals($property->getValue(), $this->defaultValue);
+        $this->assertEquals($property->getValue(), $this->getDefaultValue());
     }
 
     public function serializationDataProvider()
     {
         $tests = array();
         foreach ($this->serializationTests as $test) {
-            $tests[] = array($test, $test, $this->defaultConfig);
+            $tests[] = array($test, $test, $this->getDefaultConfig());
         }
         return $tests;
     }

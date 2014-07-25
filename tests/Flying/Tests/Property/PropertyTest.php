@@ -18,26 +18,26 @@ class PropertyTest extends BasePropertyTest
     public function testBasicOperations()
     {
         $property = $this->getTestProperty();
-        $this->assertEquals($this->defaultValue, $property->getValue());
+        $this->assertEquals($this->getDefaultValue(), $property->getValue());
         $property->setValue(12345);
         $this->assertEquals(12345, $property->getValue());
         $property->setValue(true);
         $this->assertTrue($property->getValue());
         $property->reset();
-        $this->assertEquals($this->defaultValue, $property->getValue());
+        $this->assertEquals($this->getDefaultValue(), $property->getValue());
     }
 
     public function testConfigurationOptionsAccess()
     {
         $property = $this->getTestProperty();
         $this->assertFalse($property->getConfig('nullable'));
-        $this->assertEquals($this->defaultValue, $property->getConfig('default'));
+        $this->assertEquals($this->getDefaultValue(), $property->getConfig('default'));
     }
 
     public function testPropertyRemainsTheSameOnSettingInvalidValue()
     {
         $property = $this->getTestProperty();
-        $this->assertEquals($this->defaultValue, $property->getValue());
+        $this->assertEquals($this->getDefaultValue(), $property->getValue());
         $property->setValue(12345);
         $this->assertEquals(12345, $property->getValue());
         $property->setValue(null); // NULL is not allowed so property should not change its value
@@ -58,7 +58,7 @@ class PropertyTest extends BasePropertyTest
         $this->runCallbackTest('normalize', array(
             12345,
             null,
-            $this->defaultValue,
+            $this->getDefaultValue(),
         ));
     }
 
@@ -110,7 +110,7 @@ class PropertyTest extends BasePropertyTest
             ->with(Mockery::type('Flying\Tests\Property\Fixtures\Property'));
         $property = new Property(null, array(
             'nullable'               => false,
-            'default'                => $this->defaultValue,
+            'default'                => $this->getDefaultValue(),
             'update_notify_listener' => $mock,
         ));
         $property->setValue(12345);
