@@ -77,8 +77,9 @@ class Property extends Annotation
      */
     protected function getDefaultType()
     {
-        $type = explode('\\', strtolower(get_class($this)));
+        $type = explode('\\', get_class($this));
         $type = array_pop($type);
+        $type = lcfirst($type);
         return ($type !== 'property') ? $type : null;
     }
 }
