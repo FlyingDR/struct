@@ -12,13 +12,13 @@ class PropertyMetadata implements MetadataInterface
      *
      * @var string
      */
-    protected $name;
+    private $name;
     /**
      * Class name for property object
      *
      * @var string
      */
-    protected $class;
+    private $class;
     /**
      * Hash for property object
      *
@@ -30,7 +30,7 @@ class PropertyMetadata implements MetadataInterface
      *
      * @var array
      */
-    protected $config = array();
+    private $config = array();
 
     /**
      * Class constructor

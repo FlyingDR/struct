@@ -17,13 +17,13 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      *
      * @var array
      */
-    protected $elements = array();
+    private $elements = array();
     /**
      * Cached value of "allowed" configuration option
      *
      * @var array
      */
-    protected $allowed;
+    private $allowed;
 
     /**
      * {@inheritdoc}
@@ -36,6 +36,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
 
     /**
      * {@inheritdoc}
+     * @throws \InvalidArgumentException
      */
     public function setValue($value)
     {
@@ -52,7 +53,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                 $elements[$k] = $v;
             }
         }
-        if ((sizeof($value)) && (!sizeof($elements))) {
+        if ((count($value)) && (!count($elements))) {
             // There is no valid elements into given value
             $this->onInvalidValue($value);
             return false;
@@ -153,7 +154,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function remove($key)
     {
-        if (isset($this->elements[$key]) || array_key_exists($key, $this->elements)) {
+        if (array_key_exists($key, $this->elements) || isset($this->elements[$key])) {
             $removed = $this->elements[$key];
             unset($this->elements[$key]);
             $this->onChange();
@@ -196,7 +197,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function containsKey($key)
     {
-        return isset($this->elements[$key]) || array_key_exists($key, $this->elements);
+        return array_key_exists($key, $this->elements) || isset($this->elements[$key]);
     }
 
     /**
@@ -273,7 +274,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function count()
     {
-        return sizeof($this->elements);
+        return count($this->elements);
     }
 
     /**
@@ -305,7 +306,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function offsetSet($offset, $value)
     {
-        if (isset($offset)) {
+        if ($offset !== null) {
             $this->set($offset, $value);
         } else {
             $this->add($value);
@@ -378,6 +379,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
 
     /**
      * {@inheritdoc}
+     * @throws \InvalidArgumentException
      */
     public function validateConfig($name, &$value)
     {
@@ -396,7 +398,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                 if (($value === null) || (is_callable($value))) {
                     // Explicitly defined validator or empty validator
                     $valid = true;
-                } elseif ((is_array($value)) && (sizeof($value) == 1) && (isset($value[0])) && (is_string($value[0]))) {
+                } elseif ((is_array($value)) && (count($value) === 1) && (isset($value[0])) && (is_string($value[0]))) {
                     // This is probably validator defined through annotation's "allowed" parameter
                     $v = $value[0];
                     if (class_exists($v)) {
@@ -440,6 +442,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     protected function onConfigChange($name, $value, $merge)
     {
+        /** @noinspection DegradedSwitchInspection */
         switch ($name) {
             case 'allowed':
                 $this->allowed = $value;
@@ -460,12 +463,12 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
         $flag = $this->skipNotify;
         $this->skipNotify = true;
         $default = $this->getConfig('default');
-        foreach ($default as $k => $v) {
+        foreach ($default as $k => &$v) {
             if (!$this->normalize($v, $k)) {
                 throw new Exception('Default value for property class ' . get_class($this) . ' is not acceptable for property validation rules');
             }
-            $default[$k] = $v;
         }
+        unset($v);
         $this->elements = $default;
         $this->skipNotify = $flag;
     }

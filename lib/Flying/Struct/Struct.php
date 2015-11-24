@@ -22,7 +22,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      *
      * @var array
      */
-    protected $struct;
+    private $struct;
     /**
      * Initial contents for structure properties
      *
@@ -40,25 +40,25 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      *
      * @var int
      */
-    protected $count = 0;
+    private $count = 0;
     /**
      * Current index in structure (for Iterator interface)
      *
      * @var int
      */
-    protected $index = 0;
+    private $index = 0;
     /**
      * Structure metadata
      *
      * @var StructMetadata
      */
-    protected $metadata = null;
+    private $metadata;
     /**
      * Parent structure or NULL if this is top-level structure
      *
      * @var Struct
      */
-    protected $parent = null;
+    protected $parent;
 
     /**
      * Class constructor
@@ -92,10 +92,9 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
             'update_notify_listener' => $this,
         );
         /** @var $property Property */
-        foreach ($this->struct as $name => $property) {
+        foreach ($this->struct as &$property) {
             $property = clone $property;
             $property->setConfig($config);
-            $this->struct[$name] = $property;
         }
     }
 
@@ -231,7 +230,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
             }
             $this->struct[$name] = $instance;
         }
-        $this->count = sizeof($this->struct);
+        $this->count = count($this->struct);
         $this->rewind();
     }
 
@@ -266,6 +265,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      */
     public function getProperty($name)
     {
+        /** @noinspection ImplicitMagicMethodCallInspection */
         if ($this->__isset($name)) {
             return $this->struct[$name];
         }
@@ -416,6 +416,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      * Initialize list of configuration options
      *
      * @return void
+     * @throws \InvalidArgumentException
      */
     protected function initConfig()
     {
@@ -486,6 +487,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
                 }
                 break;
             case 'explicit_metadata_class':
+                /** @noinspection ReferenceMismatchInspection */
                 if (!is_string($value)) {
                     throw new \InvalidArgumentException('Explicit metadata class name should be defined as string');
                 }
@@ -641,6 +643,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      */
     public function offsetExists($offset)
     {
+        /** @noinspection ImplicitMagicMethodCallInspection */
         return ($this->__isset($offset));
     }
 
@@ -675,6 +678,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      */
     public function offsetUnset($offset)
     {
+        /** @noinspection ImplicitMagicMethodCallInspection */
         $this->__unset($offset);
     }
 

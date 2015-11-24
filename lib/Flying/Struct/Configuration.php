@@ -24,49 +24,49 @@ class Configuration
      *
      * @var Cache
      */
-    protected $cache;
+    private $cache;
     /**
      * Namespaces map for structure classes
      *
      * @var NamespacesMap
      */
-    protected $structNsMap;
+    private $structNsMap;
     /**
      * Namespaces map for property classes
      *
      * @var NamespacesMap
      */
-    protected $propertyNsMap;
+    private $propertyNsMap;
     /**
      * Namespaces map for annotation classes
      *
      * @var NamespacesMap
      */
-    protected $annotationNsMap;
+    private $annotationNsMap;
     /**
      * Structures metadata manager
      *
      * @var MetadataManagerInterface
      */
-    protected $metadataManager;
+    private $metadataManager;
     /**
      * Structures metadata parser
      *
      * @var MetadataParserInterface
      */
-    protected $metadataParser;
+    private $metadataParser;
     /**
      * Structures storage manager
      *
      * @var StorageInterface
      */
-    protected $storage;
+    private $storage;
     /**
      * Backend for structures storage
      *
      * @var BackendInterface
      */
-    protected $storageBackend;
+    private $storageBackend;
 
     /**
      * Get cache for structures information

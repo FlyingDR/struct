@@ -16,7 +16,7 @@ class Property extends AbstractConfig implements PropertyInterface
      *
      * @var mixed
      */
-    protected $value;
+    private $value;
     /**
      * TRUE to skip property change notification, FALSE otherwise
      *
@@ -28,7 +28,7 @@ class Property extends AbstractConfig implements PropertyInterface
      *
      * @var boolean
      */
-    protected $nullable = true;
+    private $nullable = true;
 
     /**
      * Class constructor
@@ -151,6 +151,7 @@ class Property extends AbstractConfig implements PropertyInterface
 
     /**
      * {@inheritdoc}
+     * @throws \InvalidArgumentException
      */
     protected function initConfig()
     {
@@ -164,6 +165,7 @@ class Property extends AbstractConfig implements PropertyInterface
 
     /**
      * {@inheritdoc}
+     * @throws \InvalidArgumentException
      */
     public function validateConfig($name, &$value)
     {

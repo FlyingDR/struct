@@ -11,21 +11,20 @@ use Flying\Tests\TestCaseUsingConfiguration;
  */
 abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
 {
-    protected $annotationFixtures
-        = array(
-            'BasicStruct',
-            'StructWithChild',
-            'CustomPropertiesTest',
-            'CustomAnnotationsTest',
-            'ComplexStructure',
-            'StructWithInvalidPropertyType',
-            'StructWithInvalidStructureClass',
-            'StructWithNonStructureClass',
-            'InheritanceTestStructB',
-            'InlineStructDefinition',
-            'StructInheritedFromAbstract',
-            'StructWithMetadataModifications',
-        );
+    protected static $annotationFixtures = array(
+        'BasicStruct',
+        'StructWithChild',
+        'CustomPropertiesTest',
+        'CustomAnnotationsTest',
+        'ComplexStructure',
+        'StructWithInvalidPropertyType',
+        'StructWithInvalidStructureClass',
+        'StructWithNonStructureClass',
+        'InheritanceTestStructB',
+        'InlineStructDefinition',
+        'StructInheritedFromAbstract',
+        'StructWithMetadataModifications',
+    );
 
     public function setUp()
     {
@@ -39,7 +38,7 @@ abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
     public function getAnnotationFixtures()
     {
         $fixtures = array();
-        foreach ($this->annotationFixtures as $class) {
+        foreach (self::$annotationFixtures as $class) {
             $fixtures[] = array($class);
         }
         return $fixtures;
@@ -65,7 +64,7 @@ abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
                 return $nsClass;
             }
         }
-        $this->fail('Unable to find fixture class: ' . $class);
+        static::fail('Unable to find fixture class: ' . $class);
         return null;
     }
 }

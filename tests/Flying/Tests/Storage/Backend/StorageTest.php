@@ -18,20 +18,20 @@ class StorageTest extends TestCaseUsingConfiguration
         $object = $this->getStorableMock();
         $key = $object->getStorageKey();
         $storage = $this->getTestStorage();
-        $this->assertFalse($storage->has($object));
+        static::assertFalse($storage->has($object));
         $storage->register($object);
-        $this->assertTrue($storage->has($object));
+        static::assertTrue($storage->has($object));
         $storage->flush();
         $stored = $storage->load($key);
-        $this->assertEquals($stored, $object->toStorage());
+        static::assertEquals($stored, $object->toStorage());
         $storage->remove($object);
-        $this->assertFalse($storage->has($object));
+        static::assertFalse($storage->has($object));
     }
 
     public function testBackendShouldBeTakenFromConfigurationByDefault()
     {
         $storage = $this->getTestStorage();
-        $this->assertEquals($storage->getBackend(), ConfigurationManager::getConfiguration()->getStorageBackend());
+        static::assertEquals($storage->getBackend(), ConfigurationManager::getConfiguration()->getStorageBackend());
     }
 
     public function testExplicitSettingOwnBackend()
@@ -39,7 +39,7 @@ class StorageTest extends TestCaseUsingConfiguration
         $storage = $this->getTestStorage();
         $backend = new ArrayBackend();
         $storage->setBackend($backend);
-        $this->assertEquals($backend, $storage->getBackend());
+        static::assertEquals($backend, $storage->getBackend());
     }
 
     public function testMultipleObjectsWithSameStorageKeyShouldBeRegisteredSeparately()
@@ -49,11 +49,11 @@ class StorageTest extends TestCaseUsingConfiguration
         $storage->register($m1);
         $m2 = $this->getStorableMock();
         $storage->register($m2);
-        $this->assertTrue($storage->has($m1));
-        $this->assertTrue($storage->has($m2));
+        static::assertTrue($storage->has($m1));
+        static::assertTrue($storage->has($m2));
         $storage->remove($m1);
-        $this->assertFalse($storage->has($m1));
-        $this->assertTrue($storage->has($m2));
+        static::assertFalse($storage->has($m1));
+        static::assertTrue($storage->has($m2));
     }
 
     public function testDirtyFlagOperations()
@@ -61,11 +61,11 @@ class StorageTest extends TestCaseUsingConfiguration
         $storage = $this->getTestStorage();
         $object = $this->getStorableMock();
         $storage->register($object);
-        $this->assertFalse($storage->isDirty($object));
+        static::assertFalse($storage->isDirty($object));
         $storage->markAsDirty($object);
-        $this->assertTrue($storage->isDirty($object));
+        static::assertTrue($storage->isDirty($object));
         $storage->markAsNotDirty($object);
-        $this->assertFalse($storage->isDirty($object));
+        static::assertFalse($storage->isDirty($object));
     }
 
     public function testStorageFlushing()
@@ -86,10 +86,10 @@ class StorageTest extends TestCaseUsingConfiguration
         $storage = $this->getTestStorage();
         $mock = $this->getStorableMock();
         $storage->register($mock);
-        $this->assertFalse($storage->getBackend()->has($mock->getStorageKey()));
+        static::assertFalse($storage->getBackend()->has($mock->getStorageKey()));
         $storage->markAsNotDirty($mock);
         $storage->flush();
-        $this->assertTrue($storage->getBackend()->has($mock->getStorageKey()));
+        static::assertTrue($storage->getBackend()->has($mock->getStorageKey()));
     }
 
     public function testObjectsThatAvailableInBackendShouldNotBeStoredIfNotDirty()

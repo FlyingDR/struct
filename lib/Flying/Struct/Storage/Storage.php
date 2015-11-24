@@ -14,19 +14,19 @@ class Storage implements StorageInterface
      *
      * @var array
      */
-    protected $storage = array();
+    private $storage = array();
     /**
      * List of objects marked as "dirty"
      *
      * @var array
      */
-    protected $dirty = array();
+    private $dirty = array();
     /**
      * Storage backend
      *
      * @var BackendInterface
      */
-    protected $backend;
+    private $backend;
 
     /**
      * Register given object in storage
@@ -158,10 +158,10 @@ class Storage implements StorageInterface
         /** @var $object StorableInterface */
         foreach ($this->storage as $hash => $object) {
             $key = $object->getStorageKey();
-            if (($backend->has($key)) && (!array_key_exists($hash, $this->dirty))) {
+            if ((!array_key_exists($hash, $this->dirty)) && ($backend->has($key))) {
                 continue;
             }
-            if (in_array($key, $storedKeys)) {
+            if (in_array($key, $storedKeys, true)) {
                 throw new \RuntimeException('Multiple objects with same storage key "' . $key
                     . '" are requested to be stored');
             }

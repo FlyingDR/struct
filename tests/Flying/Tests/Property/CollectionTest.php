@@ -21,8 +21,8 @@ class CollectionTest extends TestCase
     public function testCountableInterface($value, $expected, $config = null)
     {
         $collection = new Collection($value, $config);
-        $this->assertEquals($expected, $collection->count());
-        $this->assertEquals($expected, sizeof($collection));
+        static::assertEquals($expected, $collection->count());
+        static::assertCount($expected, $collection);
     }
 
     public function dataProviderCountableInterface()
@@ -40,16 +40,16 @@ class CollectionTest extends TestCase
     {
         $collection = new Collection();
         $collection['a'] = 'b';
-        $this->assertEquals(1, sizeof($collection));
-        $this->assertTrue(isset($collection['a']));
-        $this->assertEquals('b', $collection['a']);
+        static::assertCount(1, $collection);
+        static::assertTrue(isset($collection['a']));
+        static::assertEquals('b', $collection['a']);
         unset($collection['a']);
-        $this->assertEquals(0, sizeof($collection));
-        $this->assertFalse(isset($collection['a']));
+        static::assertCount(0, $collection);
+        static::assertFalse(isset($collection['a']));
         $collection[] = 'abc';
-        $this->assertEquals(1, sizeof($collection));
+        static::assertCount(1, $collection);
         /** @var $collection Collection */
-        $this->assertEquals(array('abc'), $collection->toArray());
+        static::assertEquals(array('abc'), $collection->toArray());
     }
 
     public function testCollectionIterator()
@@ -57,51 +57,51 @@ class CollectionTest extends TestCase
         $values = array('a' => 'b', 'c' => 'd', 'e' => 'f');
         $collection = new Collection($values);
         $iterator = $collection->getIterator();
-        $this->assertInstanceOf('\Iterator', $iterator);
+        static::assertInstanceOf('\Iterator', $iterator);
         $actual = array();
         foreach ($iterator as $k => $v) {
             $actual[$k] = $v;
         }
-        $this->assertEquals($values, $actual);
+        static::assertEquals($values, $actual);
     }
 
     public function testAddingElements()
     {
         $collection = new Collection();
-        $this->assertEquals(array(), $collection->toArray());
+        static::assertEquals(array(), $collection->toArray());
         $collection->add(123);
-        $this->assertEquals(array(123), $collection->toArray());
+        static::assertEquals(array(123), $collection->toArray());
         $collection->add(345);
-        $this->assertEquals(array(123, 345), $collection->toArray());
-        $this->assertFalse($collection->isEmpty());
+        static::assertEquals(array(123, 345), $collection->toArray());
+        static::assertFalse($collection->isEmpty());
     }
 
     public function testGettingElements()
     {
         $values = array('a' => 'b', 'c' => 'd', 'e' => 'f');
         $collection = new Collection($values);
-        $this->assertEquals('b', $collection->get('a'));
-        $this->assertNull($collection->get('x'));
-        $this->assertEquals(array_keys($values), $collection->getKeys());
-        $this->assertEquals(array_values($values), $collection->getValues());
+        static::assertEquals('b', $collection->get('a'));
+        static::assertNull($collection->get('x'));
+        static::assertEquals(array_keys($values), $collection->getKeys());
+        static::assertEquals(array_values($values), $collection->getValues());
     }
 
     public function testSettingElements()
     {
         $collection = new Collection();
         $collection->set('a', 'b');
-        $this->assertEquals(array('a' => 'b'), $collection->toArray());
+        static::assertEquals(array('a' => 'b'), $collection->toArray());
         $collection->set('c', 'd');
         $collection->set('e', 'f');
         $expected = array('a' => 'b', 'c' => 'd', 'e' => 'f');
-        $this->assertEquals($expected, $collection->toArray());
-        $this->assertEquals('d', $collection->get('c'));
-        $this->assertEquals('f', $collection['e']);
+        static::assertEquals($expected, $collection->toArray());
+        static::assertEquals('d', $collection->get('c'));
+        static::assertEquals('f', $collection['e']);
         $actual = array();
         foreach ($collection as $k => $v) {
             $actual[$k] = $v;
         }
-        $this->assertEquals($expected, $actual);
+        static::assertEquals($expected, $actual);
     }
 
     public function testSettingCollectionValue()
@@ -109,7 +109,7 @@ class CollectionTest extends TestCase
         $collection = new Collection(array('a', 'b', 'c'));
         $value = array('x', 'y', 'z');
         $collection->setValue($value);
-        $this->assertEquals($value, $collection->getValue());
+        static::assertEquals($value, $collection->getValue());
     }
 
     /**
@@ -140,41 +140,41 @@ class CollectionTest extends TestCase
     public function testElementsExistenceChecking()
     {
         $collection = new Collection(array('a' => 'b'));
-        $this->assertTrue($collection->containsKey('a'));
-        $this->assertFalse($collection->contains('a'));
-        $this->assertFalse($collection->indexOf('a'));
-        $this->assertFalse($collection->containsKey('b'));
-        $this->assertTrue($collection->contains('b'));
-        $this->assertEquals('a', $collection->indexOf('b'));
+        static::assertTrue($collection->containsKey('a'));
+        static::assertFalse($collection->contains('a'));
+        static::assertFalse($collection->indexOf('a'));
+        static::assertFalse($collection->containsKey('b'));
+        static::assertTrue($collection->contains('b'));
+        static::assertEquals('a', $collection->indexOf('b'));
     }
 
     public function testElementsRemoving()
     {
         $collection = new Collection(array('a' => 'b', 'c' => 'd', 'e' => 'f'));
-        $this->assertEquals('d', $collection->remove('c'));
-        $this->assertNull($collection->remove('x'));
-        $this->assertEquals(array('a' => 'b', 'e' => 'f'), $collection->toArray());
-        $this->assertFalse($collection->removeElement('a'));
-        $this->assertEquals(array('a' => 'b', 'e' => 'f'), $collection->toArray());
-        $this->assertTrue($collection->removeElement('b'));
-        $this->assertEquals(array('e' => 'f'), $collection->toArray());
+        static::assertEquals('d', $collection->remove('c'));
+        static::assertNull($collection->remove('x'));
+        static::assertEquals(array('a' => 'b', 'e' => 'f'), $collection->toArray());
+        static::assertFalse($collection->removeElement('a'));
+        static::assertEquals(array('a' => 'b', 'e' => 'f'), $collection->toArray());
+        static::assertTrue($collection->removeElement('b'));
+        static::assertEquals(array('e' => 'f'), $collection->toArray());
         $collection = new Collection(array('a', 'b', 'c', 'd', 'b', 'a', 'b', 'x'));
         $collection->removeElement('b');
-        $this->assertEquals(array('a', 'c', 'd', 'a', 'x'), $collection->getValues());
+        static::assertEquals(array('a', 'c', 'd', 'a', 'x'), $collection->getValues());
     }
 
     public function testElementsToggling()
     {
         $collection = new Collection(array(1, 2, 3));
         $collection->toggle(2);
-        $this->assertEquals(array(1, 3), $collection->getValues());
+        static::assertEquals(array(1, 3), $collection->getValues());
         $collection->toggle(2);
-        $this->assertEquals(array(1, 3, 2), $collection->getValues());
+        static::assertEquals(array(1, 3, 2), $collection->getValues());
         $collection->setValue(array(1, 2, 3, 2, 4, 2, 5, 2, 6));
         $collection->toggle(2);
-        $this->assertEquals(array(1, 3, 4, 5, 6), $collection->getValues());
+        static::assertEquals(array(1, 3, 4, 5, 6), $collection->getValues());
         $collection->toggle(2);
-        $this->assertEquals(array(1, 3, 4, 5, 6, 2), $collection->getValues());
+        static::assertEquals(array(1, 3, 4, 5, 6, 2), $collection->getValues());
     }
 
     public function testPassingNullValuesAsElements()
@@ -182,11 +182,11 @@ class CollectionTest extends TestCase
         $collection = new Collection(array(null), array(
             'nullable' => true,
         ));
-        $this->assertEquals(array(null), $collection->toArray());
+        static::assertEquals(array(null), $collection->toArray());
         $collection = new Collection(array(null), array(
             'nullable' => false,
         ));
-        $this->assertEquals(array(), $collection->toArray());
+        static::assertEquals(array(), $collection->toArray());
     }
 
     public function testCollectionReset()
@@ -194,13 +194,13 @@ class CollectionTest extends TestCase
         $value = array(1, 2, 3);
         $default = array('x', 'y', 'z');
         $collection = new Collection($value, array('default' => $default));
-        $this->assertEquals($value, $collection->toArray());
+        static::assertEquals($value, $collection->toArray());
         $collection->reset();
-        $this->assertEquals($default, $collection->toArray());
-        $this->assertFalse($collection->isEmpty());
+        static::assertEquals($default, $collection->toArray());
+        static::assertFalse($collection->isEmpty());
         $collection->clear();
-        $this->assertEquals(array(), $collection->toArray());
-        $this->assertTrue($collection->isEmpty());
+        static::assertEquals(array(), $collection->toArray());
+        static::assertTrue($collection->isEmpty());
     }
 
     /**
@@ -210,13 +210,13 @@ class CollectionTest extends TestCase
     {
         $collection = new Collection(array(1, 2, 3, 5, 10, 20, 50, 100), array('allowed' => $validator));
         $expected = array(1, 2, 3, 5, 10);
-        $this->assertEquals($expected, $collection->toArray());
+        static::assertEquals($expected, $collection->toArray());
         $collection->add('abc');
-        $this->assertEquals($expected, $collection->toArray());
+        static::assertEquals($expected, $collection->toArray());
         $collection->add(8);
         $e2 = $expected;
         $e2[] = 8;
-        $this->assertEquals($e2, $collection->toArray());
+        static::assertEquals($e2, $collection->toArray());
     }
 
     public function dataProviderAllowedValuesLimitation()
@@ -241,7 +241,7 @@ class CollectionTest extends TestCase
     {
         $collection = new Collection(null, array('allowed' => $allowed));
         $collection->add($value);
-        $this->assertEquals($collection->count(), ($valid) ? 1 : 0);
+        static::assertEquals($collection->count(), ($valid) ? 1 : 0);
     }
 
     public function dataProviderVariousKindsOfAllowedValuesValidator()
@@ -268,11 +268,11 @@ class CollectionTest extends TestCase
         $collection->add(12);
         $collection->add('abc');
         $collection->add(true);
-        $this->assertEquals(0, $collection->count());
+        static::assertEquals(0, $collection->count());
         $collection->add(5);
         $collection->add(10);
         $collection->add(15);
-        $this->assertEquals(3, $collection->count());
+        static::assertEquals(3, $collection->count());
     }
 
     /**
@@ -356,7 +356,7 @@ class CollectionTest extends TestCase
         $logger = new CallbackLog();
         $collection->setCallbackLogger('normalize', $logger);
         if (!method_exists($collection, $method)) {
-            $this->fail('Method "' . $method . '" is not available in test object');
+            static::fail('Method "' . $method . '" is not available in test object');
         }
         call_user_func_array(array($collection, $method), $args);
         if ($expected === null) {
@@ -364,20 +364,19 @@ class CollectionTest extends TestCase
         }
         $log = $logger->get();
         foreach ($expected as $ek => $ev) {
+            /** @noinspection DisconnectedForeachInstructionInspection */
             $item = array_shift($log);
             array_shift($item);
             $av = array_shift($item);
             $ak = array_shift($item);
-            $this->assertEquals($ev, $av);
+            static::assertEquals($ev, $av);
             if ($checkKeys) {
-                $this->assertEquals($ek, $ak);
+                static::assertEquals($ek, $ak);
             }
         }
-        if (sizeof($log)) {
-            $this->fail(
-                'Callback is expected to be called ' . sizeof($expected) . ' times, but was called ' . (sizeof(
-                        $expected
-                    ) + sizeof($log)) . ' times'
+        if (count($log)) {
+            static::fail(
+                'Callback is expected to be called ' . count($expected) . ' times, but was called ' . (count($expected) + count($log)) . ' times'
             );
         }
     }
@@ -419,11 +418,11 @@ class CollectionTest extends TestCase
         $logger = new CallbackLog();
         $collection->setCallbackLogger('onChange', $logger);
         if (!method_exists($collection, $method)) {
-            $this->fail('Method "' . $method . '" is not available in test object');
+            static::fail('Method "' . $method . '" is not available in test object');
         }
         call_user_func_array(array($collection, $method), $args);
         $log = $logger->get();
-        $this->assertEquals($times, sizeof($log));
+        static::assertCount($times, $log);
     }
 
     public function dataProviderOnChangeCallback()
@@ -466,11 +465,11 @@ class CollectionTest extends TestCase
         $logger = new CallbackLog();
         $collection->setCallbackLogger('onInvalidValue', $logger);
         if (!method_exists($collection, $method)) {
-            $this->fail('Method "' . $method . '" is not available in test object');
+            static::fail('Method "' . $method . '" is not available in test object');
         }
         call_user_func_array(array($collection, $method), $args);
         $log = $logger->get();
-        $this->assertEquals(0, sizeof($log));
+        static::assertCount(0, $log);
 
         // If values are treated as invalid - it should be called
         $collection = new Collection($value, array('allowed' => array()));
@@ -478,7 +477,7 @@ class CollectionTest extends TestCase
         $collection->setCallbackLogger('onInvalidValue', $logger);
         call_user_func_array(array($collection, $method), $args);
         $log = $logger->get();
-        $this->assertEquals(($calledOnInvalid) ? 1 : 0, sizeof($log));
+        static::assertCount(($calledOnInvalid) ? 1 : 0, $log);
     }
 
     public function dataProviderOnInvalidValueCallback()

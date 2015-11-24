@@ -35,13 +35,13 @@ class MetadataManagerTest extends TestUsingFixtureStructures
      */
     protected function validateMetadata($metadata)
     {
-        $this->assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $metadata);
-        $this->assertEquals($metadata->getClass(), $this->getFixtureClass('BasicStruct'));
-        $this->assertEquals(4, sizeof($metadata->getProperties()));
-        $this->assertArrayHasKey('first', $metadata->getProperties());
-        $this->assertArrayHasKey('second', $metadata->getProperties());
-        $this->assertArrayHasKey('third', $metadata->getProperties());
-        $this->assertArrayHasKey('fourth', $metadata->getProperties());
+        static::assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $metadata);
+        static::assertEquals($metadata->getClass(), $this->getFixtureClass('BasicStruct'));
+        static::assertCount(4, $metadata->getProperties());
+        static::assertArrayHasKey('first', $metadata->getProperties());
+        static::assertArrayHasKey('second', $metadata->getProperties());
+        static::assertArrayHasKey('third', $metadata->getProperties());
+        static::assertArrayHasKey('fourth', $metadata->getProperties());
     }
 
     /**
@@ -108,11 +108,11 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $cache = clone ConfigurationManager::getConfiguration()->getCache();
         $manager = $this->getTestManager();
         $manager->setParser($parser);
-        $this->assertTrue($manager->getParser() === $parser);
-        $this->assertFalse($manager->getParser() === ConfigurationManager::getConfiguration()->getMetadataParser());
+        static::assertTrue($manager->getParser() === $parser);
+        static::assertFalse($manager->getParser() === ConfigurationManager::getConfiguration()->getMetadataParser());
         $manager->setCache($cache);
-        $this->assertTrue($manager->getCache() === $cache);
-        $this->assertFalse($manager->getCache() === ConfigurationManager::getConfiguration()->getCache());
+        static::assertTrue($manager->getCache() === $cache);
+        static::assertFalse($manager->getCache() === ConfigurationManager::getConfiguration()->getCache());
     }
 
     public function testManagerReturnsClonedMetadataObjects()
@@ -121,8 +121,8 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $class = $this->getFixtureClass('BasicStruct');
         $m1 = $manager->getMetadata($class);
         $m2 = $manager->getMetadata($class);
-        $this->assertEquals($m1->toArray(), $m2->toArray());
-        $this->assertFalse($m1 === $m2);
+        static::assertEquals($m1->toArray(), $m2->toArray());
+        static::assertFalse($m1 === $m2);
     }
 
     public function testManagerCachesResultsLocally()
@@ -162,8 +162,8 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $manager->setCache($cache);
 
         $m = $manager->getMetadata($class);
-        $this->assertEquals($m->toArray(), $metadata->toArray());
-        $this->assertFalse($m === $metadata);
+        static::assertEquals($m->toArray(), $metadata->toArray());
+        static::assertFalse($m === $metadata);
     }
 
     public function testManagerStoresResultsInCache()
@@ -180,8 +180,8 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $manager->setCache($cache);
 
         $m = $manager->getMetadata($class);
-        $this->assertEquals($m->toArray(), $metadata->toArray());
-        $this->assertFalse($m === $metadata);
+        static::assertEquals($m->toArray(), $metadata->toArray());
+        static::assertFalse($m === $metadata);
     }
 
     public function testManagerUsesOnlyValidCacheResults()
@@ -212,7 +212,7 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $manager->setCache($cache);
 
         $metadata = $manager->getMetadata($this->getFixtureClass('BasicStruct'));
-        $this->assertNull($metadata);
+        static::assertNull($metadata);
     }
 
     /**

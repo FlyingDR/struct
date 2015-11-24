@@ -12,7 +12,7 @@ abstract class BasePropertyTest extends TestCase
      *
      * @var string
      */
-    protected $propertyClass = null;
+    protected $propertyClass;
     /**
      * Namespace of property class to test
      *
@@ -44,8 +44,8 @@ abstract class BasePropertyTest extends TestCase
         $serialized = serialize($property);
         /** @var $p Property */
         $p = unserialize($serialized);
-        $this->assertEquals($expected, $p->getValue());
-        $this->assertEquals($property->getConfig(), $p->getConfig());
+        static::assertEquals($expected, $p->getValue());
+        static::assertEquals($property->getConfig(), $p->getConfig());
     }
 
     /**
@@ -59,7 +59,7 @@ abstract class BasePropertyTest extends TestCase
         if (!class_exists($class, true)) {
             $class = trim($this->propertyNs, '\\') . '\\' . trim($class, '\\');
             if (!class_exists($class, true)) {
-                $this->fail('Unable to find test property class: ' . $this->propertyClass);
+                static::fail('Unable to find test property class: ' . $this->propertyClass);
             }
         }
         return $class;
@@ -76,7 +76,7 @@ abstract class BasePropertyTest extends TestCase
     {
         $class = $this->getPropertyClass();
         if (!is_subclass_of($class, 'Flying\Struct\Property\Property')) {
-            $this->fail('Test property class must be inherited from Property');
+            static::fail('Test property class must be inherited from Property');
         }
         if (!is_array($config)) {
             $config = array();

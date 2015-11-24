@@ -21,13 +21,13 @@ class AnnotationParser extends AbstractMetadataParser
      *
      * @var Reader
      */
-    protected $reader;
+    private $reader;
     /**
      * Namespaces for annotations autoloading
      *
      * @var array
      */
-    protected $namespaces = array();
+    private $namespaces = array();
 
     /**
      * Get annotations reader
@@ -125,7 +125,7 @@ class AnnotationParser extends AbstractMetadataParser
                 $struct->setName($annotation->getName());
                 $struct->setConfig($annotation->getConfig());
             } else {
-                if (!sizeof($annotation->getProperties())) {
+                if (!count($annotation->getProperties())) {
                     throw new Exception('Structure metadata should have either class name or explicitly defined list of structure properties');
                 }
                 $struct = new StructMetadata($annotation->getName(), null, $annotation->getConfig());

@@ -5,13 +5,6 @@ namespace Flying\Tests\Property;
 abstract class BaseTypeTest extends BasePropertyTest
 {
     /**
-     * Value validation tests
-     * Each entry is: array($value, $expectedResult, $config)
-     *
-     * @var array
-     */
-    protected $valueTests = array();
-    /**
      * Serialization tests
      * Each entry is: array($value, $expectedResult, $config)
      *
@@ -27,7 +20,7 @@ abstract class BaseTypeTest extends BasePropertyTest
         if (is_array($config)) {
             // Run test with given config
             $property = $this->getTestProperty($value, $config);
-            $this->assertEquals($expected, $property->getValue());
+            static::assertEquals($expected, $property->getValue());
 
         } else {
             // Test setting value through constructor
@@ -35,21 +28,21 @@ abstract class BaseTypeTest extends BasePropertyTest
                 'nullable' => true,
                 'default'  => null,
             ));
-            $this->assertEquals($expected, $property->getValue());
+            static::assertEquals($expected, $property->getValue());
 
             // Test setting value as default with null value allowed
             $property = $this->getTestProperty(null, array(
                 'nullable' => true,
                 'default'  => $value,
             ));
-            $this->assertEquals($expected, $property->getValue());
+            static::assertEquals($expected, $property->getValue());
 
             // Test setting value as default with null value not allowed
             $property = $this->getTestProperty(null, array(
                 'nullable' => false,
                 'default'  => $value,
             ));
-            $this->assertEquals($expected, $property->getValue());
+            static::assertEquals($expected, $property->getValue());
 
             // Test setting value explicitly
             $property = $this->getTestProperty(null, array(
@@ -57,13 +50,8 @@ abstract class BaseTypeTest extends BasePropertyTest
                 'default'  => null,
             ));
             $property->setValue($value);
-            $this->assertEquals($expected, $property->getValue());
+            static::assertEquals($expected, $property->getValue());
         }
-    }
-
-    public function getValueTests()
-    {
-        return $this->valueTests;
     }
 
     public function testAcceptableNullValue()
@@ -72,9 +60,9 @@ abstract class BaseTypeTest extends BasePropertyTest
             'nullable' => true,
             'default'  => null,
         ));
-        $this->assertNull($property->getValue());
+        static::assertNull($property->getValue());
         $property->setValue(null);
-        $this->assertNull($property->getValue());
+        static::assertNull($property->getValue());
     }
 
     public function testUnacceptableNullValue()
@@ -82,7 +70,7 @@ abstract class BaseTypeTest extends BasePropertyTest
         $property = $this->getTestProperty(null, array(
             'nullable' => false,
         ));
-        $this->assertEquals($property->getValue(), $this->getDefaultValue());
+        static::assertEquals($property->getValue(), $this->getDefaultValue());
     }
 
     public function serializationDataProvider()
@@ -93,4 +81,12 @@ abstract class BaseTypeTest extends BasePropertyTest
         }
         return $tests;
     }
+
+    /**
+     * Get value validation tests
+     * Each entry is: array($value, $expectedResult, $config)
+     *
+     * @return array
+     */
+    abstract public function getValueTests();
 }

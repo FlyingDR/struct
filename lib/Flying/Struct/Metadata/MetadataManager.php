@@ -16,25 +16,25 @@ class MetadataManager implements MetadataManagerInterface
      *
      * @var MetadataParserInterface
      */
-    protected $parser;
+    private $parser;
     /**
      * Structures metadata cache
      *
      * @var Cache
      */
-    protected $cache;
+    private $cache;
     /**
      * Structures metadata
      *
      * @var array
      */
-    protected $metadata = array();
+    private $metadata = array();
     /**
      * Prefix for cache entries for structure metadata
      *
      * @var string
      */
-    protected $cachePrefix = 'StructMetadata_';
+    private $cachePrefix = 'StructMetadata_';
 
     /**
      * Get metadata parser
@@ -117,7 +117,7 @@ class MetadataManager implements MetadataManagerInterface
             }
         } elseif (is_string($struct)) {
             $reflection = new \ReflectionClass($struct);
-            if (in_array('Flying\Struct\StructInterface', $reflection->getInterfaceNames())) {
+            if (in_array('Flying\Struct\StructInterface', $reflection->getInterfaceNames(), true)) {
                 $class = $reflection->getName();
             } else {
                 throw new \InvalidArgumentException('Structure class must implement StructInterface interface');

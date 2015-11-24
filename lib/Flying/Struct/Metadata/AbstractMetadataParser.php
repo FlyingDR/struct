@@ -15,13 +15,13 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
      *
      * @var array
      */
-    protected $nsProperty;
+    private $nsProperty;
     /**
      * Namespaces for structure classes
      *
      * @var array
      */
-    protected $nsStruct;
+    private $nsStruct;
 
     /**
      * Get structure metadata information for given class
@@ -100,17 +100,13 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
     protected function resolveClass($class, array $namespaces, $interface = null)
     {
         $class = ucfirst(trim($class, '\\'));
-        if (class_exists($class, true)) {
-            if (($interface === null) || (in_array($interface, class_implements($class)))) {
-                return $class;
-            }
+        if ((class_exists($class, true)) && (($interface === null) || (in_array($interface, class_implements($class), true)))) {
+            return $class;
         }
         foreach ($namespaces as $ns) {
             $fqcn = $ns . '\\' . $class;
-            if (class_exists($fqcn, true)) {
-                if (($interface === null) || (in_array($interface, class_implements($fqcn)))) {
-                    return $fqcn;
-                }
+            if ((class_exists($fqcn, true)) && (($interface === null) || (in_array($interface, class_implements($fqcn), true)))) {
+                return $fqcn;
             }
         }
         return null;

@@ -20,42 +20,6 @@ class IntTest extends BaseTypeTest
      */
     protected $defaultValue = 12345;
     /**
-     * Value validation tests
-     *
-     * @var array
-     */
-    protected $valueTests = array(
-        array(true, 1),
-        array(false, 0),
-
-        array(1, 1),
-        array(0, 0),
-        array(12345, 12345),
-        array(-12345, -12345),
-        array(123.45, 123),
-        array(135.79, 135),
-        array(-135.79, -135),
-
-        array(0, 0, array('min' => 0, 'max' => 10)),
-        array(1, 1, array('min' => 0, 'max' => 10)),
-        array(10, 10, array('min' => 0, 'max' => 10)),
-        array(12345, 10, array('min' => 0, 'max' => 10)),
-        array(-12345, 0, array('min' => 0, 'max' => 10)),
-
-        array(12345, 10, array('min' => -10, 'max' => 10)),
-        array(-12345, -10, array('min' => -10, 'max' => 10)),
-
-        array('', 0),
-        array('1', 1),
-        array('0', 0),
-        array('12345', 12345),
-        array('-12345', -12345),
-        array('123.45', 123),
-        array('135.79', 135),
-        array('-135.79', -135),
-        array('test', 0),
-    );
-    /**
      * Serialization tests
      *
      * @var array
@@ -67,15 +31,49 @@ class IntTest extends BaseTypeTest
         100,
     );
 
+    /**
+     * {@inheritdoc}
+     */
     public function getValueTests()
     {
-        $tests = $this->valueTests;
-        // Non-scalar values are not acceptable for this property
-        // so default value should be set instead
-        $tests[] = array(array(), 123, array('default' => 123));
-        $tests[] = array(new \ArrayObject(), 123, array('default' => 123));
-        $tests[] = array(new Property('abc'), 0);
-        $tests[] = array(new Property('12345'), 12345);
+        $tests = array(
+            array(true, 1),
+            array(false, 0),
+
+            array(1, 1),
+            array(0, 0),
+            array(12345, 12345),
+            array(-12345, -12345),
+            array(123.45, 123),
+            array(135.79, 135),
+            array(-135.79, -135),
+
+            array(0, 0, array('min' => 0, 'max' => 10)),
+            array(1, 1, array('min' => 0, 'max' => 10)),
+            array(10, 10, array('min' => 0, 'max' => 10)),
+            array(12345, 10, array('min' => 0, 'max' => 10)),
+            array(-12345, 0, array('min' => 0, 'max' => 10)),
+
+            array(12345, 10, array('min' => -10, 'max' => 10)),
+            array(-12345, -10, array('min' => -10, 'max' => 10)),
+
+            array('', 0),
+            array('1', 1),
+            array('0', 0),
+            array('12345', 12345),
+            array('-12345', -12345),
+            array('123.45', 123),
+            array('135.79', 135),
+            array('-135.79', -135),
+            array('test', 0),
+
+            // Non-scalar values are not acceptable for this property
+            // so default value should be set instead
+            array(array(), 123, array('default' => 123)),
+            array(new \ArrayObject(), 123, array('default' => 123)),
+            array(new Property('abc'), 0),
+            array(new Property('12345'), 12345),
+        );
         return $tests;
     }
 }

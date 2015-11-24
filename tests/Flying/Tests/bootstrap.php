@@ -20,7 +20,7 @@ if (!$composer) {
         );
         foreach ($map as $prefix => $path) {
             if (0 === strpos($class, $prefix)) {
-                $path = __DIR__ . $path . strtr($class, '\\', '/') . '.php';
+                $path = __DIR__ . $path . str_replace('\\', '/', $class) . '.php';
                 if (is_file($path) && is_readable($path)) {
                     /** @noinspection PhpIncludeInspection */
                     require_once $path;

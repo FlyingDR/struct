@@ -26,117 +26,117 @@ abstract class BasicStructTest extends BaseStructTest
     {
         $reflection = new \ReflectionClass('Flying\Struct\Struct');
         $interfaces = $reflection->getInterfaces();
-        $this->assertArrayHasKey('Flying\Struct\StructInterface', $interfaces);
-        $this->assertArrayHasKey('Countable', $interfaces);
-        $this->assertArrayHasKey('Iterator', $interfaces);
-        $this->assertArrayHasKey('RecursiveIterator', $interfaces);
-        $this->assertArrayHasKey('ArrayAccess', $interfaces);
-        $this->assertArrayHasKey('Serializable', $interfaces);
-        $this->assertArrayHasKey('Flying\Struct\Common\ComplexPropertyInterface', $interfaces);
-        $this->assertArrayHasKey('Flying\Struct\Common\UpdateNotifyListenerInterface', $interfaces);
+        static::assertArrayHasKey('Flying\Struct\StructInterface', $interfaces);
+        static::assertArrayHasKey('Countable', $interfaces);
+        static::assertArrayHasKey('Iterator', $interfaces);
+        static::assertArrayHasKey('RecursiveIterator', $interfaces);
+        static::assertArrayHasKey('ArrayAccess', $interfaces);
+        static::assertArrayHasKey('Serializable', $interfaces);
+        static::assertArrayHasKey('Flying\Struct\Common\ComplexPropertyInterface', $interfaces);
+        static::assertArrayHasKey('Flying\Struct\Common\UpdateNotifyListenerInterface', $interfaces);
     }
 
     public function testExplicitGetter()
     {
         $struct = $this->getTestStruct();
 
-        $this->assertTrue($struct->get('first'));
-        $this->assertEquals(100, $struct->get('second'));
-        $this->assertEquals('default', $struct->get('unknown', 'default'));
+        static::assertTrue($struct->get('first'));
+        static::assertEquals(100, $struct->get('second'));
+        static::assertEquals('default', $struct->get('unknown', 'default'));
     }
 
     public function testGettingProperty()
     {
         $struct = $this->getTestStruct();
-        $this->assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('first'));
-        $this->assertNull($struct->getProperty('unavailable'));
+        static::assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('first'));
+        static::assertNull($struct->getProperty('unavailable'));
     }
 
     public function testIssetUnset()
     {
         $struct = $this->getTestStruct();
-        $this->assertTrue(isset($struct['first']));
-        $this->assertFalse(isset($struct['unavailable']));
+        static::assertTrue(isset($struct['first']));
+        static::assertFalse(isset($struct['unavailable']));
 
         // Unset of structure property should revert its value back to default value
-        $this->assertEquals('some value', $struct->fourth);
+        static::assertEquals('some value', $struct->fourth);
         $struct->fourth = 'another value';
-        $this->assertEquals('another value', $struct->fourth);
+        static::assertEquals('another value', $struct->fourth);
         unset($struct->fourth);
-        $this->assertEquals('some value', $struct->fourth);
+        static::assertEquals('some value', $struct->fourth);
     }
 
     public function testIssetUnsetUsingArrayAccess()
     {
         $struct = $this->getTestStruct();
         // Unset of structure property should revert its value back to default value
-        $this->assertEquals('some value', $struct['fourth']);
+        static::assertEquals('some value', $struct['fourth']);
         $struct['fourth'] = 'another value';
-        $this->assertEquals('another value', $struct['fourth']);
+        static::assertEquals('another value', $struct['fourth']);
         unset($struct['fourth']);
-        $this->assertEquals('some value', $struct['fourth']);
+        static::assertEquals('some value', $struct['fourth']);
     }
 
     public function testSettingSingleValues()
     {
         $struct = $this->getTestStruct();
 
-        $this->assertTrue($struct->first);
+        static::assertTrue($struct->first);
         $struct->first = null;
-        $this->assertNull($struct->first);
+        static::assertNull($struct->first);
         $struct->first = false;
-        $this->assertFalse($struct->first);
+        static::assertFalse($struct->first);
         $struct->first = 'abc';
-        $this->assertTrue($struct->first);
+        static::assertTrue($struct->first);
 
         $struct->second = null;
-        $this->assertEquals(100, $struct->second);
+        static::assertEquals(100, $struct->second);
         $struct->second = 12345;
-        $this->assertEquals(1000, $struct->second);
+        static::assertEquals(1000, $struct->second);
         $struct->second = -123.45;
-        $this->assertEquals(10, $struct->second);
+        static::assertEquals(10, $struct->second);
         $struct->second = 'abc';
-        $this->assertEquals(10, $struct->second);
+        static::assertEquals(10, $struct->second);
 
         $struct->third = null;
-        $this->assertNull($struct->third);
+        static::assertNull($struct->third);
         $struct->third = true;
-        $this->assertEquals('1', $struct->third);
+        static::assertEquals('1', $struct->third);
         $struct->third = 12345;
-        $this->assertEquals('12345', $struct->third);
+        static::assertEquals('12345', $struct->third);
         $struct->third = 'abc';
-        $this->assertEquals('abc', $struct->third);
+        static::assertEquals('abc', $struct->third);
     }
 
     public function testSettingSingleValuesUsingArrayAccess()
     {
         $struct = $this->getTestStruct();
 
-        $this->assertTrue($struct['first']);
+        static::assertTrue($struct['first']);
         $struct['first'] = null;
-        $this->assertNull($struct['first']);
+        static::assertNull($struct['first']);
         $struct['first'] = false;
-        $this->assertFalse($struct['first']);
+        static::assertFalse($struct['first']);
         $struct['first'] = 'abc';
-        $this->assertTrue($struct['first']);
+        static::assertTrue($struct['first']);
 
         $struct['second'] = null;
-        $this->assertEquals(100, $struct['second']);
+        static::assertEquals(100, $struct['second']);
         $struct['second'] = 12345;
-        $this->assertEquals(1000, $struct['second']);
+        static::assertEquals(1000, $struct['second']);
         $struct['second'] = -123.45;
-        $this->assertEquals(10, $struct['second']);
+        static::assertEquals(10, $struct['second']);
         $struct['second'] = 'abc';
-        $this->assertEquals(10, $struct['second']);
+        static::assertEquals(10, $struct['second']);
 
         $struct['third'] = null;
-        $this->assertNull($struct['third']);
+        static::assertNull($struct['third']);
         $struct['third'] = true;
-        $this->assertEquals('1', $struct['third']);
+        static::assertEquals('1', $struct['third']);
         $struct['third'] = 12345;
-        $this->assertEquals('12345', $struct['third']);
+        static::assertEquals('12345', $struct['third']);
         $struct['third'] = 'abc';
-        $this->assertEquals('abc', $struct['third']);
+        static::assertEquals('abc', $struct['third']);
     }
 
     public function testSettingMultipleValues()
@@ -150,7 +150,7 @@ abstract class BasicStructTest extends BaseStructTest
             'unknown' => 'value',
         );
         $struct->set($modifications);
-        $this->assertEquals(
+        static::assertEquals(
             array(
                 'first'  => false,
                 'second' => 123,
@@ -172,7 +172,7 @@ abstract class BasicStructTest extends BaseStructTest
             'unknown' => 'value',
         );
         $struct->set($modifications);
-        $this->assertEquals(
+        static::assertEquals(
             array(
                 'first'  => false,
                 'second' => 123,
@@ -182,7 +182,7 @@ abstract class BasicStructTest extends BaseStructTest
             $struct->toArray()
         );
         $struct->reset();
-        $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
+        static::assertEquals($struct->getExpectedContents(), $struct->toArray());
     }
 
     /**
@@ -193,7 +193,7 @@ abstract class BasicStructTest extends BaseStructTest
         $class = $this->getFixtureClass('BasicStruct');
         /** @var $struct BasicStruct */
         $struct = new $class($initial);
-        $this->assertEquals($expected, $struct->toArray());
+        static::assertEquals($expected, $struct->toArray());
     }
 
     public function getExplicitInitialContents()
@@ -249,11 +249,11 @@ abstract class BasicStructTest extends BaseStructTest
         $name = 'unavailable';
         $value = 'test';
         $struct->setCallbackLogger($method, $logger);
-        $this->assertEquals($value, $struct->get($name, $value));
+        static::assertEquals($value, $struct->get($name, $value));
         $log = $logger->get();
-        $this->assertEquals(1, sizeof($log));
+        static::assertCount(1, $log);
         $log = array_shift($log);
-        $this->assertEquals(array($method, $name, $value), $log);
+        static::assertEquals(array($method, $name, $value), $log);
     }
 
     public function testSetMissedCallback()
@@ -266,9 +266,9 @@ abstract class BasicStructTest extends BaseStructTest
         $struct->setCallbackLogger($method, $logger);
         $struct->set($name, $value);
         $log = $logger->get();
-        $this->assertEquals(1, sizeof($log));
+        static::assertCount(1, $log);
         $log = array_shift($log);
-        $this->assertEquals(array($method, $name, $value), $log);
+        static::assertEquals(array($method, $name, $value), $log);
     }
 
     public function testOnChangeCallback()
@@ -285,10 +285,11 @@ abstract class BasicStructTest extends BaseStructTest
         $struct->set($changes);
         unset($changes['unavailable']);
         $log = $logger->get();
-        $this->assertEquals(sizeof($changes), sizeof($log));
+        static::assertEquals(count($changes), count($log));
         foreach ($changes as $name => $value) {
+            /** @noinspection DisconnectedForeachInstructionInspection */
             $temp = array_shift($log);
-            $this->assertEquals(array($method, $name), $temp);
+            static::assertEquals(array($method, $name), $temp);
         }
     }
 
@@ -301,7 +302,7 @@ abstract class BasicStructTest extends BaseStructTest
         $struct = new Struct(null, array(
             'metadata' => $metadata,
         ));
-        $this->assertEquals(
+        static::assertEquals(
             array(
                 'a' => 123,
                 'b' => false,
@@ -316,7 +317,7 @@ abstract class BasicStructTest extends BaseStructTest
         $struct = $this->getTestStruct();
         $clone = clone $struct;
         foreach ($struct as $name => $value) {
-            $this->assertEquals($value, $clone->get($name));
+            static::assertEquals($value, $clone->get($name));
         }
         $clone->set(
             array(
@@ -327,7 +328,7 @@ abstract class BasicStructTest extends BaseStructTest
             )
         );
         foreach ($struct as $name => $value) {
-            $this->assertNotEquals($value, $clone->get($name));
+            static::assertNotEquals($value, $clone->get($name));
         }
     }
 }

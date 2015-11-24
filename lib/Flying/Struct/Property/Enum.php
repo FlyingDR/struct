@@ -12,7 +12,7 @@ class Enum extends Property
      *
      * @var array
      */
-    protected $values = array();
+    private $values = array();
 
     /**
      * {@inheritdoc}
@@ -44,6 +44,7 @@ class Enum extends Property
      */
     public function validateConfig($name, &$value)
     {
+        /** @noinspection DegradedSwitchInspection */
         switch ($name) {
             case 'values':
                 if (!is_array($value)) {
@@ -66,6 +67,7 @@ class Enum extends Property
      */
     protected function onConfigChange($name, $value, $merge)
     {
+        /** @noinspection DegradedSwitchInspection */
         switch ($name) {
             case 'values':
                 $this->values = $value;

@@ -22,19 +22,19 @@ class Struct extends Annotation
      *
      * @var string
      */
-    protected $class;
+    private $class;
     /**
      * Inline structure properties
      *
      * @var array
      */
-    protected $properties = array();
+    private $properties = array();
     /**
      * Property configuration
      *
      * @var array
      */
-    protected $config = array();
+    private $config = array();
 
     /**
      * {@inheritdoc}
@@ -57,11 +57,9 @@ class Struct extends Annotation
             }
         }
         // Check if we got required properties
-        if ((!is_string($this->class)) || (!strlen($this->class))) {
-            if (!sizeof($this->properties)) {
-                // We should have either explicitly defined structure properties or structure class name
-                throw new AnnotationException('Required property annotation is missed: class');
-            }
+        if (((!is_string($this->class)) || ($this->class === '')) && (!count($this->properties))) {
+            // We should have either explicitly defined structure properties or structure class name
+            throw new AnnotationException('Required property annotation is missed: class');
         }
     }
 

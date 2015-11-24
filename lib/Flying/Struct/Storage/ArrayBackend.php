@@ -12,7 +12,7 @@ class ArrayBackend implements BackendInterface
      *
      * @var array
      */
-    protected $storage = array();
+    private $storage = array();
 
     /**
      * Load information by given key from storage

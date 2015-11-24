@@ -20,23 +20,6 @@ class BooleanTest extends BaseTypeTest
      */
     protected $defaultValue = true;
     /**
-     * Value validation tests
-     *
-     * @var array
-     */
-    protected $valueTests = array(
-        array(true, true),
-        array(false, false),
-        array(1, true),
-        array(0, false),
-        array(-1, true),
-        array('', false),
-        array('0', false),
-        array('test', true),
-        array(array(), false),
-        array(array(1, 2, 3), true),
-    );
-    /**
      * Serialization tests
      *
      * @var array
@@ -46,11 +29,24 @@ class BooleanTest extends BaseTypeTest
         false,
     );
 
+    /**
+     * {@inheritdoc}
+     */
     public function getValueTests()
     {
-        $tests = $this->valueTests;
-        $tests[] = array(new \ArrayObject(), true);
-        $tests[] = array(new Property(false), false);
-        return $tests;
+        return array(
+            array(true, true),
+            array(false, false),
+            array(1, true),
+            array(0, false),
+            array(-1, true),
+            array('', false),
+            array('0', false),
+            array('test', true),
+            array(array(), false),
+            array(array(1, 2, 3), true),
+            array(new \ArrayObject(), true),
+            array(new Property(false), false),
+        );
     }
 }

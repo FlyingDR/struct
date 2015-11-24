@@ -14,7 +14,7 @@ class StructMetadata extends PropertyMetadata
      *
      * @var array
      */
-    protected $properties = array();
+    private $properties = array();
 
     /**
      * Class constructor
@@ -196,7 +196,7 @@ class StructMetadata extends PropertyMetadata
             foreach ($this->getProperties() as $property) {
                 $hash[] = $property->getHash();
             }
-            $this->hash = sha1(join('|', $hash));
+            $this->hash = sha1(implode('|', $hash));
         }
         return $this->hash;
     }

@@ -23,7 +23,7 @@ class DateTime extends Property
             if (method_exists($value, 'toString')) {
                 $value = $value->toString();
             } elseif (method_exists($value, '__toString')) {
-                $value = $value->__toString();
+                $value = (string)$value;
             } else {
                 return false;
             }
@@ -58,7 +58,7 @@ class DateTime extends Property
     {
         switch ($name) {
             case 'format':
-                if ((!is_string($value)) || (!strlen($value))) {
+                if ((!is_string($value)) || ($value === '')) {
                     $value = null;
                 }
                 break;

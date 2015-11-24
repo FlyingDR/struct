@@ -15,47 +15,47 @@ class StructMetadataTest extends BaseMetadataTest
         $p2 = new PropertyMetadata('p2');
 
         $metadata->addProperty($p1);
-        $this->assertTrue($metadata->hasProperty($p1->getName()));
-        $this->assertFalse($metadata->hasProperty($p2->getName()));
-        $this->assertEquals($metadata->getProperty($p1->getName()), $p1);
+        static::assertTrue($metadata->hasProperty($p1->getName()));
+        static::assertFalse($metadata->hasProperty($p2->getName()));
+        static::assertEquals($metadata->getProperty($p1->getName()), $p1);
 
         $properties = $metadata->getProperties();
-        $this->assertInternalType('array', $properties);
-        $this->assertEquals(1, sizeof($properties));
-        $this->assertArrayHasKey($p1->getName(), $properties);
+        static::assertInternalType('array', $properties);
+        static::assertCount(1, $properties);
+        static::assertArrayHasKey($p1->getName(), $properties);
 
         $metadata->addProperty($p2);
-        $this->assertTrue($metadata->hasProperty($p1->getName()));
-        $this->assertTrue($metadata->hasProperty($p2->getName()));
-        $this->assertEquals($metadata->getProperty($p1->getName()), $p1);
-        $this->assertEquals($metadata->getProperty($p2->getName()), $p2);
+        static::assertTrue($metadata->hasProperty($p1->getName()));
+        static::assertTrue($metadata->hasProperty($p2->getName()));
+        static::assertEquals($metadata->getProperty($p1->getName()), $p1);
+        static::assertEquals($metadata->getProperty($p2->getName()), $p2);
 
         $properties = $metadata->getProperties();
-        $this->assertInternalType('array', $properties);
-        $this->assertEquals(2, sizeof($properties));
-        $this->assertArrayHasKey($p1->getName(), $properties);
-        $this->assertArrayHasKey($p2->getName(), $properties);
+        static::assertInternalType('array', $properties);
+        static::assertCount(2, $properties);
+        static::assertArrayHasKey($p1->getName(), $properties);
+        static::assertArrayHasKey($p2->getName(), $properties);
 
         $metadata->removeProperty($p1->getName());
-        $this->assertFalse($metadata->hasProperty($p1->getName()));
-        $this->assertTrue($metadata->hasProperty($p2->getName()));
-        $this->assertEquals($metadata->getProperty($p2->getName()), $p2);
+        static::assertFalse($metadata->hasProperty($p1->getName()));
+        static::assertTrue($metadata->hasProperty($p2->getName()));
+        static::assertEquals($metadata->getProperty($p2->getName()), $p2);
 
         $properties = $metadata->getProperties();
-        $this->assertInternalType('array', $properties);
-        $this->assertEquals(1, sizeof($properties));
-        $this->assertArrayNotHasKey($p1->getName(), $properties);
-        $this->assertArrayHasKey($p2->getName(), $properties);
+        static::assertInternalType('array', $properties);
+        static::assertCount(1, $properties);
+        static::assertArrayNotHasKey($p1->getName(), $properties);
+        static::assertArrayHasKey($p2->getName(), $properties);
 
         $metadata->clearProperties();
-        $this->assertFalse($metadata->hasProperty($p1->getName()));
-        $this->assertFalse($metadata->hasProperty($p2->getName()));
+        static::assertFalse($metadata->hasProperty($p1->getName()));
+        static::assertFalse($metadata->hasProperty($p2->getName()));
 
         $properties = $metadata->getProperties();
-        $this->assertInternalType('array', $properties);
-        $this->assertEquals(0, sizeof($properties));
-        $this->assertArrayNotHasKey($p1->getName(), $properties);
-        $this->assertArrayNotHasKey($p2->getName(), $properties);
+        static::assertInternalType('array', $properties);
+        static::assertCount(0, $properties);
+        static::assertArrayNotHasKey($p1->getName(), $properties);
+        static::assertArrayNotHasKey($p2->getName(), $properties);
     }
 
     public function testFillingObjectFromConstructor()
@@ -67,12 +67,12 @@ class StructMetadataTest extends BaseMetadataTest
         );
         /** @var $metadata StructMetadata */
         $metadata = new $class($this->name, $this->class, $this->config, $properties);
-        $this->assertEquals($metadata->getName(), $this->name);
-        $this->assertEquals($metadata->getClass(), $this->class);
-        $this->assertTrue($metadata->getConfig() === $this->config);
+        static::assertEquals($metadata->getName(), $this->name);
+        static::assertEquals($metadata->getClass(), $this->class);
+        static::assertTrue($metadata->getConfig() === $this->config);
         /** @var $property PropertyMetadata */
         foreach ($properties as $property) {
-            $this->assertTrue($metadata->getProperty($property->getName()) === $property);
+            static::assertTrue($metadata->getProperty($property->getName()) === $property);
         }
     }
 
@@ -94,10 +94,10 @@ class StructMetadataTest extends BaseMetadataTest
         $serialized = serialize($metadata);
         /** @var $new StructMetadata */
         $new = unserialize($serialized);
-        $this->assertFalse($metadata === $new);
-        $this->assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $new);
-        $this->assertTrue($new->hasProperty('p1'));
-        $this->assertTrue($new->hasProperty('p2'));
+        static::assertFalse($metadata === $new);
+        static::assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $new);
+        static::assertTrue($new->hasProperty('p1'));
+        static::assertTrue($new->hasProperty('p2'));
     }
 
     public function testToArray()
@@ -113,7 +113,7 @@ class StructMetadataTest extends BaseMetadataTest
             'hash'       => $metadata->getHash(),
             'properties' => array(),
         );
-        $this->assertEquals($expected, $metadata->toArray());
+        static::assertEquals($expected, $metadata->toArray());
     }
 
     public function testToArrayWithProperties()
@@ -136,7 +136,7 @@ class StructMetadataTest extends BaseMetadataTest
                 'p2' => $p2->toArray(),
             ),
         );
-        $this->assertEquals($expected, $metadata->toArray());
+        static::assertEquals($expected, $metadata->toArray());
     }
 
     public function testHashUpdateOnPropertiesOperations()
@@ -146,19 +146,19 @@ class StructMetadataTest extends BaseMetadataTest
         $p2 = new PropertyMetadata('p2');
         $hash = $metadata->getHash();
         $metadata->addProperty($p1);
-        $this->assertNotEquals($hash, $metadata->getHash());
+        static::assertNotEquals($hash, $metadata->getHash());
         $hash = $metadata->getHash();
         $metadata->addProperty($p2);
-        $this->assertNotEquals($hash, $metadata->getHash());
+        static::assertNotEquals($hash, $metadata->getHash());
         $hash = $metadata->getHash();
         $metadata->removeProperty($p1->getName());
-        $this->assertNotEquals($hash, $metadata->getHash());
+        static::assertNotEquals($hash, $metadata->getHash());
         $hash = $metadata->getHash();
         $metadata->clearProperties();
-        $this->assertNotEquals($hash, $metadata->getHash());
+        static::assertNotEquals($hash, $metadata->getHash());
         $hash = $metadata->getHash();
         $metadata->setProperties(array($p1, $p2));
-        $this->assertNotEquals($hash, $metadata->getHash());
+        static::assertNotEquals($hash, $metadata->getHash());
     }
 
     /**

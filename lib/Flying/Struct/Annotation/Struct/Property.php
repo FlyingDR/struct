@@ -24,13 +24,13 @@ class Property extends Annotation
      *
      * @var string
      */
-    protected $type;
+    private $type;
     /**
      * Property configuration
      *
      * @var array
      */
-    protected $config = array();
+    private $config = array();
 
     /**
      * {@inheritdoc}
@@ -45,7 +45,7 @@ class Property extends Annotation
         }
         $this->config = $values;
         // Check if we got required properties
-        if ((!is_string($this->type)) || (!strlen($this->type))) {
+        if ((!is_string($this->type)) || ($this->type === '')) {
             throw new AnnotationException('Required property annotation is missed: type');
         }
     }

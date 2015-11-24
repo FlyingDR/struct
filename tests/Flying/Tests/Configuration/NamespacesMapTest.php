@@ -11,27 +11,27 @@ class NamespacesMapTest extends TestCase
     {
         $map = $this->getObject();
         $map->add('\\A\\B\\C\\', 'test');
-        $this->assertTrue($map->has('test'));
-        $this->assertFalse($map->has('unavailable'));
-        $this->assertEquals($map->get('test'), 'A\B\C');
+        static::assertTrue($map->has('test'));
+        static::assertFalse($map->has('unavailable'));
+        static::assertEquals($map->get('test'), 'A\B\C');
         $temp = $map->getAll();
-        $this->assertEquals(sizeof($temp), 1);
-        $this->assertArrayHasKey('test', $temp);
-        $this->assertEquals($temp['test'], 'A\B\C');
+        static::assertCount(1, $temp);
+        static::assertArrayHasKey('test', $temp);
+        static::assertEquals($temp['test'], 'A\B\C');
         $map->remove('test');
-        $this->assertFalse($map->has('test'));
-        $this->assertEquals(sizeof($map->getAll()), 0);
+        static::assertFalse($map->has('test'));
+        static::assertCount(0, $map->getAll());
     }
 
     public function testNamespaceSlashesTrimming()
     {
         $map = $this->getObject();
         $map->add('A\\B\\C', 'test');
-        $this->assertEquals($map->get('test'), 'A\B\C');
+        static::assertEquals($map->get('test'), 'A\B\C');
         $map->add('\\A\\B\\C', 'test');
-        $this->assertEquals($map->get('test'), 'A\B\C');
+        static::assertEquals($map->get('test'), 'A\B\C');
         $map->add('A\\B\\C\\', 'test');
-        $this->assertEquals($map->get('test'), 'A\B\C');
+        static::assertEquals($map->get('test'), 'A\B\C');
     }
 
     /**
@@ -44,7 +44,7 @@ class NamespacesMapTest extends TestCase
     {
         $map = $this->getObject();
         $map->add($ns, $alias);
-        $this->assertEquals($expected, $map->getAll());
+        static::assertEquals($expected, $map->getAll());
     }
 
     public function dataProviderRegisteringNamespaces()
@@ -68,7 +68,7 @@ class NamespacesMapTest extends TestCase
     public function testRegisteringNamespacesThroughConstructor($ns, $expected)
     {
         $map = $this->getObject($ns);
-        $this->assertEquals($expected, $map->getAll());
+        static::assertEquals($expected, $map->getAll());
     }
 
     public function dataProviderRegisteringNamespacesThroughConstructor()

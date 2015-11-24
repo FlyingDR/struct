@@ -36,7 +36,7 @@ class String extends Property
                 if (method_exists($value, 'toString')) {
                     $value = $value->toString();
                 } elseif (method_exists($value, '__toString')) {
-                    $value = $value->__toString();
+                    $value = (string)$value;
                 } else {
                     return false;
                 }
@@ -55,6 +55,7 @@ class String extends Property
      */
     public function validateConfig($name, &$value)
     {
+        /** @noinspection DegradedSwitchInspection */
         switch ($name) {
             case 'maxlength':
                 if ($value !== null) {

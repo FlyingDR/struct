@@ -18,13 +18,13 @@ class StorableStruct extends Struct implements StorableInterface
      *
      * @var Storage
      */
-    protected $storage = null;
+    private $storage;
     /**
      * Storage key for this structure
      *
      * @var string
      */
-    protected $storageKey = null;
+    private $storageKey;
     /**
      * TRUE if structure is already marked as "dirty" into storage
      *
@@ -174,9 +174,7 @@ class StorableStruct extends Struct implements StorableInterface
     }
 
     /**
-     * Initialize list of configuration options
-     *
-     * @return void
+     * {@inheritdoc}
      */
     protected function initConfig()
     {
@@ -194,6 +192,7 @@ class StorableStruct extends Struct implements StorableInterface
      */
     protected function lazyConfigInit($name)
     {
+        /** @noinspection DegradedSwitchInspection */
         switch ($name) {
             case 'storage':
                 /** @var $configuration Configuration */
@@ -216,6 +215,7 @@ class StorableStruct extends Struct implements StorableInterface
      */
     protected function validateConfig($name, &$value)
     {
+        /** @noinspection DegradedSwitchInspection */
         switch ($name) {
             case 'storage':
                 if (($value !== null) && (!$value instanceof StorageInterface)) {

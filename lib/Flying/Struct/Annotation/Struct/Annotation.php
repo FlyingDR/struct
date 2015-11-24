@@ -14,7 +14,7 @@ abstract class Annotation
      *
      * @var string
      */
-    protected $name;
+    private $name;
 
     /**
      * Class constructor
@@ -41,7 +41,7 @@ abstract class Annotation
             unset($values['name']);
         }
         // Check if we got required properties
-        if ((!is_string($this->name)) || (!strlen($this->name))) {
+        if ((!is_string($this->name)) || ($this->name === '')) {
             throw new AnnotationException('Required property annotation is missed: name');
         }
     }

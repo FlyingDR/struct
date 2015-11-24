@@ -21,24 +21,24 @@ abstract class MultiLevelStructTest extends BaseStructTest
     public function testCreation()
     {
         $struct = $this->getTestStruct();
-        $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
+        static::assertEquals($struct->getExpectedContents(), $struct->toArray());
     }
 
     public function testGettingProperty()
     {
         $struct = $this->getTestStruct();
-        $this->assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('b'));
-        $this->assertInstanceOf('Flying\Struct\StructInterface', $struct->getProperty('child'));
-        $this->assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->child->getProperty('x'));
-        $this->assertNull($struct->getProperty('unavailable'));
+        static::assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('b'));
+        static::assertInstanceOf('Flying\Struct\StructInterface', $struct->getProperty('child'));
+        static::assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->child->getProperty('x'));
+        static::assertNull($struct->getProperty('unavailable'));
     }
 
     public function testGettingChildStructureProperty()
     {
         $struct = $this->getTestStruct();
-        $this->assertFalse($struct->child->x);
-        $this->assertEquals(345, $struct->child->y);
-        $this->assertEquals('string', $struct->child->z);
+        static::assertFalse($struct->child->x);
+        static::assertEquals(345, $struct->child->y);
+        static::assertEquals('string', $struct->child->z);
     }
 
     public function testSettingSingleChildStructureProperty()
@@ -47,9 +47,9 @@ abstract class MultiLevelStructTest extends BaseStructTest
         $struct->child->x = true;
         $struct->child->y = 777;
         $struct->child->z = 'test string';
-        $this->assertTrue($struct->child->x);
-        $this->assertEquals(777, $struct->child->y);
-        $this->assertEquals('test string', $struct->child->z);
+        static::assertTrue($struct->child->x);
+        static::assertEquals(777, $struct->child->y);
+        static::assertEquals('test string', $struct->child->z);
     }
 
     public function testSettingMultipleChildStructureProperties()
@@ -62,9 +62,9 @@ abstract class MultiLevelStructTest extends BaseStructTest
                 'z' => 'test string',
             )
         );
-        $this->assertTrue($struct->child->x);
-        $this->assertEquals(777, $struct->child->y);
-        $this->assertEquals('test string', $struct->child->z);
+        static::assertTrue($struct->child->x);
+        static::assertEquals(777, $struct->child->y);
+        static::assertEquals('test string', $struct->child->z);
 
         $struct = $this->getTestStruct();
         $struct->child = array(
@@ -73,11 +73,11 @@ abstract class MultiLevelStructTest extends BaseStructTest
             'z' => 'test string',
         );
         /** @noinspection PhpUndefinedFieldInspection */
-        $this->assertTrue($struct->child->x);
+        static::assertTrue($struct->child->x);
         /** @noinspection PhpUndefinedFieldInspection */
-        $this->assertEquals(777, $struct->child->y);
+        static::assertEquals(777, $struct->child->y);
         /** @noinspection PhpUndefinedFieldInspection */
-        $this->assertEquals('test string', $struct->child->z);
+        static::assertEquals('test string', $struct->child->z);
     }
 
     public function testUpdateNotificationBubbling()
@@ -101,10 +101,10 @@ abstract class MultiLevelStructTest extends BaseStructTest
             if ($value instanceof ComplexPropertyInterface) {
                 $cloned = $clone->get($name);
                 foreach ($value as $k => $v) {
-                    $this->assertEquals($v, $cloned->get($k));
+                    static::assertEquals($v, $cloned->get($k));
                 }
             } else {
-                $this->assertEquals($value, $clone->get($name));
+                static::assertEquals($value, $clone->get($name));
             }
         }
         $clone->set(
@@ -123,10 +123,10 @@ abstract class MultiLevelStructTest extends BaseStructTest
             if ($value instanceof ComplexPropertyInterface) {
                 $cloned = $clone->get($name);
                 foreach ($value as $k => $v) {
-                    $this->assertNotEquals($v, $cloned->get($k));
+                    static::assertNotEquals($v, $cloned->get($k));
                 }
             } else {
-                $this->assertNotEquals($value, $clone->get($name));
+                static::assertNotEquals($value, $clone->get($name));
             }
         }
     }

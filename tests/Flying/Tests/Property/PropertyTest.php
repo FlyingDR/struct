@@ -18,30 +18,30 @@ class PropertyTest extends BasePropertyTest
     public function testBasicOperations()
     {
         $property = $this->getTestProperty();
-        $this->assertEquals($this->getDefaultValue(), $property->getValue());
+        static::assertEquals($this->getDefaultValue(), $property->getValue());
         $property->setValue(12345);
-        $this->assertEquals(12345, $property->getValue());
+        static::assertEquals(12345, $property->getValue());
         $property->setValue(true);
-        $this->assertTrue($property->getValue());
+        static::assertTrue($property->getValue());
         $property->reset();
-        $this->assertEquals($this->getDefaultValue(), $property->getValue());
+        static::assertEquals($this->getDefaultValue(), $property->getValue());
     }
 
     public function testConfigurationOptionsAccess()
     {
         $property = $this->getTestProperty();
-        $this->assertFalse($property->getConfig('nullable'));
-        $this->assertEquals($this->getDefaultValue(), $property->getConfig('default'));
+        static::assertFalse($property->getConfig('nullable'));
+        static::assertEquals($this->getDefaultValue(), $property->getConfig('default'));
     }
 
     public function testPropertyRemainsTheSameOnSettingInvalidValue()
     {
         $property = $this->getTestProperty();
-        $this->assertEquals($this->getDefaultValue(), $property->getValue());
+        static::assertEquals($this->getDefaultValue(), $property->getValue());
         $property->setValue(12345);
-        $this->assertEquals(12345, $property->getValue());
+        static::assertEquals(12345, $property->getValue());
         $property->setValue(null); // NULL is not allowed so property should not change its value
-        $this->assertEquals(12345, $property->getValue());
+        static::assertEquals(12345, $property->getValue());
     }
 
     public function testExceptionOnInvalidDefaultValue()
@@ -92,14 +92,16 @@ class PropertyTest extends BasePropertyTest
         $property->getValue();
 
         $log = $logger->get();
-        $this->assertEquals(sizeof($expected), sizeof($log));
+        static::assertEquals(count($expected), count($log));
         foreach ($expected as $v) {
+            /** @noinspection DisconnectedForeachInstructionInspection */
             $temp = array_shift($log);
+            /** @noinspection DisconnectedForeachInstructionInspection */
             $exp = array($method);
             if ($useValue) {
                 $exp[] = $v;
             }
-            $this->assertEquals($exp, $temp);
+            static::assertEquals($exp, $temp);
         }
     }
 

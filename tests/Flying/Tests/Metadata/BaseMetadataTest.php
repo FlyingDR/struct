@@ -19,13 +19,13 @@ abstract class BaseMetadataTest extends TestCase
         $metadata = $this->getMetadataObject();
 
         $metadata->setName($this->name);
-        $this->assertEquals($metadata->getName(), $this->name);
+        static::assertEquals($metadata->getName(), $this->name);
 
         $metadata->setClass($this->class);
-        $this->assertEquals($metadata->getClass(), $this->class);
+        static::assertEquals($metadata->getClass(), $this->class);
 
         $metadata->setConfig($this->config);
-        $this->assertTrue($metadata->getConfig() === $this->config);
+        static::assertTrue($metadata->getConfig() === $this->config);
     }
 
     public function testFillingObjectFromConstructor()
@@ -33,9 +33,9 @@ abstract class BaseMetadataTest extends TestCase
         $class = get_class($this->getMetadataObject());
         /** @var $metadata MetadataInterface */
         $metadata = new $class($this->name, $this->class, $this->config);
-        $this->assertEquals($metadata->getName(), $this->name);
-        $this->assertEquals($metadata->getClass(), $this->class);
-        $this->assertTrue($metadata->getConfig() === $this->config);
+        static::assertEquals($metadata->getName(), $this->name);
+        static::assertEquals($metadata->getClass(), $this->class);
+        static::assertTrue($metadata->getConfig() === $this->config);
     }
 
     public function testSettingInvalidName()
@@ -64,10 +64,10 @@ abstract class BaseMetadataTest extends TestCase
         $result = $metadata->setName($this->name)
             ->setClass($this->class)
             ->setConfig($this->config);
-        $this->assertTrue($metadata === $result);
-        $this->assertEquals($metadata->getName(), $this->name);
-        $this->assertEquals($metadata->getClass(), $this->class);
-        $this->assertEquals($metadata->getConfig(), $this->config);
+        static::assertTrue($metadata === $result);
+        static::assertEquals($metadata->getName(), $this->name);
+        static::assertEquals($metadata->getClass(), $this->class);
+        static::assertEquals($metadata->getConfig(), $this->config);
     }
 
     public function testEmptyObjectSerialization()
@@ -78,8 +78,8 @@ abstract class BaseMetadataTest extends TestCase
 
         /** @var $new MetadataInterface */
         $new = unserialize($data);
-        $this->assertInstanceOf($class, $new);
-        $this->assertFalse($metadata === $new);
+        static::assertInstanceOf($class, $new);
+        static::assertFalse($metadata === $new);
     }
 
     public function testFilledObjectSerialization()
@@ -93,11 +93,11 @@ abstract class BaseMetadataTest extends TestCase
 
         /** @var $new MetadataInterface */
         $new = unserialize($data);
-        $this->assertInstanceOf($class, $new);
-        $this->assertFalse($metadata === $new);
-        $this->assertEquals($new->getName(), $this->name);
-        $this->assertEquals($new->getClass(), $this->class);
-        $this->assertEquals($new->getConfig(), $this->config);
+        static::assertInstanceOf($class, $new);
+        static::assertFalse($metadata === $new);
+        static::assertEquals($new->getName(), $this->name);
+        static::assertEquals($new->getClass(), $this->class);
+        static::assertEquals($new->getConfig(), $this->config);
     }
 
     public function testUnserializationOfInvalidSerializationData()
@@ -106,11 +106,11 @@ abstract class BaseMetadataTest extends TestCase
         $class = get_class($metadata);
         $data = sprintf('C:%d:"%s":0:{}', strlen($class), $class);
         $new = unserialize($data);
-        $this->assertInstanceOf($class, $new);
-        $this->assertFalse($metadata === $new);
-        $this->assertNull($new->getName());
-        $this->assertNull($new->getClass());
-        $this->assertEmpty($new->getConfig());
+        static::assertInstanceOf($class, $new);
+        static::assertFalse($metadata === $new);
+        static::assertNull($new->getName());
+        static::assertNull($new->getClass());
+        static::assertEmpty($new->getConfig());
     }
 
     public function testToArray()
@@ -125,7 +125,7 @@ abstract class BaseMetadataTest extends TestCase
             'config' => $this->config,
             'hash'   => $metadata->getHash(),
         );
-        $this->assertEquals($expected, $metadata->toArray());
+        static::assertEquals($expected, $metadata->toArray());
     }
 
     public function testHashUpdateOnChange()
@@ -133,13 +133,13 @@ abstract class BaseMetadataTest extends TestCase
         $metadata = $this->getMetadataObject();
         $hash = $metadata->getHash();
         $metadata->setName($this->name);
-        $this->assertNotEquals($hash, $metadata->getHash());
+        static::assertNotEquals($hash, $metadata->getHash());
         $hash = $metadata->getHash();
         $metadata->setClass($this->class);
-        $this->assertNotEquals($hash, $metadata->getHash());
+        static::assertNotEquals($hash, $metadata->getHash());
         $hash = $metadata->getHash();
         $metadata->setConfig($this->config);
-        $this->assertNotEquals($hash, $metadata->getHash());
+        static::assertNotEquals($hash, $metadata->getHash());
     }
 
     /**

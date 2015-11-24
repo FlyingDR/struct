@@ -54,9 +54,9 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
     {
         $struct = $this->getTestStruct();
         $storage = ConfigurationManager::getConfiguration()->getStorage();
-        $this->assertFalse($storage->isDirty($struct));
+        static::assertFalse($storage->isDirty($struct));
         $struct->child->x = false;
-        $this->assertTrue($storage->isDirty($struct));
+        static::assertTrue($storage->isDirty($struct));
     }
 
     public function testStructureShouldTakeItsInitialContentsFromStorageBackend()
@@ -65,12 +65,12 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
         $storage = ConfigurationManager::getConfiguration()->getStorage();
         $modified = 'modified value';
         $s1->child->z = $modified;
-        $this->assertEquals($modified, $s1->child->z);
+        static::assertEquals($modified, $s1->child->z);
         // Check that structure modifications doesn't propagated into storage automatically
         $s2 = $this->getTestStruct();
-        $this->assertNotEquals($s1->child->z, $s2->child->z);
+        static::assertNotEquals($s1->child->z, $s2->child->z);
         $storage->flush();
         $s3 = $this->getTestStruct();
-        $this->assertEquals($modified, $s3->child->z);
+        static::assertEquals($modified, $s3->child->z);
     }
 }

@@ -15,7 +15,7 @@ class CacheBackend implements BackendInterface
      *
      * @var Cache
      */
-    protected $cache;
+    private $cache;
 
     /**
      * Load information by given key from storage

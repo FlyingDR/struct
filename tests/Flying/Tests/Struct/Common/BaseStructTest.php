@@ -22,7 +22,7 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
      *
      * @var string
      */
-    protected $fixtureClass = null;
+    protected $fixtureClass;
 
     public function setUp()
     {
@@ -34,7 +34,7 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
     {
         $struct = $this->getTestStruct();
         $expected = $struct->getExpectedContents();
-        $this->assertEquals(sizeof($expected), sizeof($struct));
+        static::assertEquals(count($expected), count($struct));
     }
 
     public function testIteratorInterface()
@@ -49,7 +49,7 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
                 $contents[$key] = $value;
             }
         }
-        $this->assertEquals($expected, $contents);
+        static::assertEquals($expected, $contents);
     }
 
     public function testRecursiveIteratorInterface()
@@ -65,7 +65,7 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
         foreach ($iterator as $key => $value) {
             $actual[] = array($key, $value);
         }
-        $this->assertEquals($expected, $actual);
+        static::assertEquals($expected, $actual);
     }
 
     public function testArrayAccessInterface()
@@ -77,14 +77,14 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
             if ($sv instanceof ComplexPropertyInterface) {
                 $sv = $sv->toArray();
             }
-            $this->assertEquals($sv, $value);
+            static::assertEquals($sv, $value);
         }
     }
 
     public function testConversionToArray()
     {
         $struct = $this->getTestStruct();
-        $this->assertEquals($struct->toArray(), $struct->getExpectedContents());
+        static::assertEquals($struct->toArray(), $struct->getExpectedContents());
     }
 
     public function testSerialization()
@@ -94,9 +94,9 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
         $data = serialize($struct);
         /** @var $new Struct */
         $new = unserialize($data);
-        $this->assertInstanceOf($class, $new);
-        $this->assertNotEquals($struct, $new);
-        $this->assertEquals($struct->getExpectedContents(), $new->toArray());
+        static::assertInstanceOf($class, $new);
+        static::assertNotEquals($struct, $new);
+        static::assertEquals($struct->getExpectedContents(), $new->toArray());
     }
 
     /**
@@ -118,7 +118,7 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
                 return $nsClass;
             }
         }
-        $this->fail('Unable to find fixture class: ' . $class);
+        static::fail('Unable to find fixture class: ' . $class);
         return null;
     }
 

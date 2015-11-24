@@ -36,15 +36,15 @@ class AnnotationParserTest extends TestUsingFixtureStructures
             $parser->getMetadata($class);
         } else {
             $metadata = $parser->getMetadata($class);
-            $this->assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $metadata);
+            static::assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $metadata);
             $expected = $fixture->getExpectedMetadata();
             $actual = $metadata->toArray();
             array_walk_recursive($actual, function (&$v, $k) {
-                if ($k == 'hash') {
+                if ($k === 'hash') {
                     $v = 'test';
                 };
             });
-            $this->assertEquals($expected, $actual);
+            static::assertEquals($expected, $actual);
         }
     }
 
@@ -72,8 +72,8 @@ class AnnotationParserTest extends TestUsingFixtureStructures
         /** @var $reader Reader */
         $parser->setReader($reader);
         $metadata = $parser->getMetadata($this->getFixtureClass('BasicStruct'));
-        $this->assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $metadata);
-        $this->assertEmpty($metadata->getProperties());
+        static::assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $metadata);
+        static::assertEmpty($metadata->getProperties());
     }
 
     /**

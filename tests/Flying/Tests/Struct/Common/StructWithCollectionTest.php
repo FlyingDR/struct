@@ -20,15 +20,15 @@ abstract class StructWithCollectionTest extends BaseStructTest
     public function testCreation()
     {
         $struct = $this->getTestStruct();
-        $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
+        static::assertEquals($struct->getExpectedContents(), $struct->toArray());
     }
 
     public function testGettingProperty()
     {
         $struct = $this->getTestStruct();
-        $this->assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('first'));
-        $this->assertInstanceOf('Flying\Struct\Common\ComplexPropertyInterface', $struct->getProperty('collection'));
-        $this->assertNull($struct->getProperty('unavailable'));
+        static::assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('first'));
+        static::assertInstanceOf('Flying\Struct\Common\ComplexPropertyInterface', $struct->getProperty('collection'));
+        static::assertNull($struct->getProperty('unavailable'));
     }
 
     public function testRecursiveIteratorInterface()
@@ -51,13 +51,13 @@ abstract class StructWithCollectionTest extends BaseStructTest
             }
             $actual[] = array($key, $value);
         }
-        $this->assertEquals($expected, $actual);
+        static::assertEquals($expected, $actual);
     }
 
     public function testCollectionAccess()
     {
         $struct = $this->getTestStruct();
-        $this->assertInstanceOf('Flying\Struct\Property\Collection', $struct->collection);
+        static::assertInstanceOf('Flying\Struct\Property\Collection', $struct->collection);
     }
 
     public function testArrayAccess()
@@ -68,6 +68,6 @@ abstract class StructWithCollectionTest extends BaseStructTest
         $struct->collection[] = 6;
         $struct->collection[] = 7;
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertEquals(array(1, 2, 3, 4, 5), $struct->collection->toArray());
+        static::assertEquals(array(1, 2, 3, 4, 5), $struct->collection->toArray());
     }
 }

@@ -14,7 +14,7 @@ class NamespacesMap
      *
      * @var array
      */
-    protected $namespaces = array();
+    private $namespaces = array();
 
     /**
      * Class constructor
@@ -83,10 +83,10 @@ class NamespacesMap
             }
         }
         foreach ($namespace as $alias => $ns) {
-            if ((!is_string($ns)) || (!strlen($ns))) {
+            if ((!is_string($ns)) || ($ns === '')) {
                 throw new \InvalidArgumentException('Class namespace must be a string');
             }
-            if ((!is_string($alias)) || (!strlen($alias))) {
+            if ((!is_string($alias)) || ($alias === '')) {
                 $alias = mb_strtolower(str_replace('\\', '_', $ns));
             }
             $ns = trim($ns, '\\');

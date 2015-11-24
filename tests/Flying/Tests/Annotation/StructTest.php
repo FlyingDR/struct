@@ -9,11 +9,10 @@ use Flying\Tests\TestCase;
 
 class StructTest extends TestCase
 {
-
     public function testInheritance()
     {
         $annotation = new Struct(array('name' => 'test', 'class' => 'test'));
-        $this->assertInstanceOf('Flying\Struct\Annotation\Struct\Annotation', $annotation);
+        static::assertInstanceOf('Flying\Struct\Annotation\Struct\Annotation', $annotation);
     }
 
     public function testBasicOperations()
@@ -23,11 +22,11 @@ class StructTest extends TestCase
             'class' => 'MyStruct',
             'abc'   => 'xyz',
         ));
-        $this->assertEquals('test', $annotation->getName());
-        $this->assertEquals('MyStruct', $annotation->getClass());
-        $this->assertArrayHasKey('abc', $annotation->getConfig());
+        static::assertEquals('test', $annotation->getName());
+        static::assertEquals('MyStruct', $annotation->getClass());
+        static::assertArrayHasKey('abc', $annotation->getConfig());
         $config = $annotation->getConfig();
-        $this->assertEquals('xyz', $config['abc']);
+        static::assertEquals('xyz', $config['abc']);
     }
 
     public function testMissedClass()
@@ -50,7 +49,6 @@ class StructTest extends TestCase
             'name'  => 'test',
             'value' => $properties,
         ));
-        $this->assertEquals($properties, $annotation->getProperties());
+        static::assertEquals($properties, $annotation->getProperties());
     }
-
 }

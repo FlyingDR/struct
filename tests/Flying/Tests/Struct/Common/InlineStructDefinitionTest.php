@@ -20,6 +20,6 @@ abstract class InlineStructDefinitionTest extends BaseStructTest
     public function testCreation()
     {
         $struct = $this->getTestStruct();
-        $this->assertEquals($struct->getExpectedContents(), $struct->toArray());
+        static::assertEquals($struct->getExpectedContents(), $struct->toArray());
     }
 }

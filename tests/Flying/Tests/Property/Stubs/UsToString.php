@@ -4,7 +4,10 @@ namespace Flying\Tests\Property\Stubs;
 
 class UsToString
 {
-    protected $value;
+    /**
+     * @var string
+     */
+    private $value;
 
     public function __construct($value)
     {
