@@ -108,11 +108,11 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $cache = clone ConfigurationManager::getConfiguration()->getCache();
         $manager = $this->getTestManager();
         $manager->setParser($parser);
-        static::assertTrue($manager->getParser() === $parser);
-        static::assertFalse($manager->getParser() === ConfigurationManager::getConfiguration()->getMetadataParser());
+        static::assertSame($parser, $manager->getParser());
+        static::assertNotSame(ConfigurationManager::getConfiguration()->getMetadataParser(), $manager->getParser());
         $manager->setCache($cache);
-        static::assertTrue($manager->getCache() === $cache);
-        static::assertFalse($manager->getCache() === ConfigurationManager::getConfiguration()->getCache());
+        static::assertSame($cache, $manager->getCache());
+        static::assertNotSame(ConfigurationManager::getConfiguration()->getCache(), $manager->getCache());
     }
 
     public function testManagerReturnsClonedMetadataObjects()
@@ -122,7 +122,7 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $m1 = $manager->getMetadata($class);
         $m2 = $manager->getMetadata($class);
         static::assertEquals($m1->toArray(), $m2->toArray());
-        static::assertFalse($m1 === $m2);
+        static::assertNotSame($m1, $m2);
     }
 
     public function testManagerCachesResultsLocally()
@@ -163,7 +163,7 @@ class MetadataManagerTest extends TestUsingFixtureStructures
 
         $m = $manager->getMetadata($class);
         static::assertEquals($m->toArray(), $metadata->toArray());
-        static::assertFalse($m === $metadata);
+        static::assertNotSame($m, $metadata);
     }
 
     public function testManagerStoresResultsInCache()
@@ -181,7 +181,7 @@ class MetadataManagerTest extends TestUsingFixtureStructures
 
         $m = $manager->getMetadata($class);
         static::assertEquals($m->toArray(), $metadata->toArray());
-        static::assertFalse($m === $metadata);
+        static::assertNotSame($m, $metadata);
     }
 
     public function testManagerUsesOnlyValidCacheResults()

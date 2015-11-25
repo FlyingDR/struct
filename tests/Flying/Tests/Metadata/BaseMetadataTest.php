@@ -25,7 +25,7 @@ abstract class BaseMetadataTest extends TestCase
         static::assertEquals($metadata->getClass(), $this->class);
 
         $metadata->setConfig($this->config);
-        static::assertTrue($metadata->getConfig() === $this->config);
+        static::assertSame($this->config, $metadata->getConfig());
     }
 
     public function testFillingObjectFromConstructor()
@@ -35,7 +35,7 @@ abstract class BaseMetadataTest extends TestCase
         $metadata = new $class($this->name, $this->class, $this->config);
         static::assertEquals($metadata->getName(), $this->name);
         static::assertEquals($metadata->getClass(), $this->class);
-        static::assertTrue($metadata->getConfig() === $this->config);
+        static::assertsame($this->config, $metadata->getConfig());
     }
 
     public function testSettingInvalidName()
@@ -64,7 +64,7 @@ abstract class BaseMetadataTest extends TestCase
         $result = $metadata->setName($this->name)
             ->setClass($this->class)
             ->setConfig($this->config);
-        static::assertTrue($metadata === $result);
+        static::assertSame($metadata, $result);
         static::assertEquals($metadata->getName(), $this->name);
         static::assertEquals($metadata->getClass(), $this->class);
         static::assertEquals($metadata->getConfig(), $this->config);
@@ -79,7 +79,7 @@ abstract class BaseMetadataTest extends TestCase
         /** @var $new MetadataInterface */
         $new = unserialize($data);
         static::assertInstanceOf($class, $new);
-        static::assertFalse($metadata === $new);
+        static::assertNotSame($metadata, $new);
     }
 
     public function testFilledObjectSerialization()
@@ -94,7 +94,7 @@ abstract class BaseMetadataTest extends TestCase
         /** @var $new MetadataInterface */
         $new = unserialize($data);
         static::assertInstanceOf($class, $new);
-        static::assertFalse($metadata === $new);
+        static::assertNotSame($metadata, $new);
         static::assertEquals($new->getName(), $this->name);
         static::assertEquals($new->getClass(), $this->class);
         static::assertEquals($new->getConfig(), $this->config);
@@ -107,7 +107,7 @@ abstract class BaseMetadataTest extends TestCase
         $data = sprintf('C:%d:"%s":0:{}', strlen($class), $class);
         $new = unserialize($data);
         static::assertInstanceOf($class, $new);
-        static::assertFalse($metadata === $new);
+        static::assertNotSame($metadata, $new);
         static::assertNull($new->getName());
         static::assertNull($new->getClass());
         static::assertEmpty($new->getConfig());

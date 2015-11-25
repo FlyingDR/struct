@@ -69,10 +69,10 @@ class StructMetadataTest extends BaseMetadataTest
         $metadata = new $class($this->name, $this->class, $this->config, $properties);
         static::assertEquals($metadata->getName(), $this->name);
         static::assertEquals($metadata->getClass(), $this->class);
-        static::assertTrue($metadata->getConfig() === $this->config);
+        static::assertSame($this->config, $metadata->getConfig());
         /** @var $property PropertyMetadata */
         foreach ($properties as $property) {
-            static::assertTrue($metadata->getProperty($property->getName()) === $property);
+            static::assertSame($property, $metadata->getProperty($property->getName()));
         }
     }
 
@@ -94,7 +94,7 @@ class StructMetadataTest extends BaseMetadataTest
         $serialized = serialize($metadata);
         /** @var $new StructMetadata */
         $new = unserialize($serialized);
-        static::assertFalse($metadata === $new);
+        static::assertNotSame($metadata, $new);
         static::assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $new);
         static::assertTrue($new->hasProperty('p1'));
         static::assertTrue($new->hasProperty('p2'));
