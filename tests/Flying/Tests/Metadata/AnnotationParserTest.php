@@ -51,8 +51,7 @@ class AnnotationParserTest extends TestUsingFixtureStructures
     public function testMetadataReceivingFailure()
     {
         $manager = Mockery::mock('Flying\Struct\Metadata\MetadataManagerInterface');
-        $manager->shouldReceive('getMetadata')->once()
-            ->andReturnNull();
+        $manager->shouldReceive('getMetadata')->andReturnNull();
         /** @var $manager MetadataManagerInterface */
         ConfigurationManager::getConfiguration()->setMetadataManager($manager);
         $this->setExpectedException(
@@ -67,7 +66,7 @@ class AnnotationParserTest extends TestUsingFixtureStructures
     {
         $parser = $this->getTestParser();
         $reader = Mockery::mock('Doctrine\Common\Annotations\Reader');
-        $reader->shouldReceive('getClassAnnotations')->twice()
+        $reader->shouldReceive('getClassAnnotations')->once()
             ->andReturn(array());
         /** @var $reader Reader */
         $parser->setReader($reader);

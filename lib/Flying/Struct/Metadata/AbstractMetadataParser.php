@@ -22,6 +22,29 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
      * @var array
      */
     private $nsStruct;
+    /**
+     * @var MetadataManagerInterface
+     */
+    private $metadataManager;
+
+    /**
+     * @return MetadataManagerInterface
+     */
+    public function getMetadataManager()
+    {
+        if (!$this->metadataManager) {
+            $this->metadataManager = ConfigurationManager::getConfiguration()->getMetadataManager();
+        }
+        return $this->metadataManager;
+    }
+
+    /**
+     * @param MetadataManagerInterface $metadataManager
+     */
+    public function setMetadataManager(MetadataManagerInterface $metadataManager)
+    {
+        $this->metadataManager = $metadataManager;
+    }
 
     /**
      * Get structure metadata information for given class
@@ -35,9 +58,11 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
     {
         $reflection = new \ReflectionClass($class);
         $parent = $reflection->getParentClass();
+        $metadata = null;
         if (($parent instanceof \ReflectionClass) && ($parent->implementsInterface('Flying\Struct\StructInterface'))) {
-            $metadata = $this->getMetadata($parent->getName());
-        } else {
+            $metadata = $this->getMetadataManager()->getMetadata($parent->getName());
+        }
+        if (!$metadata instanceof StructMetadata) {
             $metadata = new StructMetadata();
         }
         $metadata->setClass($class);

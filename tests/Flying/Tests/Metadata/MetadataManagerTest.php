@@ -5,15 +5,52 @@ namespace Flying\Tests\Metadata;
 use Doctrine\Common\Cache\Cache;
 use Flying\Struct\Configuration;
 use Flying\Struct\ConfigurationManager;
+use Flying\Struct\Metadata\AbstractMetadataParser;
 use Flying\Struct\Metadata\AnnotationParser;
 use Flying\Struct\Metadata\MetadataManager;
 use Flying\Struct\Metadata\MetadataParserInterface;
 use Flying\Struct\Metadata\StructMetadata;
 use Flying\Tests\Metadata\Fixtures\Structs\BasicStruct;
+use Flying\Tests\Metadata\Fixtures\Stubs\AbstractParserBasedParserStub;
+use Flying\Tests\Metadata\Fixtures\Stubs\InterfaceBasedParserStub;
 use Mockery;
 
 class MetadataManagerTest extends TestUsingFixtureStructures
 {
+    public function testMetadataManagerConnectsItselfWithParserWhenGettingParser()
+    {
+        $parser = new AbstractParserBasedParserStub();
+        $config = Mockery::mock('Flying\Struct\Configuration');
+        $config->shouldReceive('getMetadataManager')->once()
+            ->andReturn(new MetadataManager());
+        $config->shouldReceive('getMetadataParser')->once()
+            ->andReturn($parser);
+        /** @var $config Configuration */
+        ConfigurationManager::setConfiguration($config);
+        $manager = $this->getTestManager();
+        static::assertNotSame($parser->getMetadataManager(), $manager);
+        /** @var AbstractMetadataParser $parserFromManager */
+        $parserFromManager = $manager->getParser();
+        static::assertSame($parserFromManager, $parser);
+        static::assertSame($parserFromManager->getMetadataManager(), $manager);
+    }
+
+    public function testMetadataManagerConnectsItselfWithParserWhenSettingParser()
+    {
+        $manager = $this->getTestManager();
+        $parser = new AbstractParserBasedParserStub();
+        static::assertNotSame($manager, $parser->getMetadataManager());
+        $manager->setParser($parser);
+        static::assertSame($manager, $parser->getMetadataManager());
+    }
+
+    public function testMetadataManagerOnlyConnectsItselfWithParserWhenPossible()
+    {
+        $manager = $this->getTestManager();
+        $parser = new InterfaceBasedParserStub();
+        $manager->setParser($parser);
+    }
+
     public function testMetadataRetrievingByClassName()
     {
         $manager = $this->getTestManager();
@@ -173,6 +210,10 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $metadata = $manager->getMetadata($class);
 
         $manager = $this->getTestManager();
+        /** @var MetadataParserInterface $parser */
+        $parser = Mockery::mock('Flying\Struct\Metadata\MetadataParserInterface')
+            ->shouldReceive('getMetadata')->andReturn($metadata)->getMock();
+        $manager->setParser($parser);
         $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
             ->shouldReceive('contains')->once()->ordered()->andReturn(false)->getMock()
             ->shouldReceive('save')->once()->ordered()->with(Mockery::type('string'), get_class($metadata))->andReturnUndefined()->getMock();
@@ -187,6 +228,11 @@ class MetadataManagerTest extends TestUsingFixtureStructures
     public function testManagerUsesOnlyValidCacheResults()
     {
         $manager = $this->getTestManager();
+        $class = $this->getFixtureClass('BasicStruct');
+        /** @var MetadataParserInterface $parser */
+        $parser = Mockery::mock('Flying\Struct\Metadata\MetadataParserInterface')
+            ->shouldReceive('getMetadata')->andReturn($this->getTestManager()->getMetadata($class))->getMock();
+        $manager->setParser($parser);
         $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
             ->shouldReceive('contains')->once()->ordered()->andReturn(true)->getMock()
             ->shouldReceive('fetch')->once()->ordered()->andReturn(array())->getMock()
@@ -194,7 +240,7 @@ class MetadataManagerTest extends TestUsingFixtureStructures
             ->shouldReceive('save')->once()->ordered()->with(Mockery::type('string'), Mockery::any())->andReturnUndefined()->getMock();
         /** @var $cache Cache */
         $manager->setCache($cache);
-        $manager->getMetadata($this->getFixtureClass('BasicStruct'));
+        $manager->getMetadata($class);
     }
 
     public function testManagerReturnsNullIfNoResultsAvailable()

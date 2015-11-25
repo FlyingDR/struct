@@ -45,6 +45,9 @@ class MetadataManager implements MetadataManagerInterface
     {
         if (!$this->parser) {
             $this->parser = ConfigurationManager::getConfiguration()->getMetadataParser();
+            if ($this->parser instanceof AbstractMetadataParser) {
+                $this->parser->setMetadataManager($this);
+            }
         }
         return $this->parser;
     }
@@ -58,6 +61,9 @@ class MetadataManager implements MetadataManagerInterface
     public function setParser(MetadataParserInterface $parser)
     {
         $this->parser = $parser;
+        if ($this->parser instanceof AbstractMetadataParser) {
+            $this->parser->setMetadataManager($this);
+        }
         return $this;
     }
 
