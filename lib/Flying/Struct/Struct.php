@@ -219,6 +219,9 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
             $class = $property->getClass();
             $value = (array_key_exists($name, $contents)) ? $contents[$name] : null;
             $config = array_merge($property->getConfig(), $baseConfig);
+            if ($property instanceof StructMetadata) {
+                $config['metadata'] = $property;
+            }
             if ($class === null) {
                 // Structure properties metadata is defined explicitly
                 $class = $this->getConfig('explicit_metadata_class');

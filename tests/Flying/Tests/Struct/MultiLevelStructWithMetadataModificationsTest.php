@@ -1,0 +1,10 @@
+<?php
+
+namespace Flying\Tests\Struct;
+
+use Flying\Tests\Struct\Common\MultiLevelStructWithMetadataModificationsTest as CommonMultiLevelStructWithMetadataModificationsTest;
+
+class MultiLevelStructWithMetadataModificationsTest extends CommonMultiLevelStructWithMetadataModificationsTest
+{
+
+}
