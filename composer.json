@@ -19,6 +19,11 @@
         "flying/config": "~1.1",
         "doctrine/cache": "~1.0"
     },
+    "conflict": {
+        "doctrine/annotations": ">=1.5",
+        "doctrine/instantiator": ">=1.1",
+        "doctrine/cache": ">=1.7"
+    },
     "require-dev": {
         "mockery/mockery": "~0.8",
         "phpunit/phpunit": "~4.8"
