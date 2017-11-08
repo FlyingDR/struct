@@ -82,8 +82,8 @@ class Property extends AbstractConfig implements PropertyInterface
     /**
      * Normalize given value to make it compatible with property requirements
      *
-     * @param mixed $value Given property value (passed by reference)
-     * @return mixed        TRUE if value can be accepted, FALSE otherwise
+     * @param mixed $value  Given property value (passed by reference)
+     * @return boolean      TRUE if value can be accepted, FALSE otherwise
      */
     protected function normalize(&$value)
     {

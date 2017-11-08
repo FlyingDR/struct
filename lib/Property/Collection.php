@@ -67,9 +67,9 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * Normalize given value to make it compatible with property requirements
      *
-     * @param mixed $value    Given property value (passed by reference)
-     * @param int|string $key OPTIONAL Key for given value in a case if multiple values are given
-     * @return mixed            TRUE if value can be accepted, FALSE otherwise
+     * @param mixed $value      Given property value (passed by reference)
+     * @param int|string $key   OPTIONAL Key for given value in a case if multiple values are given
+     * @return boolean          TRUE if value can be accepted, FALSE otherwise
      */
     protected function normalize(&$value, $key = null)
     {
