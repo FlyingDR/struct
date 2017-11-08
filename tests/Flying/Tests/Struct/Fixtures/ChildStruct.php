@@ -8,9 +8,9 @@ namespace Flying\Tests\Struct\Fixtures;
  * @property boolean $x
  * @Struct\Boolean(name="x", default=false)
  * @property int $y
- * @Struct\Int(name="y", default=345)
+ * @Struct\Integer(name="y", default=345)
  * @property string $z
- * @Struct\String(name="z", default="string")
+ * @Struct\Str(name="z", default="string")
  */
 class ChildStruct extends TestStruct
 {

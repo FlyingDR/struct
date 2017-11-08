@@ -6,8 +6,8 @@ use Flying\Struct\ConfigurationManager;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
- * @Struct\String(name="name", nullable=false, maxlength=100)
- * @Struct\String(name="email", nullable=false, maxlength=255)
+ * @Struct\Str(name="name", nullable=false, maxlength=100)
+ * @Struct\Str(name="email", nullable=false, maxlength=255)
  * @Struct\Struct(name="child", class="BasicStruct", option="value", another=12345)
  */
 class StructWithChild extends StructStub implements MetadataTestcaseInterface
@@ -28,7 +28,7 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
             'properties' => array(
                 'name'  => array(
                     'name'   => 'name',
-                    'class'  => $pNs . '\\String',
+                    'class'  => $pNs . '\\Str',
                     'config' => array(
                         'nullable'  => false,
                         'maxlength' => 100,
@@ -37,7 +37,7 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
                 ),
                 'email' => array(
                     'name'   => 'email',
-                    'class'  => $pNs . '\\String',
+                    'class'  => $pNs . '\\Str',
                     'config' => array(
                         'nullable'  => false,
                         'maxlength' => 255,

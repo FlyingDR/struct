@@ -5,7 +5,7 @@ namespace Flying\Struct\Property;
 /**
  * Structure property with string value
  */
-class String extends Property
+class Str extends Property
 {
     /**
      * {@inheritdoc}

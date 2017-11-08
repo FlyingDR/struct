@@ -12,7 +12,7 @@ class IntTest extends BaseTypeTest
      *
      * @var string
      */
-    protected $propertyClass = 'Int';
+    protected $propertyClass = 'Integer';
     /**
      * Default property value
      *

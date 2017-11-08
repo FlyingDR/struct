@@ -7,8 +7,8 @@ use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
  * @Struct\Boolean(name="first", default=true)
- * @Struct\Int(name="second", nullable=false, default=100, min=10, max=1000)
- * @Struct\String(name="third")
+ * @Struct\Integer(name="second", nullable=false, default=100, min=10, max=1000)
+ * @Struct\Str(name="third")
  * @Struct\Property(name="fourth", type="string", default="some value")
  */
 class BasicStruct extends StructStub implements MetadataTestcaseInterface
@@ -37,7 +37,7 @@ class BasicStruct extends StructStub implements MetadataTestcaseInterface
                 ),
                 'second' => array(
                     'name'   => 'second',
-                    'class'  => $pNs . '\\Int',
+                    'class'  => $pNs . '\\Integer',
                     'config' => array(
                         'nullable' => false,
                         'default'  => 100,
@@ -48,13 +48,13 @@ class BasicStruct extends StructStub implements MetadataTestcaseInterface
                 ),
                 'third'  => array(
                     'name'   => 'third',
-                    'class'  => $pNs . '\\String',
+                    'class'  => $pNs . '\\Str',
                     'config' => array(),
                     'hash'   => 'test',
                 ),
                 'fourth' => array(
                     'name'   => 'fourth',
-                    'class'  => $pNs . '\\String',
+                    'class'  => $pNs . '\\Str',
                     'config' => array(
                         'default' => 'some value',
                     ),

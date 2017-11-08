@@ -5,7 +5,7 @@ namespace Flying\Tests\Metadata\Fixtures\Structs;
 use Flying\Struct\ConfigurationManager;
 
 /**
- * @Struct\String(name="inherited", default="yes")
+ * @Struct\Str(name="inherited", default="yes")
  */
 class StructInheritedFromAbstract extends AbstractStruct
 {
@@ -33,7 +33,7 @@ class StructInheritedFromAbstract extends AbstractStruct
                 ),
                 'inherited'     => array(
                     'name'   => 'inherited',
-                    'class'  => $pNs . '\\String',
+                    'class'  => $pNs . '\\Str',
                     'config' => array(
                         'default' => 'yes',
                     ),

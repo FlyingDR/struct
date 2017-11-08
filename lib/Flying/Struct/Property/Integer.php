@@ -5,7 +5,7 @@ namespace Flying\Struct\Property;
 /**
  * Structure property with integer value
  */
-class Int extends Property
+class Integer extends Property
 {
     /**
      * {@inheritdoc}

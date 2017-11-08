@@ -16,6 +16,6 @@ use Doctrine\Common\Annotations\Annotation\Target;
  *      @Attribute("maxlength", required=false, type="int")
  * })
  */
-class String extends Property
+class Str extends Property
 {
 }

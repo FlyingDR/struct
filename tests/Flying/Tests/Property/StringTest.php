@@ -13,7 +13,7 @@ class StringTest extends BaseTypeTest
      *
      * @var string
      */
-    protected $propertyClass = 'String';
+    protected $propertyClass = 'Str';
     /**
      * Default property value
      *

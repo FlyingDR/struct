@@ -296,9 +296,9 @@ abstract class BasicStructTest extends BaseStructTest
     public function testExplicitMetadata()
     {
         $metadata = new StructMetadata();
-        $metadata->addProperty(new PropertyMetadata('a', 'Flying\Struct\Property\Int', array('default' => 123)));
+        $metadata->addProperty(new PropertyMetadata('a', 'Flying\Struct\Property\Integer', array('default' => 123)));
         $metadata->addProperty(new PropertyMetadata('b', 'Flying\Struct\Property\Boolean', array('default' => false)));
-        $metadata->addProperty(new PropertyMetadata('c', 'Flying\Struct\Property\String', array('default' => 'test')));
+        $metadata->addProperty(new PropertyMetadata('c', 'Flying\Struct\Property\Str', array('default' => 'test')));
         $struct = new Struct(null, array(
             'metadata' => $metadata,
         ));

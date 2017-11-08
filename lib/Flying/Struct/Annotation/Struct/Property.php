@@ -20,6 +20,16 @@ use Doctrine\Common\Annotations\AnnotationException;
 class Property extends Annotation
 {
     /**
+     * Types mapping to allow use of standard type names
+     * in PHP 7.x where use of reserved words as class names is not allowed
+     *
+     * @var array
+     */
+    private static $typesMap = [
+        'string' => 'str',
+        'int'    => 'integer',
+    ];
+    /**
      * Property type
      *
      * @var string
@@ -41,6 +51,9 @@ class Property extends Annotation
         $this->type = $this->getDefaultType();
         if (array_key_exists('type', $values)) {
             $this->type = $values['type'];
+            if (array_key_exists($this->type, self::$typesMap)) {
+                $this->type = self::$typesMap[$this->type];
+            }
             unset($values['type']);
         }
         $this->config = $values;

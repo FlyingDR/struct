@@ -9,8 +9,8 @@ use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
  * @Struct\Boolean(name="first", default=true)
- * @Struct\Int(name="second", nullable=false, default=100, min=10, max=1000)
- * @Struct\String(name="third")
+ * @Struct\Integer(name="second", nullable=false, default=100, min=10, max=1000)
+ * @Struct\Str(name="third")
  * @Struct\Property(name="fourth", type="string", default="some value")
  */
 class StructWithMetadataModifications extends StructStub implements MetadataTestcaseInterface, MetadataModificationInterface
@@ -51,7 +51,7 @@ class StructWithMetadataModifications extends StructStub implements MetadataTest
                 ),
                 'second' => array(
                     'name'   => 'second',
-                    'class'  => $pNs . '\\Int',
+                    'class'  => $pNs . '\\Integer',
                     'config' => array(
                         'nullable' => false,
                         'default'  => 100,
@@ -62,7 +62,7 @@ class StructWithMetadataModifications extends StructStub implements MetadataTest
                 ),
                 'fourth' => array(
                     'name'   => 'fourth',
-                    'class'  => $pNs . '\\String',
+                    'class'  => $pNs . '\\Str',
                     'config' => array(
                         'default' => 'another value',
                     ),

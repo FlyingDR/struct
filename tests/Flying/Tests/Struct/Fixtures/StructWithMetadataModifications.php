@@ -7,8 +7,8 @@ use Flying\Struct\Metadata\StructMetadata;
 
 /**
  * @Struct\Boolean(name="first", default=true)
- * @Struct\Int(name="second", nullable=false, default=100, min=10, max=1000)
- * @Struct\String(name="third")
+ * @Struct\Integer(name="second", nullable=false, default=100, min=10, max=1000)
+ * @Struct\Str(name="third")
  * @Struct\Property(name="fourth", type="string", default="some value")
  */
 class StructWithMetadataModifications extends TestStruct
@@ -23,7 +23,7 @@ class StructWithMetadataModifications extends TestStruct
         $config = $fourth->getConfig();
         $config['default'] = 'another value';
         $fourth->setConfig($config);
-        $property = new PropertyMetadata('new', 'Flying\Struct\Property\String', array('default' => 'custom property'));
+        $property = new PropertyMetadata('new', 'Flying\Struct\Property\Str', array('default' => 'custom property'));
         $metadata->addProperty($property);
     }
 

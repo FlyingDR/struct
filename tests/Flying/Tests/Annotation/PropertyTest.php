@@ -10,8 +10,8 @@ class PropertyTest extends TestCase
     protected $propertyNamespace = 'Flying\Struct\Annotation\Struct';
     protected static $typesMap = array(
         'Boolean'    => 'boolean',
-        'Int'        => 'int',
-        'String'     => 'string',
+        'Integer'    => 'integer',
+        'Str'        => 'str',
         'Enum'       => 'enum',
         'Collection' => 'collection',
     );

@@ -5,7 +5,7 @@ namespace Flying\Tests\Struct\Fixtures;
 use Flying\Struct\Metadata\StructMetadata;
 
 /**
- * @Struct\String(name="own", default="own property")
+ * @Struct\Str(name="own", default="own property")
  * @Struct\Struct(name="child", class="BasicStruct")
  */
 class MultiLevelStructWithMetadataModifications extends TestStruct

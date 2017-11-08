@@ -6,10 +6,10 @@ use Flying\Struct\ConfigurationManager;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
- * @Struct\Int(name="a1")
+ * @Struct\Integer(name="a1")
  * @Struct\Boolean(name="b1")
- * @Struct\String(name="c1")
- * @Struct\String(name="overloaded", default="FromA", nullable=false)
+ * @Struct\Str(name="c1")
+ * @Struct\Str(name="overloaded", default="FromA", nullable=false)
  */
 class InheritanceTestStructA extends StructStub implements MetadataTestcaseInterface
 {
@@ -29,7 +29,7 @@ class InheritanceTestStructA extends StructStub implements MetadataTestcaseInter
             'properties' => array(
                 'a1'         => array(
                     'name'   => 'a1',
-                    'class'  => $pNs . '\\Int',
+                    'class'  => $pNs . '\\Integer',
                     'config' => array(),
                     'hash'   => 'test',
                 ),
@@ -41,13 +41,13 @@ class InheritanceTestStructA extends StructStub implements MetadataTestcaseInter
                 ),
                 'c1'         => array(
                     'name'   => 'c1',
-                    'class'  => $pNs . '\\String',
+                    'class'  => $pNs . '\\Str',
                     'config' => array(),
                     'hash'   => 'test',
                 ),
                 'overloaded' => array(
                     'name'   => 'overloaded',
-                    'class'  => $pNs . '\\String',
+                    'class'  => $pNs . '\\Str',
                     'config' => array(
                         'default' => 'FromA',
                     ),

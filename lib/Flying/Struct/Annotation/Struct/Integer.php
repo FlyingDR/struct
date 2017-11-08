@@ -17,6 +17,6 @@ use Doctrine\Common\Annotations\Annotation\Attributes;
  *      @Attribute("max", required=false, type="int")
  * })
  */
-class Int extends Property
+class Integer extends Property
 {
 }

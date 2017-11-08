@@ -5,10 +5,10 @@ namespace Flying\Tests\Metadata\Fixtures\Structs;
 use Flying\Struct\ConfigurationManager;
 
 /**
- * @Struct\Int(name="a2")
+ * @Struct\Integer(name="a2")
  * @Struct\Boolean(name="b2")
- * @Struct\String(name="c2")
- * @Struct\String(name="overloaded", default="FromB")
+ * @Struct\Str(name="c2")
+ * @Struct\Str(name="overloaded", default="FromB")
  */
 class InheritanceTestStructB extends InheritanceTestStructA
 {
@@ -24,7 +24,7 @@ class InheritanceTestStructB extends InheritanceTestStructA
         $metadata['class'] = __CLASS__;
         $metadata['properties']['a2'] = array(
             'name'   => 'a2',
-            'class'  => $pNs . '\\Int',
+            'class'  => $pNs . '\\Integer',
             'config' => array(),
             'hash'   => 'test',
         );
@@ -36,13 +36,13 @@ class InheritanceTestStructB extends InheritanceTestStructA
         );
         $metadata['properties']['c2'] = array(
             'name'   => 'c2',
-            'class'  => $pNs . '\\String',
+            'class'  => $pNs . '\\Str',
             'config' => array(),
             'hash'   => 'test',
         );
         $metadata['properties']['overloaded'] = array(
             'name'   => 'overloaded',
-            'class'  => $pNs . '\\String',
+            'class'  => $pNs . '\\Str',
             'config' => array(
                 'default' => 'FromB',
             ),

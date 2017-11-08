@@ -28,7 +28,7 @@ class CustomPropertiesTest extends StructStub implements MetadataTestcaseInterfa
             'properties' => array(
                 'standard' => array(
                     'name'   => 'standard',
-                    'class'  => $nsMap->get('default') . '\\String',
+                    'class'  => $nsMap->get('default') . '\\Str',
                     'config' => array(),
                     'hash'   => 'test',
                 ),
