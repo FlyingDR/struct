@@ -60,7 +60,7 @@ class StorableStruct extends Struct implements StorableInterface
     {
         parent::__clone();
         // Register newly cloned object into storage
-        if ($this->getStorageKey()) {
+        if ($this->getStorageKey() !== null) {
             $this->getStorage()->register($this);
             // If structure had some changes before cloning - its cloned version should also be marked as "dirty"
             if ($this->markedAsDirty) {
@@ -72,7 +72,7 @@ class StorableStruct extends Struct implements StorableInterface
     /**
      * Get key for this structure to use in structures storage
      *
-     * @return string
+     * @return string|null
      * @throws \Flying\Struct\Exception
      */
     public function getStorageKey()
@@ -134,7 +134,7 @@ class StorableStruct extends Struct implements StorableInterface
     public function updateNotify(SimplePropertyInterface $property)
     {
         parent::updateNotify($property);
-        if ((!$this->markedAsDirty) && $this->getStorageKey()) {
+        if ($this->markedAsDirty === false && $this->getStorageKey() !== null) {
             $this->getStorage()->markAsDirty($this);
             $this->markedAsDirty = true;
         }
@@ -154,7 +154,7 @@ class StorableStruct extends Struct implements StorableInterface
             // Initial contents for structure are taken from storage
             $contents = [];
             $key = $this->getStorageKey();
-            if ($key) {
+            if ($key !== null) {
                 // Storage key is only available for top-level structure so it may be missed
                 $contents = $this->getStorage()->load($key);
                 if (!is_array($contents)) {
@@ -189,7 +189,7 @@ class StorableStruct extends Struct implements StorableInterface
     {
         parent::createStruct($metadata);
         // Register ourselves into storage, but only top-level structure should be stored
-        if ($this->getStorageKey()) {
+        if ($this->getStorageKey() !== null) {
             $this->getStorage()->register($this);
             $this->markedAsDirty = false;
         }
@@ -222,10 +222,8 @@ class StorableStruct extends Struct implements StorableInterface
                 /** @var $configuration Configuration */
                 $configuration = $this->getConfig('configuration');
                 return $configuration->getStorage();
-                break;
             default:
                 return parent::lazyConfigInit($name);
-                break;
         }
     }
 
@@ -248,7 +246,6 @@ class StorableStruct extends Struct implements StorableInterface
                 break;
             default:
                 return parent::validateConfig($name, $value);
-                break;
         }
         return true;
     }

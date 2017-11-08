@@ -46,7 +46,6 @@ class MetadataManager implements MetadataManagerInterface
      */
     public function getMetadata($struct)
     {
-        $class = null;
         // Get class name of given structure
         if (is_object($struct)) {
             if ($struct instanceof StructInterface) {
@@ -61,7 +60,7 @@ class MetadataManager implements MetadataManagerInterface
                 throw new \InvalidArgumentException('Invalid structure class "' . $struct . '"');
             }
             if (in_array(StructInterface::class, $reflection->getInterfaceNames(), true)) {
-                $class = $reflection->getName();
+                $class = $reflection->name;
             } else {
                 throw new \InvalidArgumentException('Structure class must implement StructInterface interface');
             }

@@ -21,7 +21,6 @@ class Str extends Property
                 break;
             default:
                 return parent::validateConfig($name, $value);
-                break;
         }
         return true;
     }

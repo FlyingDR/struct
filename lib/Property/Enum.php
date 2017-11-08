@@ -74,7 +74,6 @@ class Enum extends Property
                 break;
             default:
                 parent::onConfigChange($name, $value);
-                break;
         }
     }
 }

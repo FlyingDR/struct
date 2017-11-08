@@ -429,7 +429,6 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                 break;
             default:
                 return parent::validateConfig($name, $value);
-                break;
         }
         return true;
     }
@@ -443,8 +442,9 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
         // property value should be set to its default
         $flag = $this->skipNotify;
         $this->skipNotify = true;
-        $default = $this->getConfig('default');
-        foreach ((array)$default as $k => &$v) {
+        /** @var array $default */
+        $default = (array)$this->getConfig('default');
+        foreach ($default as $k => &$v) {
             if (!$this->normalize($v, $k)) {
                 throw new Exception('Default value for property class ' . get_class($this) . ' is not acceptable for property validation rules');
             }

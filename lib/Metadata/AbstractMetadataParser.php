@@ -17,13 +17,13 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
      *
      * @var array
      */
-    private $nsProperty;
+    private $nsProperty = [];
     /**
      * Namespaces for structure classes
      *
      * @var array
      */
-    private $nsStruct;
+    private $nsStruct = [];
     /**
      * @var MetadataManagerInterface
      */
@@ -100,7 +100,7 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
      */
     protected function resolvePropertyClass($class)
     {
-        if (!$this->nsProperty) {
+        if (empty($this->nsProperty)) {
             $ns = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->getAll();
             $this->nsProperty = array_reverse($ns, true);
         }
@@ -139,7 +139,7 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
      */
     protected function resolveStructClass($class)
     {
-        if (!$this->nsStruct) {
+        if (empty($this->nsStruct)) {
             $ns = ConfigurationManager::getConfiguration()->getStructNamespacesMap()->getAll();
             $this->nsStruct = array_reverse($ns, true);
         }

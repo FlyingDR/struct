@@ -653,17 +653,14 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
         switch ($name) {
             case 'configuration':
                 return ConfigurationManager::getConfiguration();
-                break;
             case 'metadata':
                 /** @var $configuration Configuration */
                 $configuration = $this->getConfig('configuration');
                 return $configuration->getMetadataManager()->getMetadata($this);
-                break;
             case 'explicit_metadata_class':
                 return __CLASS__;
             default:
                 return parent::lazyConfigInit($name);
-                break;
         }
     }
 

@@ -111,7 +111,7 @@ class AnnotationParser extends AbstractMetadataParser
     {
         if ($annotation instanceof Property) {
             $class = $this->resolvePropertyClass($annotation->getType());
-            if (!$class) {
+            if (!is_string($class)) {
                 throw new Exception('Unable to resolve structure property class for type: ' . $annotation->getType());
             }
             $property = new PropertyMetadata($annotation->getName(), $class, $annotation->getConfig());
@@ -124,7 +124,7 @@ class AnnotationParser extends AbstractMetadataParser
 
         if ($annotation->getClass()) {
             $class = $this->resolveStructClass($annotation->getClass());
-            if (!$class) {
+            if (!is_string($class)) {
                 throw new Exception('Unable to resolve structure class: ' . $annotation->getClass());
             }
             $struct = ConfigurationManager::getConfiguration()->getMetadataManager()->getMetadata($class);

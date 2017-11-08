@@ -32,7 +32,6 @@ class DateTime extends Property
                 break;
             default:
                 return parent::validateConfig($name, $value);
-                break;
         }
         return true;
     }
