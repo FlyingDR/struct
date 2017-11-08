@@ -9,26 +9,26 @@ class UnacceptableValueTest extends TestCase
 {
     public function testNullValueToNullableProperty()
     {
-        $property = new PropertyForUnacceptableValues(null, array(
+        $property = new PropertyForUnacceptableValues(null, [
             'nullable' => true,
-        ));
+        ]);
         static::assertNull($property->getValue());
     }
 
     public function testNotNullValueToNullableProperty()
     {
-        $property = new PropertyForUnacceptableValues('test', array(
+        $property = new PropertyForUnacceptableValues('test', [
             'nullable' => true,
-        ));
+        ]);
         static::assertNull($property->getValue());
     }
 
     public function testUnacceptableValuePassedToConstructor()
     {
-        $property = new PropertyForUnacceptableValues('test', array(
+        $property = new PropertyForUnacceptableValues('test', [
             'nullable' => false,
             'default'  => 'value',
-        ));
+        ]);
         static::assertEquals('value', $property->getValue());
     }
 }

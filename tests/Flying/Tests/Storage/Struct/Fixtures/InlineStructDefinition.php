@@ -28,22 +28,22 @@ class InlineStructDefinition extends TestStruct
      */
     public function getExpectedContents()
     {
-        $contents = array(
+        $contents = [
             'boolean_property'                    => true,
             'int_property'                        => 100,
             'string_property'                     => null,
             'generic_property'                    => 'some value',
             'child_struct_with_explicit_class'    => null,
-            'child_struct_with_inline_definition' => array(
+            'child_struct_with_inline_definition' => [
                 'a' => null,
                 'b' => null,
                 'c' => null,
-                's' => array(
+                's' => [
                     'min' => 0,
                     'max' => 100,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $child = new BasicStruct();
         $contents['child_struct_with_explicit_class'] = $child->getExpectedContents();
         return $contents;

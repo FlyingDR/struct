@@ -21,11 +21,11 @@ class MultiLevelStruct extends TestStruct
      */
     public function getExpectedContents()
     {
-        $contents = array(
+        $contents = [
             'b' => true,
             'i' => 123,
             's' => 'test',
-        );
+        ];
         $child = new ChildStruct();
         $contents['child'] = $child->getExpectedContents();
         return ($contents);

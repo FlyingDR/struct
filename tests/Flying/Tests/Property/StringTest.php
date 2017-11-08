@@ -25,39 +25,39 @@ class StringTest extends BaseTypeTest
      *
      * @var array
      */
-    protected $serializationTests = array(
+    protected $serializationTests = [
         '',
         'some text',
         'some long text for property value',
-    );
+    ];
 
     /**
      * {@inheritdoc}
      */
     public function getValueTests()
     {
-        return array(
-            array(true, '1'),
-            array(false, ''),
+        return [
+            [true, '1'],
+            [false, ''],
 
-            array(1, '1'),
-            array(0, '0'),
-            array(12345, '12345'),
-            array(-12345, '-12345'),
-            array(123.45, '123.45'),
-            array(-123.45, '-123.45'),
+            [1, '1'],
+            [0, '0'],
+            [12345, '12345'],
+            [-12345, '-12345'],
+            [123.45, '123.45'],
+            [-123.45, '-123.45'],
 
-            array('test', 'test'),
-            array('some long text for property value', 'some long text for property value'),
-            array('some long text for property value', 'some long ', array('maxlength' => 10)),
-            array('some long text for property value', 'some long text for p', array('maxlength' => 20)),
+            ['test', 'test'],
+            ['some long text for property value', 'some long text for property value'],
+            ['some long text for property value', 'some long ', ['maxlength' => 10]],
+            ['some long text for property value', 'some long text for p', ['maxlength' => 20]],
 
-            array(array(), 'test', array('default' => 'test')),
-            array(new \ArrayObject(), 'test', array('default' => 'test')),
-            array(new Property('abc'), 'abc'),
-            array(new Property('12345'), '12345'),
-            array(new ToString('test string'), 'test string'),
-            array(new UsToString('another test string'), 'another test string'),
-        );
+            [[], 'test', ['default' => 'test']],
+            [new \ArrayObject(), 'test', ['default' => 'test']],
+            [new Property('abc'), 'abc'],
+            [new Property('12345'), '12345'],
+            [new ToString('test string'), 'test string'],
+            [new UsToString('another test string'), 'another test string'],
+        ];
     }
 }

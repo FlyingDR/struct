@@ -156,11 +156,11 @@ class Property extends AbstractConfig implements PropertyInterface
     protected function initConfig()
     {
         parent::initConfig();
-        $this->mergeConfig(array(
+        $this->mergeConfig([
             'nullable'               => true, // TRUE if property value can be NULL, FALSE if not
             'default'                => null, // Default value for the property
             'update_notify_listener' => null, // Listener of property update notifications
-        ));
+        ]);
     }
 
     /**
@@ -215,10 +215,10 @@ class Property extends AbstractConfig implements PropertyInterface
      */
     public function serialize()
     {
-        return (serialize(array(
+        return (serialize([
             'value'  => $this->getValue(),
             'config' => $this->getConfigForSerialization(),
-        )));
+        ]));
     }
 
     /**

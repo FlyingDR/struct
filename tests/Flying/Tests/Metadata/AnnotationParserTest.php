@@ -67,7 +67,7 @@ class AnnotationParserTest extends TestUsingFixtureStructures
         $parser = $this->getTestParser();
         $reader = Mockery::mock('Doctrine\Common\Annotations\Reader');
         $reader->shouldReceive('getClassAnnotations')->once()
-            ->andReturn(array());
+            ->andReturn([]);
         /** @var $reader Reader */
         $parser->setReader($reader);
         $metadata = $parser->getMetadata($this->getFixtureClass('BasicStruct'));

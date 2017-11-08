@@ -40,7 +40,7 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
     public function testIteratorInterface()
     {
         $struct = $this->getTestStruct();
-        $contents = array();
+        $contents = [];
         $expected = $struct->getExpectedContents();
         foreach ($struct as $key => $value) {
             if ($value instanceof ComplexPropertyInterface) {
@@ -55,15 +55,15 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
     public function testRecursiveIteratorInterface()
     {
         $struct = $this->getTestStruct();
-        $expected = array();
+        $expected = [];
         $temp = $struct->getExpectedContents();
         array_walk_recursive($temp, function ($v, $k) use (&$expected) {
-            $expected[] = array($k, $v);
+            $expected[] = [$k, $v];
         });
-        $actual = array();
+        $actual = [];
         $iterator = new \RecursiveIteratorIterator($struct);
         foreach ($iterator as $key => $value) {
-            $actual[] = array($key, $value);
+            $actual[] = [$key, $value];
         }
         static::assertEquals($expected, $actual);
     }

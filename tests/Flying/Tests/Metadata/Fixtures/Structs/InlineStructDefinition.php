@@ -33,103 +33,103 @@ class InlineStructDefinition extends StructStub implements MetadataTestcaseInter
     public function getExpectedMetadata()
     {
         $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
-        $metadata = array(
+        $metadata = [
             'name'       => null,
             'class'      => __CLASS__,
-            'config'     => array(),
+            'config'     => [],
             'hash'       => 'test',
-            'properties' => array(
-                'boolean_property'                    => array(
+            'properties' => [
+                'boolean_property'                    => [
                     'name'   => 'boolean_property',
                     'class'  => $pNs . '\\Boolean',
-                    'config' => array(
+                    'config' => [
                         'default' => true,
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-                'int_property'                        => array(
+                ],
+                'int_property'                        => [
                     'name'   => 'int_property',
                     'class'  => $pNs . '\\Integer',
-                    'config' => array(
+                    'config' => [
                         'nullable' => false,
                         'default'  => 100,
                         'min'      => 10,
                         'max'      => 1000,
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-                'string_property'                     => array(
+                ],
+                'string_property'                     => [
                     'name'   => 'string_property',
                     'class'  => $pNs . '\\Str',
-                    'config' => array(),
+                    'config' => [],
                     'hash'   => 'test',
-                ),
-                'generic_property'                    => array(
+                ],
+                'generic_property'                    => [
                     'name'   => 'generic_property',
                     'class'  => $pNs . '\\Str',
-                    'config' => array(
+                    'config' => [
                         'default' => 'some value',
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-                'child_struct_with_explicit_class'    => array(
+                ],
+                'child_struct_with_explicit_class'    => [
                     'name'   => 'child_struct_with_explicit_class',
                     'class'  => __NAMESPACE__ . '\\BasicStruct',
-                    'config' => array(),
+                    'config' => [],
                     'hash'   => 'test',
-                ),
-                'child_struct_with_inline_definition' => array(
+                ],
+                'child_struct_with_inline_definition' => [
                     'name'       => 'child_struct_with_inline_definition',
                     'class'      => null,
-                    'config'     => array(),
+                    'config'     => [],
                     'hash'       => 'test',
-                    'properties' => array(
-                        'a' => array(
+                    'properties' => [
+                        'a' => [
                             'name'   => 'a',
                             'class'  => $pNs . '\\Boolean',
-                            'config' => array(),
+                            'config' => [],
                             'hash'   => 'test',
-                        ),
-                        'b' => array(
+                        ],
+                        'b' => [
                             'name'   => 'b',
                             'class'  => $pNs . '\\Integer',
-                            'config' => array(),
+                            'config' => [],
                             'hash'   => 'test',
-                        ),
-                        'c' => array(
+                        ],
+                        'c' => [
                             'name'   => 'c',
                             'class'  => $pNs . '\\Str',
-                            'config' => array(),
+                            'config' => [],
                             'hash'   => 'test',
-                        ),
-                        's' => array(
+                        ],
+                        's' => [
                             'name'       => 's',
                             'class'      => null,
-                            'config'     => array(),
+                            'config'     => [],
                             'hash'       => 'test',
-                            'properties' => array(
-                                'min' => array(
+                            'properties' => [
+                                'min' => [
                                     'name'   => 'min',
                                     'class'  => $pNs . '\\Integer',
-                                    'config' => array(
+                                    'config' => [
                                         'default' => 0,
-                                    ),
+                                    ],
                                     'hash'   => 'test',
-                                ),
-                                'max' => array(
+                                ],
+                                'max' => [
                                     'name'   => 'max',
                                     'class'  => $pNs . '\\Integer',
-                                    'config' => array(
+                                    'config' => [
                                         'default' => 100,
-                                    ),
+                                    ],
                                     'hash'   => 'test',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        );
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
         /** @var $child MetadataTestcaseInterface */
         $child = new $metadata['properties']['child_struct_with_explicit_class']['class'];
         $meta = $child->getExpectedMetadata();

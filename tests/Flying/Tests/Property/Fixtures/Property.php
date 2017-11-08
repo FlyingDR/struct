@@ -16,7 +16,7 @@ class Property extends BaseProperty implements CallbackTrackingInterface
      *
      * @var array
      */
-    private $cbLogs = array();
+    private $cbLogs = [];
 
     /**
      * Set logger for defined method

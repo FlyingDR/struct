@@ -20,42 +20,42 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
     public function getExpectedMetadata()
     {
         $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
-        $metadata = array(
+        $metadata = [
             'name'       => null,
             'class'      => __CLASS__,
-            'config'     => array(),
+            'config'     => [],
             'hash'       => 'test',
-            'properties' => array(
-                'name'  => array(
+            'properties' => [
+                'name'  => [
                     'name'   => 'name',
                     'class'  => $pNs . '\\Str',
-                    'config' => array(
+                    'config' => [
                         'nullable'  => false,
                         'maxlength' => 100,
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-                'email' => array(
+                ],
+                'email' => [
                     'name'   => 'email',
                     'class'  => $pNs . '\\Str',
-                    'config' => array(
+                    'config' => [
                         'nullable'  => false,
                         'maxlength' => 255,
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-                'child' => array(
+                ],
+                'child' => [
                     'name'       => 'child',
                     'class'      => __NAMESPACE__ . '\\BasicStruct',
-                    'config'     => array(
+                    'config'     => [
                         'option'  => 'value',
                         'another' => 12345,
-                    ),
+                    ],
                     'hash'       => 'test',
-                    'properties' => array(),
-                ),
-            ),
-        );
+                    'properties' => [],
+                ],
+            ],
+        ];
         /** @var $child MetadataTestcaseInterface */
         $child = new $metadata['properties']['child']['class'];
         $meta = $child->getExpectedMetadata();

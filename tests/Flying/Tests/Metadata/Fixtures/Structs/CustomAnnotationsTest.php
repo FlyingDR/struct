@@ -20,37 +20,37 @@ class CustomAnnotationsTest extends StructStub implements MetadataTestcaseInterf
     public function getExpectedMetadata()
     {
         $nsMap = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap();
-        return array(
+        return [
             'name'       => null,
             'class'      => __CLASS__,
-            'config'     => array(),
+            'config'     => [],
             'hash'       => 'test',
-            'properties' => array(
-                'standard'       => array(
+            'properties' => [
+                'standard'       => [
                     'name'   => 'standard',
                     'class'  => $nsMap->get('default') . '\\Str',
-                    'config' => array(),
+                    'config' => [],
                     'hash'   => 'test',
-                ),
-                'custom'         => array(
+                ],
+                'custom'         => [
                     'name'   => 'custom',
                     'class'  => $nsMap->get('fixtures') . '\\Custom',
-                    'config' => array(
+                    'config' => [
                         'test'    => 123,
                         'enabled' => true,
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-                'fromAnnotation' => array(
+                ],
+                'fromAnnotation' => [
                     'name'   => 'fromAnnotation',
                     'class'  => $nsMap->get('fixtures') . '\\Custom',
-                    'config' => array(
+                    'config' => [
                         'abc' => 'xyz',
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**

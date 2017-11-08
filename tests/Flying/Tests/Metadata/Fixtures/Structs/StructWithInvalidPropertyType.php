@@ -16,7 +16,7 @@ class StructWithInvalidPropertyType extends StructStub implements MetadataTestca
      */
     public function getExpectedMetadata()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -26,6 +26,6 @@ class StructWithInvalidPropertyType extends StructStub implements MetadataTestca
      */
     public function getExpectedException()
     {
-        return array('Flying\Struct\Exception', 'Unable to resolve structure property class for type: unknown');
+        return ['Flying\Struct\Exception', 'Unable to resolve structure property class for type: unknown'];
     }
 }

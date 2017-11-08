@@ -20,23 +20,23 @@ class DateTimeTest extends BaseTypeTest
      */
     public function getValueTests()
     {
-        $config = array('nullable' => false, 'default' => '2014-01-01');
+        $config = ['nullable' => false, 'default' => '2014-01-01'];
         $dt = new \DateTime('2014-01-01');
-        return array(
-            array(null, null, array('nullable' => true, 'default' => null)),
-            array(null, $dt, array('nullable' => true, 'default' => '2014-01-01')),
-            array(true, $dt, $config),
-            array(false, $dt, $config),
-            array(123456789, $dt, $config),
-            array('2013-10-20', new \DateTime('2013-10-20'), $config),
-            array('2013-10-20', new \DateTime('2013-10-20'), $config),
-            array(array(), $dt, $config),
-            array(new \ArrayObject(), $dt, $config),
-            array(new Property('2013-10-20'), new \DateTime('2013-10-20'), $config),
-            array(new ToString('2013-10-20'), new \DateTime('2013-10-20'), $config),
-            array(new UsToString('2013-10-20'), new \DateTime('2013-10-20'), $config),
-            array('2013-10-20 05:25:50', new \DateTime('2013-10-20 05:25:50'), array('format' => 'Y-m-d H:i:s')),
-        );
+        return [
+            [null, null, ['nullable' => true, 'default' => null]],
+            [null, $dt, ['nullable' => true, 'default' => '2014-01-01']],
+            [true, $dt, $config],
+            [false, $dt, $config],
+            [123456789, $dt, $config],
+            ['2013-10-20', new \DateTime('2013-10-20'), $config],
+            ['2013-10-20', new \DateTime('2013-10-20'), $config],
+            [[], $dt, $config],
+            [new \ArrayObject(), $dt, $config],
+            [new Property('2013-10-20'), new \DateTime('2013-10-20'), $config],
+            [new ToString('2013-10-20'), new \DateTime('2013-10-20'), $config],
+            [new UsToString('2013-10-20'), new \DateTime('2013-10-20'), $config],
+            ['2013-10-20 05:25:50', new \DateTime('2013-10-20 05:25:50'), ['format' => 'Y-m-d H:i:s']],
+        ];
     }
 
     /**
@@ -49,7 +49,7 @@ class DateTimeTest extends BaseTypeTest
 
     public function testNullDefaultForNotNullablePropertyResultsInDateTimeDefault()
     {
-        $property = $this->getTestProperty(null, array('nullable' => false, 'default' => null));
+        $property = $this->getTestProperty(null, ['nullable' => false, 'default' => null]);
         static::assertInstanceOf('\DateTime', $property->getConfig('default'));
     }
 
@@ -63,30 +63,30 @@ class DateTimeTest extends BaseTypeTest
 
     public function serializationDataProvider()
     {
-        $config = array('nullable' => false, 'default' => '2014-01-01');
+        $config = ['nullable' => false, 'default' => '2014-01-01'];
         $dt = new \DateTime('2014-01-01');
-        $tests = array(
-            array(
+        $tests = [
+            [
                 null,
                 $dt,
                 $config,
-            ),
-            array(
+            ],
+            [
                 '2013-10-20',
                 new \DateTime('2013-10-20'),
                 $config,
-            ),
-            array(
+            ],
+            [
                 '2013-10-20 05:25:50',
                 new \DateTime('2013-10-20 05:25:50'),
                 $config,
-            ),
-            array(
+            ],
+            [
                 new \DateTime('2013-10-20 05:25:50', new \DateTimeZone('Europe/London')),
                 new \DateTime('2013-10-20 05:25:50', new \DateTimeZone('Europe/London')),
                 $config,
-            ),
-        );
+            ],
+        ];
         return $tests;
     }
 }

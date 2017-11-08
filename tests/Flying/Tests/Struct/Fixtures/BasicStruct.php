@@ -21,11 +21,11 @@ class BasicStruct extends TestStruct
      */
     public function getExpectedContents()
     {
-        return (array(
+        return ([
             'first'  => true,
             'second' => 100,
             'third'  => null,
             'fourth' => 'some value',
-        ));
+        ]);
     }
 }

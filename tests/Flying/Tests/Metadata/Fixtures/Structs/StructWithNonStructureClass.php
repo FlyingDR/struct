@@ -16,7 +16,7 @@ class StructWithNonStructureClass extends StructStub implements MetadataTestcase
      */
     public function getExpectedMetadata()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -26,6 +26,6 @@ class StructWithNonStructureClass extends StructStub implements MetadataTestcase
      */
     public function getExpectedException()
     {
-        return array('Flying\Struct\Exception', 'Unable to resolve structure class: \ArrayObject');
+        return ['Flying\Struct\Exception', 'Unable to resolve structure class: \ArrayObject'];
     }
 }

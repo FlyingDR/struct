@@ -14,13 +14,13 @@ class Storage implements StorageInterface
      *
      * @var array
      */
-    private $storage = array();
+    private $storage = [];
     /**
      * List of objects marked as "dirty"
      *
      * @var array
      */
-    private $dirty = array();
+    private $dirty = [];
     /**
      * Storage backend
      *
@@ -154,7 +154,7 @@ class Storage implements StorageInterface
     public function flush()
     {
         $backend = $this->getBackend();
-        $storedKeys = array();
+        $storedKeys = [];
         /** @var $object StorableInterface */
         foreach ($this->storage as $hash => $object) {
             $key = $object->getStorageKey();
@@ -168,7 +168,7 @@ class Storage implements StorageInterface
             $backend->save($key, $object->toStorage());
             $storedKeys[] = $key;
         }
-        $this->dirty = array();
+        $this->dirty = [];
         return $this;
     }
 }

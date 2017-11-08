@@ -61,10 +61,10 @@ class StructMetadataTest extends BaseMetadataTest
     public function testFillingObjectFromConstructor()
     {
         $class = get_class($this->getMetadataObject());
-        $properties = array(
+        $properties = [
             new PropertyMetadata('p1'),
             new PropertyMetadata('p2'),
-        );
+        ];
         /** @var $metadata StructMetadata */
         $metadata = new $class($this->name, $this->class, $this->config, $properties);
         static::assertEquals($metadata->getName(), $this->name);
@@ -106,13 +106,13 @@ class StructMetadataTest extends BaseMetadataTest
         $metadata->setName($this->name)
             ->setClass($this->class)
             ->setConfig($this->config);
-        $expected = array(
+        $expected = [
             'name'       => $this->name,
             'class'      => $this->class,
             'config'     => $this->config,
             'hash'       => $metadata->getHash(),
-            'properties' => array(),
-        );
+            'properties' => [],
+        ];
         static::assertEquals($expected, $metadata->toArray());
     }
 
@@ -126,16 +126,16 @@ class StructMetadataTest extends BaseMetadataTest
             ->setConfig($this->config)
             ->addProperty($p1)
             ->addProperty($p2);
-        $expected = array(
+        $expected = [
             'name'       => $this->name,
             'class'      => $this->class,
             'config'     => $this->config,
             'hash'       => $metadata->getHash(),
-            'properties' => array(
+            'properties' => [
                 'p1' => $p1->toArray(),
                 'p2' => $p2->toArray(),
-            ),
-        );
+            ],
+        ];
         static::assertEquals($expected, $metadata->toArray());
     }
 
@@ -157,7 +157,7 @@ class StructMetadataTest extends BaseMetadataTest
         $metadata->clearProperties();
         static::assertNotEquals($hash, $metadata->getHash());
         $hash = $metadata->getHash();
-        $metadata->setProperties(array($p1, $p2));
+        $metadata->setProperties([$p1, $p2]);
         static::assertNotEquals($hash, $metadata->getHash());
     }
 

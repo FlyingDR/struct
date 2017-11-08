@@ -34,22 +34,22 @@ abstract class StructWithCollectionTest extends BaseStructTest
     public function testRecursiveIteratorInterface()
     {
         $struct = $this->getTestStruct();
-        $expected = array();
+        $expected = [];
         $temp = $struct->getExpectedContents();
         // Don't walk recursively to avoid converting collection into list of its values
         array_walk(
             $temp,
             function ($v, $k) use (&$expected) {
-                $expected[] = array($k, $v);
+                $expected[] = [$k, $v];
             }
         );
-        $actual = array();
+        $actual = [];
         $iterator = new \RecursiveIteratorIterator($struct);
         foreach ($iterator as $key => $value) {
             if ($value instanceof ComplexPropertyInterface) {
                 $value = $value->toArray();
             }
-            $actual[] = array($key, $value);
+            $actual[] = [$key, $value];
         }
         static::assertEquals($expected, $actual);
     }
@@ -67,7 +67,6 @@ abstract class StructWithCollectionTest extends BaseStructTest
         $struct->collection[] = 5;
         $struct->collection[] = 6;
         $struct->collection[] = 7;
-        /** @noinspection PhpUndefinedMethodInspection */
-        static::assertEquals(array(1, 2, 3, 4, 5), $struct->collection->toArray());
+        static::assertEquals([1, 2, 3, 4, 5], $struct->collection->toArray());
     }
 }

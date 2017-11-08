@@ -55,23 +55,21 @@ abstract class MultiLevelStructTest extends BaseStructTest
     public function testSettingMultipleChildStructureProperties()
     {
         $struct = $this->getTestStruct();
-        $struct->child->set(
-            array(
-                'x' => true,
-                'y' => 777,
-                'z' => 'test string',
-            )
-        );
+        $struct->child->set([
+            'x' => true,
+            'y' => 777,
+            'z' => 'test string',
+        ]);
         static::assertTrue($struct->child->x);
         static::assertEquals(777, $struct->child->y);
         static::assertEquals('test string', $struct->child->z);
 
         $struct = $this->getTestStruct();
-        $struct->child = array(
+        $struct->child = [
             'x' => true,
             'y' => 777,
             'z' => 'test string',
-        );
+        ];
         /** @noinspection PhpUndefinedFieldInspection */
         static::assertTrue($struct->child->x);
         /** @noinspection PhpUndefinedFieldInspection */
@@ -107,18 +105,16 @@ abstract class MultiLevelStructTest extends BaseStructTest
                 static::assertEquals($value, $clone->get($name));
             }
         }
-        $clone->set(
-            array(
-                'b'     => false,
-                'i'     => 345,
-                's'     => 'changed',
-                'child' => array(
-                    'x' => true,
-                    'y' => 777,
-                    'z' => 'modified',
-                ),
-            )
-        );
+        $clone->set([
+            'b'     => false,
+            'i'     => 345,
+            's'     => 'changed',
+            'child' => [
+                'x' => true,
+                'y' => 777,
+                'z' => 'modified',
+            ],
+        ]);
         foreach ($struct as $name => $value) {
             if ($value instanceof ComplexPropertyInterface) {
                 $cloned = $clone->get($name);

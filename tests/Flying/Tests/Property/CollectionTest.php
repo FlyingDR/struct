@@ -27,13 +27,13 @@ class CollectionTest extends TestCase
 
     public function dataProviderCountableInterface()
     {
-        return array(
-            array(null, 0),
-            array(array(), 0),
-            array(array(123), 1),
-            array(array(1, 2, 3), 3),
-            array(null, 3, array('default' => array(1, 2, 3)))
-        );
+        return [
+            [null, 0],
+            [[], 0],
+            [[123], 1],
+            [[1, 2, 3], 3],
+            [null, 3, ['default' => [1, 2, 3]]]
+        ];
     }
 
     public function testArrayAccess()
@@ -49,16 +49,16 @@ class CollectionTest extends TestCase
         $collection[] = 'abc';
         static::assertCount(1, $collection);
         /** @var $collection Collection */
-        static::assertEquals(array('abc'), $collection->toArray());
+        static::assertEquals(['abc'], $collection->toArray());
     }
 
     public function testCollectionIterator()
     {
-        $values = array('a' => 'b', 'c' => 'd', 'e' => 'f');
+        $values = ['a' => 'b', 'c' => 'd', 'e' => 'f'];
         $collection = new Collection($values);
         $iterator = $collection->getIterator();
         static::assertInstanceOf('\Iterator', $iterator);
-        $actual = array();
+        $actual = [];
         foreach ($iterator as $k => $v) {
             $actual[$k] = $v;
         }
@@ -68,17 +68,17 @@ class CollectionTest extends TestCase
     public function testAddingElements()
     {
         $collection = new Collection();
-        static::assertEquals(array(), $collection->toArray());
+        static::assertEquals([], $collection->toArray());
         $collection->add(123);
-        static::assertEquals(array(123), $collection->toArray());
+        static::assertEquals([123], $collection->toArray());
         $collection->add(345);
-        static::assertEquals(array(123, 345), $collection->toArray());
+        static::assertEquals([123, 345], $collection->toArray());
         static::assertFalse($collection->isEmpty());
     }
 
     public function testGettingElements()
     {
-        $values = array('a' => 'b', 'c' => 'd', 'e' => 'f');
+        $values = ['a' => 'b', 'c' => 'd', 'e' => 'f'];
         $collection = new Collection($values);
         static::assertEquals('b', $collection->get('a'));
         static::assertNull($collection->get('x'));
@@ -90,14 +90,14 @@ class CollectionTest extends TestCase
     {
         $collection = new Collection();
         $collection->set('a', 'b');
-        static::assertEquals(array('a' => 'b'), $collection->toArray());
+        static::assertEquals(['a' => 'b'], $collection->toArray());
         $collection->set('c', 'd');
         $collection->set('e', 'f');
-        $expected = array('a' => 'b', 'c' => 'd', 'e' => 'f');
+        $expected = ['a' => 'b', 'c' => 'd', 'e' => 'f'];
         static::assertEquals($expected, $collection->toArray());
         static::assertEquals('d', $collection->get('c'));
         static::assertEquals('f', $collection['e']);
-        $actual = array();
+        $actual = [];
         foreach ($collection as $k => $v) {
             $actual[$k] = $v;
         }
@@ -106,8 +106,8 @@ class CollectionTest extends TestCase
 
     public function testSettingCollectionValue()
     {
-        $collection = new Collection(array('a', 'b', 'c'));
-        $value = array('x', 'y', 'z');
+        $collection = new Collection(['a', 'b', 'c']);
+        $value = ['x', 'y', 'z'];
         $collection->setValue($value);
         static::assertEquals($value, $collection->getValue());
     }
@@ -126,20 +126,20 @@ class CollectionTest extends TestCase
 
     public function dataProviderSettingInvalidCollectionValues()
     {
-        return array(
-            array(null),
-            array(true),
-            array(12345),
-            array('test'),
-            array(new \ArrayObject()),
-            array(array(1, 2, 3), false),
-            array(new ToArray(array(1, 2, 3)), false),
-        );
+        return [
+            [null],
+            [true],
+            [12345],
+            ['test'],
+            [new \ArrayObject()],
+            [[1, 2, 3], false],
+            [new ToArray([1, 2, 3]), false],
+        ];
     }
 
     public function testElementsExistenceChecking()
     {
-        $collection = new Collection(array('a' => 'b'));
+        $collection = new Collection(['a' => 'b']);
         static::assertTrue($collection->containsKey('a'));
         static::assertFalse($collection->contains('a'));
         static::assertFalse($collection->indexOf('a'));
@@ -150,56 +150,56 @@ class CollectionTest extends TestCase
 
     public function testElementsRemoving()
     {
-        $collection = new Collection(array('a' => 'b', 'c' => 'd', 'e' => 'f'));
+        $collection = new Collection(['a' => 'b', 'c' => 'd', 'e' => 'f']);
         static::assertEquals('d', $collection->remove('c'));
         static::assertNull($collection->remove('x'));
-        static::assertEquals(array('a' => 'b', 'e' => 'f'), $collection->toArray());
+        static::assertEquals(['a' => 'b', 'e' => 'f'], $collection->toArray());
         static::assertFalse($collection->removeElement('a'));
-        static::assertEquals(array('a' => 'b', 'e' => 'f'), $collection->toArray());
+        static::assertEquals(['a' => 'b', 'e' => 'f'], $collection->toArray());
         static::assertTrue($collection->removeElement('b'));
-        static::assertEquals(array('e' => 'f'), $collection->toArray());
-        $collection = new Collection(array('a', 'b', 'c', 'd', 'b', 'a', 'b', 'x'));
+        static::assertEquals(['e' => 'f'], $collection->toArray());
+        $collection = new Collection(['a', 'b', 'c', 'd', 'b', 'a', 'b', 'x']);
         $collection->removeElement('b');
-        static::assertEquals(array('a', 'c', 'd', 'a', 'x'), $collection->getValues());
+        static::assertEquals(['a', 'c', 'd', 'a', 'x'], $collection->getValues());
     }
 
     public function testElementsToggling()
     {
-        $collection = new Collection(array(1, 2, 3));
+        $collection = new Collection([1, 2, 3]);
         $collection->toggle(2);
-        static::assertEquals(array(1, 3), $collection->getValues());
+        static::assertEquals([1, 3], $collection->getValues());
         $collection->toggle(2);
-        static::assertEquals(array(1, 3, 2), $collection->getValues());
-        $collection->setValue(array(1, 2, 3, 2, 4, 2, 5, 2, 6));
+        static::assertEquals([1, 3, 2], $collection->getValues());
+        $collection->setValue([1, 2, 3, 2, 4, 2, 5, 2, 6]);
         $collection->toggle(2);
-        static::assertEquals(array(1, 3, 4, 5, 6), $collection->getValues());
+        static::assertEquals([1, 3, 4, 5, 6], $collection->getValues());
         $collection->toggle(2);
-        static::assertEquals(array(1, 3, 4, 5, 6, 2), $collection->getValues());
+        static::assertEquals([1, 3, 4, 5, 6, 2], $collection->getValues());
     }
 
     public function testPassingNullValuesAsElements()
     {
-        $collection = new Collection(array(null), array(
+        $collection = new Collection([null], [
             'nullable' => true,
-        ));
-        static::assertEquals(array(null), $collection->toArray());
-        $collection = new Collection(array(null), array(
+        ]);
+        static::assertEquals([null], $collection->toArray());
+        $collection = new Collection([null], [
             'nullable' => false,
-        ));
-        static::assertEquals(array(), $collection->toArray());
+        ]);
+        static::assertEquals([], $collection->toArray());
     }
 
     public function testCollectionReset()
     {
-        $value = array(1, 2, 3);
-        $default = array('x', 'y', 'z');
-        $collection = new Collection($value, array('default' => $default));
+        $value = [1, 2, 3];
+        $default = ['x', 'y', 'z'];
+        $collection = new Collection($value, ['default' => $default]);
         static::assertEquals($value, $collection->toArray());
         $collection->reset();
         static::assertEquals($default, $collection->toArray());
         static::assertFalse($collection->isEmpty());
         $collection->clear();
-        static::assertEquals(array(), $collection->toArray());
+        static::assertEquals([], $collection->toArray());
         static::assertTrue($collection->isEmpty());
     }
 
@@ -208,8 +208,8 @@ class CollectionTest extends TestCase
      */
     public function testAllowedValuesLimitation($validator)
     {
-        $collection = new Collection(array(1, 2, 3, 5, 10, 20, 50, 100), array('allowed' => $validator));
-        $expected = array(1, 2, 3, 5, 10);
+        $collection = new Collection([1, 2, 3, 5, 10, 20, 50, 100], ['allowed' => $validator]);
+        $expected = [1, 2, 3, 5, 10];
         static::assertEquals($expected, $collection->toArray());
         $collection->add('abc');
         static::assertEquals($expected, $collection->toArray());
@@ -225,10 +225,10 @@ class CollectionTest extends TestCase
         $cb = function ($v) {
             return ((is_int($v)) && ($v >= 0) && ($v <= 10));
         };
-        return array(
-            array($range),
-            array($cb),
-        );
+        return [
+            [$range],
+            [$cb],
+        ];
     }
 
     /**
@@ -239,32 +239,32 @@ class CollectionTest extends TestCase
      */
     public function testVariousKindsOfAllowedValuesValidator($allowed, $value, $valid)
     {
-        $collection = new Collection(null, array('allowed' => $allowed));
+        $collection = new Collection(null, ['allowed' => $allowed]);
         $collection->add($value);
         static::assertEquals($collection->count(), ($valid) ? 1 : 0);
     }
 
     public function dataProviderVariousKindsOfAllowedValuesValidator()
     {
-        return array(
-            array(array(1, 2, 3), 1, true),
-            array(array(1, 2, 3), 123, false),
-            array(array('x'), 'x', true),
-            array(array('x'), 'y', false),
-            array(array('x', 'y', 'z'), 'x', true),
-            array(array('x', 'y', 'z'), 'xyz', false),
-            array(array(true, false), false, true),
-            array(array(true, false), null, false),
-            array(array(true, false), 1, false),
-            array('\DateTime', new \DateTime(), true),
-            array('\DateTime', new \ArrayObject(), false),
-            array('Flying\Struct\Struct', new BasicStruct(), true),
-        );
+        return [
+            [[1, 2, 3], 1, true],
+            [[1, 2, 3], 123, false],
+            [['x'], 'x', true],
+            [['x'], 'y', false],
+            [['x', 'y', 'z'], 'x', true],
+            [['x', 'y', 'z'], 'xyz', false],
+            [[true, false], false, true],
+            [[true, false], null, false],
+            [[true, false], 1, false],
+            ['\DateTime', new \DateTime(), true],
+            ['\DateTime', new \ArrayObject(), false],
+            ['Flying\Struct\Struct', new BasicStruct(), true],
+        ];
     }
 
     public function testCustomValidatorAsClassMethod()
     {
-        $collection = new CollectionWithCustomValidator(null, array('allowed' => 'validate'));
+        $collection = new CollectionWithCustomValidator(null, ['allowed' => 'validate']);
         $collection->add(12);
         $collection->add('abc');
         $collection->add(true);
@@ -283,25 +283,25 @@ class CollectionTest extends TestCase
         if ($exception) {
             $this->setExpectedException('\InvalidArgumentException');
         }
-        new Collection(null, array('default' => $default));
+        new Collection(null, ['default' => $default]);
     }
 
     public function dataProviderConfigDefaultValues()
     {
         $func = function () {
         };
-        $obj = new ToArray(array(1, 2, 3));
-        return array(
-            array(null),
-            array(true),
-            array(123),
-            array('test'),
-            array(array(), false),
-            array(array(1, 2, 3), false),
-            array($func),
-            array(new \ArrayObject()),
-            array($obj, false),
-        );
+        $obj = new ToArray([1, 2, 3]);
+        return [
+            [null],
+            [true],
+            [123],
+            ['test'],
+            [[], false],
+            [[1, 2, 3], false],
+            [$func],
+            [new \ArrayObject()],
+            [$obj, false],
+        ];
     }
 
     /**
@@ -312,26 +312,26 @@ class CollectionTest extends TestCase
         if ($exception) {
             $this->setExpectedException('\InvalidArgumentException');
         }
-        new Collection(null, array('allowed' => $allowed));
+        new Collection(null, ['allowed' => $allowed]);
     }
 
     public function dataProviderConfigAllowedValues()
     {
         $func = function () {
         };
-        $obj = new ToArray(array(1, 2, 3));
-        return array(
-            array(null, false),
-            array(true),
-            array(123),
-            array('test'),
-            array(array(), false),
-            array(array(1, 2, 3), false),
-            array($func, false),
-            array(new \ArrayObject()),
-            array($obj),
-            array(array($obj, 'toArray'), false),
-        );
+        $obj = new ToArray([1, 2, 3]);
+        return [
+            [null, false],
+            [true],
+            [123],
+            ['test'],
+            [[], false],
+            [[1, 2, 3], false],
+            [$func, false],
+            [new \ArrayObject()],
+            [$obj],
+            [[$obj, 'toArray'], false],
+        ];
     }
 
     /**
@@ -358,7 +358,7 @@ class CollectionTest extends TestCase
         if (!method_exists($collection, $method)) {
             static::fail('Method "' . $method . '" is not available in test object');
         }
-        call_user_func_array(array($collection, $method), $args);
+        call_user_func_array([$collection, $method], $args);
         if ($expected === null) {
             $expected = $args;
         }
@@ -383,24 +383,24 @@ class CollectionTest extends TestCase
 
     public function dataProviderValueNormalizationCallback()
     {
-        return array(
-            array('setValue', array(array(1, 2, 3)), array(1, 2, 3), true),
-            array('set', array(0, 123), array(123)),
-            array('add', array(123)),
-            array('toggle', array(123)),
-            array('toggle', array(2), null, false, array(1, 2, 3)),
-            array('contains', array(2), null, false, array(1, 2, 3)),
-            array('containsKey', array(2), array(), false, array(1, 2, 3)),
-            array('indexOf', array(2), null, false, array(1, 2, 3)),
-            array('remove', array(2), array(), false, array(1, 2, 3)),
-            array('removeElement', array(2), null, false, array(1, 2, 3)),
-            array('offsetExists', array(2), array(), false, array(1, 2, 3)),
-            array('offsetSet', array(2, 123), array(123)),
-            array('offsetSet', array(null, 123), array(123)),
-            array('offsetUnset', array(2), array()),
-            array('clear', array(), array()),
-            array('reset', array(), array(1, 2, 3), true, null, array('default' => array(1, 2, 3))),
-        );
+        return [
+            ['setValue', [[1, 2, 3]], [1, 2, 3], true],
+            ['set', [0, 123], [123]],
+            ['add', [123]],
+            ['toggle', [123]],
+            ['toggle', [2], null, false, [1, 2, 3]],
+            ['contains', [2], null, false, [1, 2, 3]],
+            ['containsKey', [2], [], false, [1, 2, 3]],
+            ['indexOf', [2], null, false, [1, 2, 3]],
+            ['remove', [2], [], false, [1, 2, 3]],
+            ['removeElement', [2], null, false, [1, 2, 3]],
+            ['offsetExists', [2], [], false, [1, 2, 3]],
+            ['offsetSet', [2, 123], [123]],
+            ['offsetSet', [null, 123], [123]],
+            ['offsetUnset', [2], []],
+            ['clear', [], []],
+            ['reset', [], [1, 2, 3], true, null, ['default' => [1, 2, 3]]],
+        ];
     }
 
     /**
@@ -420,34 +420,34 @@ class CollectionTest extends TestCase
         if (!method_exists($collection, $method)) {
             static::fail('Method "' . $method . '" is not available in test object');
         }
-        call_user_func_array(array($collection, $method), $args);
+        call_user_func_array([$collection, $method], $args);
         $log = $logger->get();
         static::assertCount($times, $log);
     }
 
     public function dataProviderOnChangeCallback()
     {
-        return array(
-            array('setValue', array(array(1, 2, 3)), 1),
-            array('set', array(0, 123), 1),
-            array('add', array(123), 1),
-            array('toggle', array(123), 1),
-            array('toggle', array(2), 1, array(1, 2, 3)),
-            array('contains', array(2), 0),
-            array('containsKey', array(2), 0),
-            array('indexOf', array(2), 0),
-            array('remove', array(2), 1, array(1, 2, 3)),
-            array('remove', array(2), 0),
-            array('removeElement', array(2), 1, array(1, 2, 3)),
-            array('removeElement', array(2), 0, array(1, 3, 5)),
-            array('offsetExists', array(2), 0, array(1, 2, 3)),
-            array('offsetSet', array(2, 123), 1),
-            array('offsetSet', array(null, 123), 1),
-            array('offsetUnset', array(2), 1, array(1, 2, 3)),
-            array('offsetUnset', array(2), 0, array()),
-            array('clear', array(), 1),
-            array('reset', array(), 0),
-        );
+        return [
+            ['setValue', [[1, 2, 3]], 1],
+            ['set', [0, 123], 1],
+            ['add', [123], 1],
+            ['toggle', [123], 1],
+            ['toggle', [2], 1, [1, 2, 3]],
+            ['contains', [2], 0],
+            ['containsKey', [2], 0],
+            ['indexOf', [2], 0],
+            ['remove', [2], 1, [1, 2, 3]],
+            ['remove', [2], 0],
+            ['removeElement', [2], 1, [1, 2, 3]],
+            ['removeElement', [2], 0, [1, 3, 5]],
+            ['offsetExists', [2], 0, [1, 2, 3]],
+            ['offsetSet', [2, 123], 1],
+            ['offsetSet', [null, 123], 1],
+            ['offsetUnset', [2], 1, [1, 2, 3]],
+            ['offsetUnset', [2], 0, []],
+            ['clear', [], 1],
+            ['reset', [], 0],
+        ];
     }
 
     /**
@@ -467,41 +467,41 @@ class CollectionTest extends TestCase
         if (!method_exists($collection, $method)) {
             static::fail('Method "' . $method . '" is not available in test object');
         }
-        call_user_func_array(array($collection, $method), $args);
+        call_user_func_array([$collection, $method], $args);
         $log = $logger->get();
         static::assertCount(0, $log);
 
         // If values are treated as invalid - it should be called
-        $collection = new Collection($value, array('allowed' => array()));
+        $collection = new Collection($value, ['allowed' => []]);
         $logger = new CallbackLog();
         $collection->setCallbackLogger('onInvalidValue', $logger);
-        call_user_func_array(array($collection, $method), $args);
+        call_user_func_array([$collection, $method], $args);
         $log = $logger->get();
         static::assertCount(($calledOnInvalid) ? 1 : 0, $log);
     }
 
     public function dataProviderOnInvalidValueCallback()
     {
-        return array(
-            array('setValue', array(array(1, 2, 3))),
-            array('set', array(0, 123)),
-            array('add', array(123)),
-            array('toggle', array(123)),
-            array('toggle', array(2), array(1, 2, 3)),
-            array('contains', array(2), null, false),
-            array('containsKey', array(2), null, false),
-            array('indexOf', array(2), null, false),
-            array('remove', array(2), array(1, 2, 3), false),
-            array('remove', array(2), null, false),
-            array('removeElement', array(2), array(1, 2, 3)),
-            array('removeElement', array(2), array(1, 3, 5)),
-            array('offsetExists', array(2), array(1, 2, 3), false),
-            array('offsetSet', array(2, 123)),
-            array('offsetSet', array(null, 123)),
-            array('offsetUnset', array(2), array(1, 2, 3), false),
-            array('offsetUnset', array(2), array(), false),
-            array('clear', array(), null, false),
-            array('reset', array(), null, false),
-        );
+        return [
+            ['setValue', [[1, 2, 3]]],
+            ['set', [0, 123]],
+            ['add', [123]],
+            ['toggle', [123]],
+            ['toggle', [2], [1, 2, 3]],
+            ['contains', [2], null, false],
+            ['containsKey', [2], null, false],
+            ['indexOf', [2], null, false],
+            ['remove', [2], [1, 2, 3], false],
+            ['remove', [2], null, false],
+            ['removeElement', [2], [1, 2, 3]],
+            ['removeElement', [2], [1, 3, 5]],
+            ['offsetExists', [2], [1, 2, 3], false],
+            ['offsetSet', [2, 123]],
+            ['offsetSet', [null, 123]],
+            ['offsetUnset', [2], [1, 2, 3], false],
+            ['offsetUnset', [2], [], false],
+            ['clear', [], null, false],
+            ['reset', [], null, false],
+        ];
     }
 }

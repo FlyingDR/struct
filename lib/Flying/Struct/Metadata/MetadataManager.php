@@ -28,7 +28,7 @@ class MetadataManager implements MetadataManagerInterface
      *
      * @var array
      */
-    private $metadata = array();
+    private $metadata = [];
     /**
      * Prefix for cache entries for structure metadata
      *

@@ -27,7 +27,7 @@ class AnnotationParser extends AbstractMetadataParser
      *
      * @var array
      */
-    private $namespaces = array();
+    private $namespaces = [];
 
     /**
      * Get annotations reader
@@ -43,7 +43,7 @@ class AnnotationParser extends AbstractMetadataParser
                 $this->reader->addNamespace($ns);
             }
             $this->namespaces = array_reverse($namespaces, true);
-            AnnotationRegistry::registerLoader(array($this, 'loadClass'));
+            AnnotationRegistry::registerLoader([$this, 'loadClass']);
         }
         return $this->reader;
     }

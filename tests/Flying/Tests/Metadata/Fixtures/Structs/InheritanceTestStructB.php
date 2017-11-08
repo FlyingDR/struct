@@ -22,32 +22,32 @@ class InheritanceTestStructB extends InheritanceTestStructA
         $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
         $metadata = parent::getExpectedMetadata();
         $metadata['class'] = __CLASS__;
-        $metadata['properties']['a2'] = array(
+        $metadata['properties']['a2'] = [
             'name'   => 'a2',
             'class'  => $pNs . '\\Integer',
-            'config' => array(),
+            'config' => [],
             'hash'   => 'test',
-        );
-        $metadata['properties']['b2'] = array(
+        ];
+        $metadata['properties']['b2'] = [
             'name'   => 'b2',
             'class'  => $pNs . '\\Boolean',
-            'config' => array(),
+            'config' => [],
             'hash'   => 'test',
-        );
-        $metadata['properties']['c2'] = array(
+        ];
+        $metadata['properties']['c2'] = [
             'name'   => 'c2',
             'class'  => $pNs . '\\Str',
-            'config' => array(),
+            'config' => [],
             'hash'   => 'test',
-        );
-        $metadata['properties']['overloaded'] = array(
+        ];
+        $metadata['properties']['overloaded'] = [
             'name'   => 'overloaded',
             'class'  => $pNs . '\\Str',
-            'config' => array(
+            'config' => [
                 'default' => 'FromB',
-            ),
+            ],
             'hash'   => 'test',
-        );
+        ];
         return $metadata;
     }
 

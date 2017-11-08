@@ -12,7 +12,7 @@ class CallbackLog
      *
      * @var array
      */
-    protected $log = array();
+    protected $log = [];
 
     /**
      * Add callback log entry

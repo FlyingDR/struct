@@ -30,7 +30,7 @@ class PropertyMetadata implements MetadataInterface
      *
      * @var array
      */
-    private $config = array();
+    private $config = [];
 
     /**
      * Class constructor
@@ -137,11 +137,11 @@ class PropertyMetadata implements MetadataInterface
      */
     public function serialize()
     {
-        return (serialize(array(
+        return (serialize([
             'name'   => $this->getName(),
             'class'  => $this->getClass(),
             'config' => $this->getConfig(),
-        )));
+        ]));
     }
 
     /**
@@ -174,12 +174,12 @@ class PropertyMetadata implements MetadataInterface
      */
     public function toArray()
     {
-        return array(
+        return [
             'name'   => $this->getName(),
             'class'  => $this->getClass(),
             'config' => $this->getConfig(),
             'hash'   => $this->getHash(),
-        );
+        ];
     }
 
     /**

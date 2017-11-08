@@ -21,47 +21,47 @@ class BasicStruct extends StructStub implements MetadataTestcaseInterface
     public function getExpectedMetadata()
     {
         $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
-        return array(
+        return [
             'name'       => null,
             'class'      => __CLASS__,
-            'config'     => array(),
+            'config'     => [],
             'hash'       => 'test',
-            'properties' => array(
-                'first'  => array(
+            'properties' => [
+                'first'  => [
                     'name'   => 'first',
                     'class'  => $pNs . '\\Boolean',
-                    'config' => array(
+                    'config' => [
                         'default' => true,
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-                'second' => array(
+                ],
+                'second' => [
                     'name'   => 'second',
                     'class'  => $pNs . '\\Integer',
-                    'config' => array(
+                    'config' => [
                         'nullable' => false,
                         'default'  => 100,
                         'min'      => 10,
                         'max'      => 1000,
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-                'third'  => array(
+                ],
+                'third'  => [
                     'name'   => 'third',
                     'class'  => $pNs . '\\Str',
-                    'config' => array(),
+                    'config' => [],
                     'hash'   => 'test',
-                ),
-                'fourth' => array(
+                ],
+                'fourth' => [
                     'name'   => 'fourth',
                     'class'  => $pNs . '\\Str',
-                    'config' => array(
+                    'config' => [
                         'default' => 'some value',
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**

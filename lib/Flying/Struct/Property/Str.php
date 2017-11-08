@@ -13,9 +13,9 @@ class Str extends Property
     protected function initConfig()
     {
         parent::initConfig();
-        $this->mergeConfig(array(
+        $this->mergeConfig([
             'maxlength' => null, // String length limitation
-        ));
+        ]);
     }
 
     /**

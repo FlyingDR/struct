@@ -21,40 +21,40 @@ class InheritanceTestStructA extends StructStub implements MetadataTestcaseInter
     public function getExpectedMetadata()
     {
         $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
-        return array(
+        return [
             'name'       => null,
             'class'      => __CLASS__,
-            'config'     => array(),
+            'config'     => [],
             'hash'       => 'test',
-            'properties' => array(
-                'a1'         => array(
+            'properties' => [
+                'a1'         => [
                     'name'   => 'a1',
                     'class'  => $pNs . '\\Integer',
-                    'config' => array(),
+                    'config' => [],
                     'hash'   => 'test',
-                ),
-                'b1'         => array(
+                ],
+                'b1'         => [
                     'name'   => 'b1',
                     'class'  => $pNs . '\\Boolean',
-                    'config' => array(),
+                    'config' => [],
                     'hash'   => 'test',
-                ),
-                'c1'         => array(
+                ],
+                'c1'         => [
                     'name'   => 'c1',
                     'class'  => $pNs . '\\Str',
-                    'config' => array(),
+                    'config' => [],
                     'hash'   => 'test',
-                ),
-                'overloaded' => array(
+                ],
+                'overloaded' => [
                     'name'   => 'overloaded',
                     'class'  => $pNs . '\\Str',
-                    'config' => array(
+                    'config' => [
                         'default' => 'FromA',
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**

@@ -18,7 +18,7 @@ class StructWithCollection extends BasicStruct
     public function getExpectedContents()
     {
         $contents = parent::getExpectedContents();
-        $contents['collection'] = array(1, 2, 3);
+        $contents['collection'] = [1, 2, 3];
         return $contents;
     }
 }

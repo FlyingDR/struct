@@ -29,13 +29,13 @@ class MultiLevelStructWithMetadataModifications extends TestStruct
      */
     public function getExpectedContents()
     {
-        return (array(
+        return ([
             'own'   => 'own property',
-            'child' => array(
+            'child' => [
                 'second' => 100,
                 'third' => null,
                 'fourth' => 'modified value',
-            ),
-        ));
+            ],
+        ]);
     }
 }

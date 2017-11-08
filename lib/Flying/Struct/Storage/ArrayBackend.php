@@ -12,7 +12,7 @@ class ArrayBackend implements BackendInterface
      *
      * @var array
      */
-    private $storage = array();
+    private $storage = [];
 
     /**
      * Load information by given key from storage
@@ -69,6 +69,6 @@ class ArrayBackend implements BackendInterface
      */
     public function clear()
     {
-        $this->storage = array();
+        $this->storage = [];
     }
 }

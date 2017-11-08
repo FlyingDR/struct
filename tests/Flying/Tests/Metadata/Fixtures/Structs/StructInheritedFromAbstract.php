@@ -17,30 +17,30 @@ class StructInheritedFromAbstract extends AbstractStruct
     public function getExpectedMetadata()
     {
         $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
-        return array(
+        return [
             'name'       => null,
             'class'      => __CLASS__,
-            'config'     => array(),
+            'config'     => [],
             'hash'       => 'test',
-            'properties' => array(
-                'from_abstract' => array(
+            'properties' => [
+                'from_abstract' => [
                     'name'   => 'from_abstract',
                     'class'  => $pNs . '\\Boolean',
-                    'config' => array(
+                    'config' => [
                         'default' => true,
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-                'inherited'     => array(
+                ],
+                'inherited'     => [
                     'name'   => 'inherited',
                     'class'  => $pNs . '\\Str',
-                    'config' => array(
+                    'config' => [
                         'default' => 'yes',
-                    ),
+                    ],
                     'hash'   => 'test',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**

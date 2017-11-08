@@ -49,15 +49,15 @@ class NamespacesMapTest extends TestCase
 
     public function dataProviderRegisteringNamespaces()
     {
-        return array(
-            array(null, null, array()),
-            array(null, 'test', array()),
-            array('A\B\C', null, array('a_b_c' => 'A\B\C')),
-            array('A\B\C', 'test', array('test' => 'A\B\C')),
-            array(array('A\B\C', 'D\E\F'), null, array('a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F')),
-            array(array('A\B\C', 'D\E\F'), 'test', array('a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F')),
-            array(array('a' => 'A\B\C', 'b' => 'D\E\F'), null, array('a' => 'A\B\C', 'b' => 'D\E\F')),
-        );
+        return [
+            [null, null, []],
+            [null, 'test', []],
+            ['A\B\C', null, ['a_b_c' => 'A\B\C']],
+            ['A\B\C', 'test', ['test' => 'A\B\C']],
+            [['A\B\C', 'D\E\F'], null, ['a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F']],
+            [['A\B\C', 'D\E\F'], 'test', ['a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F']],
+            [['a' => 'A\B\C', 'b' => 'D\E\F'], null, ['a' => 'A\B\C', 'b' => 'D\E\F']],
+        ];
     }
 
     /**
@@ -73,12 +73,12 @@ class NamespacesMapTest extends TestCase
 
     public function dataProviderRegisteringNamespacesThroughConstructor()
     {
-        return array(
-            array(null, array()),
-            array('A\B\C', array('a_b_c' => 'A\B\C')),
-            array(array('A\B\C', 'D\E\F'), array('a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F')),
-            array(array('a' => 'A\B\C', 'b' => 'D\E\F'), array('a' => 'A\B\C', 'b' => 'D\E\F')),
-        );
+        return [
+            [null, []],
+            ['A\B\C', ['a_b_c' => 'A\B\C']],
+            [['A\B\C', 'D\E\F'], ['a_b_c' => 'A\B\C', 'd_e_f' => 'D\E\F']],
+            [['a' => 'A\B\C', 'b' => 'D\E\F'], ['a' => 'A\B\C', 'b' => 'D\E\F']],
+        ];
     }
 
     public function testGettingInvalidNamespace()
@@ -103,12 +103,12 @@ class NamespacesMapTest extends TestCase
 
     public function dataProviderSettingInvalidNamespace()
     {
-        return array(
-            array(true),
-            array(12345),
-            array(''),
-            array(new \ArrayObject()),
-        );
+        return [
+            [true],
+            [12345],
+            [''],
+            [new \ArrayObject()],
+        ];
     }
 
     /**

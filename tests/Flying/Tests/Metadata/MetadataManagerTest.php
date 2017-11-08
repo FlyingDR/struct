@@ -96,10 +96,10 @@ class MetadataManagerTest extends TestUsingFixtureStructures
 
     public function dataProviderOfInvalidObjects()
     {
-        return array(
-            array('\ArrayObject'),
-            array(new \ArrayObject()),
-        );
+        return [
+            ['\ArrayObject'],
+            [new \ArrayObject()],
+        ];
     }
 
     /**
@@ -117,12 +117,12 @@ class MetadataManagerTest extends TestUsingFixtureStructures
 
     public function dataProviderOfInvalidValues()
     {
-        return array(
-            array(null),
-            array(true),
-            array(false),
-            array(array(1, 2, 3)),
-        );
+        return [
+            [null],
+            [true],
+            [false],
+            [[1, 2, 3]],
+        ];
     }
 
     public function testManagerReceivesDependenciesFromConfigurationByDefault()
@@ -235,7 +235,7 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $manager->setParser($parser);
         $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
             ->shouldReceive('contains')->once()->ordered()->andReturn(true)->getMock()
-            ->shouldReceive('fetch')->once()->ordered()->andReturn(array())->getMock()
+            ->shouldReceive('fetch')->once()->ordered()->andReturn([])->getMock()
             ->shouldReceive('delete')->once()->ordered()->getMock()
             ->shouldReceive('save')->once()->ordered()->with(Mockery::type('string'), Mockery::any())->andReturnUndefined()->getMock();
         /** @var $cache Cache */

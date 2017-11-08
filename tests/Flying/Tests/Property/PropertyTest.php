@@ -47,33 +47,33 @@ class PropertyTest extends BasePropertyTest
     public function testExceptionOnInvalidDefaultValue()
     {
         $this->setExpectedException('Flying\Struct\Exception');
-        new Property(null, array(
+        new Property(null, [
             'nullable' => false,
             'default'  => null,
-        ));
+        ]);
     }
 
     public function testValueNormalizationCallback()
     {
-        $this->runCallbackTest('normalize', array(
+        $this->runCallbackTest('normalize', [
             12345,
             null,
             $this->getDefaultValue(),
-        ));
+        ]);
     }
 
     public function testOnChangeCallback()
     {
-        $this->runCallbackTest('onChange', array(
+        $this->runCallbackTest('onChange', [
             12345,
-        ), false);
+        ], false);
     }
 
     public function testOnInvalidValueCallback()
     {
-        $this->runCallbackTest('onInvalidValue', array(
+        $this->runCallbackTest('onInvalidValue', [
             null,
-        ));
+        ]);
     }
 
     protected function runCallbackTest($method, $expected, $useValue = true)
@@ -97,7 +97,7 @@ class PropertyTest extends BasePropertyTest
             /** @noinspection DisconnectedForeachInstructionInspection */
             $temp = array_shift($log);
             /** @noinspection DisconnectedForeachInstructionInspection */
-            $exp = array($method);
+            $exp = [$method];
             if ($useValue) {
                 $exp[] = $v;
             }
@@ -110,11 +110,11 @@ class PropertyTest extends BasePropertyTest
         $mock = Mockery::mock('Flying\Struct\Common\UpdateNotifyListenerInterface');
         $mock->shouldReceive('updateNotify')->once()
             ->with(Mockery::type('Flying\Tests\Property\Fixtures\Property'));
-        $property = new Property(null, array(
+        $property = new Property(null, [
             'nullable'               => false,
             'default'                => $this->getDefaultValue(),
             'update_notify_listener' => $mock,
-        ));
+        ]);
         $property->setValue(12345);
         // Attempt to set invalid property value should not trigger update notification
         $property->setValue(null);
@@ -124,17 +124,17 @@ class PropertyTest extends BasePropertyTest
 
     public function serializationDataProvider()
     {
-        $testValues = array(
+        $testValues = [
             true,
             false,
             12345,
             -123.45,
             'some string',
             new \ArrayObject(),
-        );
-        $result = array();
+        ];
+        $result = [];
         foreach ($testValues as $value) {
-            $result[] = array($value, $value);
+            $result[] = [$value, $value];
         }
         return $result;
     }

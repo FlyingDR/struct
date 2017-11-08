@@ -20,32 +20,32 @@ class CustomPropertiesTest extends StructStub implements MetadataTestcaseInterfa
     public function getExpectedMetadata()
     {
         $nsMap = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap();
-        return array(
+        return [
             'name'       => null,
             'class'      => __CLASS__,
-            'config'     => array(),
+            'config'     => [],
             'hash'       => 'test',
-            'properties' => array(
-                'standard' => array(
+            'properties' => [
+                'standard' => [
                     'name'   => 'standard',
                     'class'  => $nsMap->get('default') . '\\Str',
-                    'config' => array(),
+                    'config' => [],
                     'hash'   => 'test',
-                ),
-                'custom'   => array(
+                ],
+                'custom'   => [
                     'name'   => 'custom',
                     'class'  => $nsMap->get('fixtures') . '\\Custom',
-                    'config' => array(),
+                    'config' => [],
                     'hash'   => 'test',
-                ),
-                'complex'  => array(
+                ],
+                'complex'  => [
                     'name'   => 'complex',
                     'class'  => $nsMap->get('fixtures') . '\\PropertyWithComplexName',
-                    'config' => array(),
+                    'config' => [],
                     'hash'   => 'test',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**

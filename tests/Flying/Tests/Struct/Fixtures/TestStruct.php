@@ -14,7 +14,7 @@ abstract class TestStruct extends Struct implements CallbackTrackingInterface
      *
      * @var array
      */
-    private $cbLogs = array();
+    private $cbLogs = [];
 
     /**
      * Set logger for defined method

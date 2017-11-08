@@ -13,10 +13,10 @@ class Integer extends Property
     protected function initConfig()
     {
         parent::initConfig();
-        $this->mergeConfig(array(
+        $this->mergeConfig([
             'min' => null, // Minimum allowed value
             'max' => null, // Maximum allowed value
-        ));
+        ]);
     }
 
     /**

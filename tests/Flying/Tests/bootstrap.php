@@ -14,10 +14,10 @@ for ($i = 0; $i < 10; $i++) {
 }
 if (!$composer) {
     spl_autoload_register(function ($class) {
-        $map = array(
+        $map = [
             'Flying\\Tests\\'  => '/../../',
             'Flying\\Struct\\' => '/../../../lib/',
-        );
+        ];
         foreach ($map as $prefix => $path) {
             if (0 === strpos($class, $prefix)) {
                 $path = __DIR__ . $path . str_replace('\\', '/', $class) . '.php';

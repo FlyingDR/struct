@@ -12,7 +12,7 @@ class Enum extends Property
      *
      * @var array
      */
-    private $values = array();
+    private $values = [];
 
     /**
      * {@inheritdoc}
@@ -20,9 +20,9 @@ class Enum extends Property
     protected function initConfig()
     {
         parent::initConfig();
-        $this->mergeConfig(array(
-            'values' => array(), // List of possible values in enum
-        ));
+        $this->mergeConfig([
+            'values' => [], // List of possible values in enum
+        ]);
     }
 
     /**

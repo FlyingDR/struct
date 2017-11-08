@@ -19,10 +19,10 @@ class ChildStruct extends TestStruct
      */
     public function getExpectedContents()
     {
-        return array(
+        return [
             'x' => false,
             'y' => 345,
             'z' => 'string',
-        );
+        ];
     }
 }

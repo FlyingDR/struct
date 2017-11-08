@@ -43,9 +43,9 @@ class BasicStructTest extends CommonBasicStructTest
     public function testExplicitStorageSetting()
     {
         $storage = new Storage();
-        $struct = $this->getTestStruct(null, array(
+        $struct = $this->getTestStruct(null, [
             'storage' => $storage,
-        ));
+        ]);
         static::assertNotEquals($struct->getConfig('storage'), ConfigurationManager::getConfiguration()->getStorage());
         static::assertTrue($storage->has($struct));
         static::assertFalse(ConfigurationManager::getConfiguration()->getStorage()->has($struct));

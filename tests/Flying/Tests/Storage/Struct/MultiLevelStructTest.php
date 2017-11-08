@@ -37,16 +37,16 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
             ->with(Mockery::type($this->fixtureClass))->andReturn(Mockery::self())->getMock();
         /** @var $storage StorageInterface */
         ConfigurationManager::getConfiguration()->setStorage($storage);
-        $struct = $this->getTestStruct(array(
+        $struct = $this->getTestStruct([
             'b'     => false,
             'i'     => 777,
             's'     => 'something',
-            'child' => array(
+            'child' => [
                 'x' => true,
                 'y' => 888,
                 'z' => 'child',
-            ),
-        ));
+            ],
+        ]);
         $struct->child->x = false;
     }
 

@@ -13,7 +13,7 @@ class Collection extends BaseCollection implements CallbackTrackingInterface
      *
      * @var array
      */
-    private $cbLogs = array();
+    private $cbLogs = [];
 
     /**
      * Set logger for defined method

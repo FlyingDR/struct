@@ -131,13 +131,13 @@ class StorableStruct extends Struct implements StorableInterface
     {
         if (!is_array($this->initialContents)) {
             // Initial contents for structure are taken from storage
-            $contents = array();
+            $contents = [];
             $key = $this->getStorageKey();
             if ($key) {
                 // Storage key is only available for top-level structure so it may be missed
                 $contents = $this->getStorage()->load($key);
                 if (!is_array($contents)) {
-                    $contents = array();
+                    $contents = [];
                 }
             }
             $this->initialContents = $contents;
@@ -179,9 +179,9 @@ class StorableStruct extends Struct implements StorableInterface
     protected function initConfig()
     {
         parent::initConfig();
-        $this->mergeConfig(array(
+        $this->mergeConfig([
             'storage' => null,
-        ));
+        ]);
     }
 
     /**

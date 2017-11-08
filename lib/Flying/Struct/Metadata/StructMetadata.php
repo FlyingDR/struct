@@ -14,7 +14,7 @@ class StructMetadata extends PropertyMetadata
      *
      * @var array
      */
-    private $properties = array();
+    private $properties = [];
 
     /**
      * Class constructor
@@ -117,7 +117,7 @@ class StructMetadata extends PropertyMetadata
      */
     public function clearProperties()
     {
-        $this->properties = array();
+        $this->properties = [];
         $this->hash = null;
     }
 
@@ -128,12 +128,12 @@ class StructMetadata extends PropertyMetadata
      */
     public function serialize()
     {
-        return (serialize(array(
+        return (serialize([
             'name'       => $this->getName(),
             'class'      => $this->getClass(),
             'config'     => $this->getConfig(),
             'properties' => $this->getProperties(),
-        )));
+        ]));
     }
 
     /**
@@ -167,13 +167,13 @@ class StructMetadata extends PropertyMetadata
      */
     public function toArray()
     {
-        $array = array(
+        $array = [
             'name'       => $this->getName(),
             'class'      => $this->getClass(),
             'config'     => $this->getConfig(),
             'hash'       => $this->getHash(),
-            'properties' => array(),
-        );
+            'properties' => [],
+        ];
         /** @var $property MetadataInterface */
         foreach ($this->getProperties() as $name => $property) {
             $array['properties'][$name] = $property->toArray();
@@ -187,11 +187,11 @@ class StructMetadata extends PropertyMetadata
     public function getHash()
     {
         if (!$this->hash) {
-            $hash = array(
+            $hash = [
                 $this->getName(),
                 $this->getClass(),
                 serialize($this->getConfig()),
-            );
+            ];
             /** @var $property PropertyMetadata */
             foreach ($this->getProperties() as $property) {
                 $hash[] = $property->getHash();

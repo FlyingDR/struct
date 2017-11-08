@@ -24,10 +24,10 @@ abstract class BasePropertyTest extends TestCase
      *
      * @var array
      */
-    protected $defaultConfig = array(
+    protected $defaultConfig = [
         'nullable' => false,
         'default'  => null,
-    );
+    ];
     /**
      * Default property value
      *
@@ -79,7 +79,7 @@ abstract class BasePropertyTest extends TestCase
             static::fail('Test property class must be inherited from Property');
         }
         if (!is_array($config)) {
-            $config = array();
+            $config = [];
         }
         $defaults = $this->getDefaultConfig();
         $defaultValue = $this->getDefaultValue();

@@ -14,7 +14,7 @@ class NamespacesMap
      *
      * @var array
      */
-    private $namespaces = array();
+    private $namespaces = [];
 
     /**
      * Class constructor
@@ -23,7 +23,7 @@ class NamespacesMap
      */
     public function __construct($namespaces = null)
     {
-        $this->namespaces = array();
+        $this->namespaces = [];
         if ($namespaces) {
             $this->add($namespaces);
         }
@@ -77,9 +77,9 @@ class NamespacesMap
     {
         if (!is_array($namespace)) {
             if ($namespace !== null) {
-                $namespace = ($alias !== null) ? array($alias => $namespace) : array($namespace);
+                $namespace = ($alias !== null) ? [$alias => $namespace] : [$namespace];
             } else {
-                $namespace = array();
+                $namespace = [];
             }
         }
         foreach ($namespace as $alias => $ns) {

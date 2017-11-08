@@ -28,13 +28,13 @@ class Struct extends Annotation
      *
      * @var array
      */
-    private $properties = array();
+    private $properties = [];
     /**
      * Property configuration
      *
      * @var array
      */
-    private $config = array();
+    private $config = [];
 
     /**
      * {@inheritdoc}

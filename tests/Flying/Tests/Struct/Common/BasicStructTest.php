@@ -2,7 +2,6 @@
 
 namespace Flying\Tests\Struct\Common;
 
-use Flying\Struct\Configuration;
 use Flying\Struct\Metadata\PropertyMetadata;
 use Flying\Struct\Metadata\StructMetadata;
 use Flying\Struct\Struct;
@@ -142,45 +141,39 @@ abstract class BasicStructTest extends BaseStructTest
     public function testSettingMultipleValues()
     {
         $struct = $this->getTestStruct();
-        $modifications = array(
+        $modifications = [
             'fourth'  => 'test',
             'first'   => false,
             'third'   => 'something',
             'second'  => 123,
             'unknown' => 'value',
-        );
+        ];
         $struct->set($modifications);
-        static::assertEquals(
-            array(
-                'first'  => false,
-                'second' => 123,
-                'third'  => 'something',
-                'fourth' => 'test',
-            ),
-            $struct->toArray()
-        );
+        static::assertEquals([
+            'first'  => false,
+            'second' => 123,
+            'third'  => 'something',
+            'fourth' => 'test',
+        ], $struct->toArray());
     }
 
     public function testStructureReset()
     {
         $struct = $this->getTestStruct();
-        $modifications = array(
+        $modifications = [
             'fourth'  => 'test',
             'first'   => false,
             'third'   => 'something',
             'second'  => 123,
             'unknown' => 'value',
-        );
+        ];
         $struct->set($modifications);
-        static::assertEquals(
-            array(
-                'first'  => false,
-                'second' => 123,
-                'third'  => 'something',
-                'fourth' => 'test',
-            ),
-            $struct->toArray()
-        );
+        static::assertEquals([
+            'first'  => false,
+            'second' => 123,
+            'third'  => 'something',
+            'fourth' => 'test',
+        ], $struct->toArray());
         $struct->reset();
         static::assertEquals($struct->getExpectedContents(), $struct->toArray());
     }
@@ -200,28 +193,28 @@ abstract class BasicStructTest extends BaseStructTest
     {
         $struct = new BasicStruct();
         $defaultExpected = $struct->getExpectedContents();
-        $initial = array(
+        $initial = [
             'third'  => 'test value',
             'first'  => false,
             'second' => 123.45,
-        );
-        $expected = array(
+        ];
+        $expected = [
             'first'  => false,
             'second' => 123,
             'third'  => 'test value',
             'fourth' => 'some value',
-        );
-        $tests = array();
-        $tests[] = array($initial, $expected);
-        $tests[] = array(true, $defaultExpected);
-        $tests[] = array('some test value', $defaultExpected);
-        $tests[] = array(array(), $defaultExpected);
-        $tests[] = array(new \SplFixedArray(), $defaultExpected);
-        $tests[] = array(new \ArrayObject(), $defaultExpected);
-        $tests[] = array(new \ArrayObject($initial), $expected);
-        $tests[] = array(new \ArrayIterator($initial), $expected);
+        ];
+        $tests = [];
+        $tests[] = [$initial, $expected];
+        $tests[] = [true, $defaultExpected];
+        $tests[] = ['some test value', $defaultExpected];
+        $tests[] = [[], $defaultExpected];
+        $tests[] = [new \SplFixedArray(), $defaultExpected];
+        $tests[] = [new \ArrayObject(), $defaultExpected];
+        $tests[] = [new \ArrayObject($initial), $expected];
+        $tests[] = [new \ArrayIterator($initial), $expected];
         $struct->set($initial);
-        $tests[] = array($struct, $expected);
+        $tests[] = [$struct, $expected];
         return $tests;
     }
 
@@ -233,9 +226,7 @@ abstract class BasicStructTest extends BaseStructTest
             ->getMock();
         $struct = $this->getTestStruct(
             null,
-            array(
-                'update_notify_listener' => $mock,
-            )
+            ['update_notify_listener' => $mock]
         );
         $struct->set('first', true);
         $struct->set('unavailable', false);
@@ -253,7 +244,7 @@ abstract class BasicStructTest extends BaseStructTest
         $log = $logger->get();
         static::assertCount(1, $log);
         $log = array_shift($log);
-        static::assertEquals(array($method, $name, $value), $log);
+        static::assertEquals([$method, $name, $value], $log);
     }
 
     public function testSetMissedCallback()
@@ -268,7 +259,7 @@ abstract class BasicStructTest extends BaseStructTest
         $log = $logger->get();
         static::assertCount(1, $log);
         $log = array_shift($log);
-        static::assertEquals(array($method, $name, $value), $log);
+        static::assertEquals([$method, $name, $value], $log);
     }
 
     public function testOnChangeCallback()
@@ -276,11 +267,11 @@ abstract class BasicStructTest extends BaseStructTest
         $struct = $this->getTestStruct();
         $logger = new CallbackLog();
         $method = 'onChange';
-        $changes = array(
+        $changes = [
             'second'      => 123.45,
             'unavailable' => 'test',
             'first'       => true,
-        );
+        ];
         $struct->setCallbackLogger($method, $logger);
         $struct->set($changes);
         unset($changes['unavailable']);
@@ -289,27 +280,24 @@ abstract class BasicStructTest extends BaseStructTest
         foreach ($changes as $name => $value) {
             /** @noinspection DisconnectedForeachInstructionInspection */
             $temp = array_shift($log);
-            static::assertEquals(array($method, $name), $temp);
+            static::assertEquals([$method, $name], $temp);
         }
     }
 
     public function testExplicitMetadata()
     {
         $metadata = new StructMetadata();
-        $metadata->addProperty(new PropertyMetadata('a', 'Flying\Struct\Property\Integer', array('default' => 123)));
-        $metadata->addProperty(new PropertyMetadata('b', 'Flying\Struct\Property\Boolean', array('default' => false)));
-        $metadata->addProperty(new PropertyMetadata('c', 'Flying\Struct\Property\Str', array('default' => 'test')));
-        $struct = new Struct(null, array(
+        $metadata->addProperty(new PropertyMetadata('a', 'Flying\Struct\Property\Integer', ['default' => 123]));
+        $metadata->addProperty(new PropertyMetadata('b', 'Flying\Struct\Property\Boolean', ['default' => false]));
+        $metadata->addProperty(new PropertyMetadata('c', 'Flying\Struct\Property\Str', ['default' => 'test']));
+        $struct = new Struct(null, [
             'metadata' => $metadata,
-        ));
-        static::assertEquals(
-            array(
-                'a' => 123,
-                'b' => false,
-                'c' => 'test',
-            ),
-            $struct->toArray()
-        );
+        ]);
+        static::assertEquals([
+            'a' => 123,
+            'b' => false,
+            'c' => 'test',
+        ], $struct->toArray());
     }
 
     public function testCloning()
@@ -319,14 +307,12 @@ abstract class BasicStructTest extends BaseStructTest
         foreach ($struct as $name => $value) {
             static::assertEquals($value, $clone->get($name));
         }
-        $clone->set(
-            array(
-                'first'  => false,
-                'second' => 77,
-                'third'  => 'modified',
-                'fourth' => 'another value',
-            )
-        );
+        $clone->set([
+            'first'  => false,
+            'second' => 77,
+            'third'  => 'modified',
+            'fourth' => 'another value',
+        ]);
         foreach ($struct as $name => $value) {
             static::assertNotEquals($value, $clone->get($name));
         }

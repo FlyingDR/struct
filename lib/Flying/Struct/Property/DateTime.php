@@ -46,9 +46,9 @@ class DateTime extends Property
     protected function initConfig()
     {
         parent::initConfig();
-        $this->mergeConfig(array(
+        $this->mergeConfig([
             'format' => null, // Default format of date/time information to use for constructing DateTime object from string
-        ));
+        ]);
     }
 
     /**

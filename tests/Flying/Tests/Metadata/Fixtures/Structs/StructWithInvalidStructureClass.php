@@ -16,7 +16,7 @@ class StructWithInvalidStructureClass extends StructStub implements MetadataTest
      */
     public function getExpectedMetadata()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -26,6 +26,6 @@ class StructWithInvalidStructureClass extends StructStub implements MetadataTest
      */
     public function getExpectedException()
     {
-        return array('Flying\Struct\Exception', 'Unable to resolve structure class: UnavailableStruct');
+        return ['Flying\Struct\Exception', 'Unable to resolve structure class: UnavailableStruct'];
     }
 }

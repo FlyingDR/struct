@@ -24,29 +24,29 @@ class BooleanTest extends BaseTypeTest
      *
      * @var array
      */
-    protected $serializationTests = array(
+    protected $serializationTests = [
         true,
         false,
-    );
+    ];
 
     /**
      * {@inheritdoc}
      */
     public function getValueTests()
     {
-        return array(
-            array(true, true),
-            array(false, false),
-            array(1, true),
-            array(0, false),
-            array(-1, true),
-            array('', false),
-            array('0', false),
-            array('test', true),
-            array(array(), false),
-            array(array(1, 2, 3), true),
-            array(new \ArrayObject(), true),
-            array(new Property(false), false),
-        );
+        return [
+            [true, true],
+            [false, false],
+            [1, true],
+            [0, false],
+            [-1, true],
+            ['', false],
+            ['0', false],
+            ['test', true],
+            [[], false],
+            [[1, 2, 3], true],
+            [new \ArrayObject(), true],
+            [new Property(false), false],
+        ];
     }
 }

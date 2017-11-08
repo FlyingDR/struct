@@ -140,7 +140,7 @@ class StorageTest extends TestCaseUsingConfiguration
         /** @var $mock StorableInterface */
         $mock = Mockery::mock('Flying\Struct\Storage\StorableInterface')
             ->shouldReceive('getStorageKey')->andReturn('myTestKey')->getMock()
-            ->shouldReceive('toStorage')->andReturn(array('myStorageRepresentation'))
+            ->shouldReceive('toStorage')->andReturn(['myStorageRepresentation'])
             ->getMock();
         return $mock;
     }

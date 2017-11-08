@@ -11,7 +11,7 @@ use Flying\Tests\TestCaseUsingConfiguration;
  */
 abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
 {
-    protected static $annotationFixtures = array(
+    protected static $annotationFixtures = [
         'BasicStruct',
         'StructWithChild',
         'CustomPropertiesTest',
@@ -24,7 +24,7 @@ abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
         'InlineStructDefinition',
         'StructInheritedFromAbstract',
         'StructWithMetadataModifications',
-    );
+    ];
 
     public function setUp()
     {
@@ -37,9 +37,9 @@ abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
 
     public function getAnnotationFixtures()
     {
-        $fixtures = array();
+        $fixtures = [];
         foreach (self::$annotationFixtures as $class) {
-            $fixtures[] = array($class);
+            $fixtures[] = [$class];
         }
         return $fixtures;
     }

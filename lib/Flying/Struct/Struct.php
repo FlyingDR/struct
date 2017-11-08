@@ -87,10 +87,10 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      */
     public function __clone()
     {
-        $config = array(
+        $config = [
             'parent_structure'       => $this,
             'update_notify_listener' => $this,
-        );
+        ];
         /** @var $property Property */
         foreach ($this->struct as &$property) {
             $property = clone $property;
@@ -142,7 +142,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
     protected function getInitialContents($name = null)
     {
         if (!is_array($this->initialContents)) {
-            $this->initialContents = array();
+            $this->initialContents = [];
         }
         if ($name !== null) {
             return (array_key_exists($name, $this->initialContents)) ? $this->initialContents[$name] : null;
@@ -165,7 +165,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
             $this->initialContents = $this->convertToArray($contents);
         }
         if (!is_array($this->initialContents)) {
-            $this->initialContents = array();
+            $this->initialContents = [];
         }
     }
 
@@ -178,12 +178,12 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
     protected function convertToArray($contents)
     {
         if (is_object($contents)) {
-            if (is_callable(array($contents, 'toArray'))) {
+            if (is_callable([$contents, 'toArray'])) {
                 $contents = $contents->toArray();
             } elseif ($contents instanceof \ArrayObject) {
                 $contents = $contents->getArrayCopy();
             } elseif ($contents instanceof \Iterator) {
-                $temp = array();
+                $temp = [];
                 foreach ($contents as $k => $v) {
                     $temp[$k] = $v;
                 }
@@ -191,7 +191,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
             }
         }
         if (!is_array($contents)) {
-            $contents = array();
+            $contents = [];
         }
         return $contents;
     }
@@ -209,11 +209,11 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
             $metadata = $this->getMetadata();
         }
         $contents = $this->getInitialContents();
-        $baseConfig = array(
+        $baseConfig = [
             'parent_structure'       => $this,
             'update_notify_listener' => $this,
-        );
-        $this->struct = array();
+        ];
+        $this->struct = [];
         /** @var $property MetadataInterface */
         foreach ($metadata->getProperties() as $name => $property) {
             $class = $property->getClass();
@@ -310,7 +310,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      */
     public function set($name, $value = null)
     {
-        $values = (is_scalar($name)) ? array($name => $value) : $name;
+        $values = (is_scalar($name)) ? [$name => $value] : $name;
         foreach ($values as $k => $v) {
             if (!array_key_exists($k, $this->struct)) {
                 $this->setMissed($k, $v);
@@ -388,7 +388,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      */
     public function toArray()
     {
-        $array = array();
+        $array = [];
         foreach ($this->struct as $key => $value) {
             if ($value instanceof ComplexPropertyInterface) {
                 $array[$key] = $value->toArray();
@@ -424,13 +424,13 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
     protected function initConfig()
     {
         parent::initConfig();
-        $this->mergeConfig(array(
+        $this->mergeConfig([
             'configuration'           => null, // Structures configuration object (@see Configuration)
             'metadata'                => null, // Structure metadata
             'parent_structure'        => null, // Link to parent structure in a case of multi-level structures
             'update_notify_listener'  => null, // Listener for structure's update notifications
             'explicit_metadata_class' => null, // Name of the class to use to create structures from explicitly defined properties
-        ));
+        ]);
     }
 
     /**
@@ -686,10 +686,10 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      */
     public function serialize()
     {
-        return (serialize(array(
+        return (serialize([
             'metadata' => $this->getMetadata(),
             'struct'   => $this->toArray(),
-        )));
+        ]));
     }
 
     /**

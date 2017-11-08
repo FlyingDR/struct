@@ -8,27 +8,27 @@ use Flying\Tests\TestCase;
 class PropertyTest extends TestCase
 {
     protected $propertyNamespace = 'Flying\Struct\Annotation\Struct';
-    protected static $typesMap = array(
+    protected static $typesMap = [
         'Boolean'    => 'boolean',
         'Integer'    => 'integer',
         'Str'        => 'str',
         'Enum'       => 'enum',
         'Collection' => 'collection',
-    );
+    ];
 
     public function testInheritance()
     {
-        $annotation = new Property(array('name' => 'test', 'type' => 'test'));
+        $annotation = new Property(['name' => 'test', 'type' => 'test']);
         static::assertInstanceOf('Flying\Struct\Annotation\Struct\Annotation', $annotation);
     }
 
     public function testBasicOperations()
     {
-        $annotation = new Property(array(
+        $annotation = new Property([
             'name' => 'test',
             'type' => 'boolean',
             'abc'  => 'xyz',
-        ));
+        ]);
         static::assertEquals('test', $annotation->getName());
         static::assertEquals('boolean', $annotation->getType());
         static::assertArrayHasKey('abc', $annotation->getConfig());
@@ -42,7 +42,7 @@ class PropertyTest extends TestCase
             'Doctrine\Common\Annotations\AnnotationException',
             'Required property annotation is missed: name'
         );
-        new Property(array());
+        new Property([]);
     }
 
     public function testMissedType()
@@ -51,9 +51,9 @@ class PropertyTest extends TestCase
             'Doctrine\Common\Annotations\AnnotationException',
             'Required property annotation is missed: type'
         );
-        new Property(array(
+        new Property([
             'name' => 'test',
-        ));
+        ]);
     }
 
     public function testTypeAnnotations()
@@ -61,9 +61,9 @@ class PropertyTest extends TestCase
         foreach (self::$typesMap as $class => $type) {
             $class = trim($this->propertyNamespace, '\\') . '\\' . $class;
             /** @var $annotation Property */
-            $annotation = new $class(array(
+            $annotation = new $class([
                 'name' => 'test',
-            ));
+            ]);
             static::assertInstanceOf(trim($this->propertyNamespace, '\\') . '\\Property', $annotation);
             static::assertEquals($type, $annotation->getType());
         }

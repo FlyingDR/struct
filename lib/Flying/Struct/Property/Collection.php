@@ -17,7 +17,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      *
      * @var array
      */
-    private $elements = array();
+    private $elements = [];
     /**
      * Cached value of "allowed" configuration option
      *
@@ -47,7 +47,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                 throw new \InvalidArgumentException('Only array values are accepted for collections');
             }
         }
-        $elements = array();
+        $elements = [];
         foreach ($value as $k => $v) {
             if ($this->normalize($v, $k)) {
                 $elements[$k] = $v;
@@ -265,7 +265,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      */
     public function clear()
     {
-        $this->elements = array();
+        $this->elements = [];
         $this->onChange();
     }
 
@@ -370,11 +370,11 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     protected function initConfig()
     {
         parent::initConfig();
-        $this->mergeConfig(array(
-            'default' => array(), // Default value for collection
+        $this->mergeConfig([
+            'default' => [], // Default value for collection
             'allowed' => null, // Either list of allowed values for collection elements
             // or callable to test if element is allowed to be in collection
-        ));
+        ]);
     }
 
     /**
@@ -407,7 +407,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                         $valid = true;
                     } elseif (method_exists($this, $v)) {
                         // Name of validation method
-                        $value = array($this, $v);
+                        $value = [$this, $v];
                         $valid = true;
                     } else {
                         // Explicitly given list of valid values
@@ -419,7 +419,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                         $valid = true;
                     } elseif (method_exists($this, $value)) {
                         // Explicitly given name of validation method
-                        $value = array($this, $value);
+                        $value = [$this, $value];
                         $valid = true;
                     }
                 } elseif (is_array($value)) {

@@ -9,10 +9,10 @@ abstract class BaseMetadataTest extends TestCase
 {
     protected $name = 'test_name';
     protected $class = 'test_class';
-    protected $config = array(
+    protected $config = [
         'abc' => 123,
         'xyz' => 456,
-    );
+    ];
 
     public function testBasicOperations()
     {
@@ -45,7 +45,7 @@ abstract class BaseMetadataTest extends TestCase
             'Property name must be a string'
         );
         $metadata = $this->getMetadataObject();
-        $metadata->setName(array('test_name'));
+        $metadata->setName(['test_name']);
     }
 
     public function testSettingInvalidClass()
@@ -55,7 +55,7 @@ abstract class BaseMetadataTest extends TestCase
             'Property class name must be a string'
         );
         $metadata = $this->getMetadataObject();
-        $metadata->setClass(array('test_class'));
+        $metadata->setClass(['test_class']);
     }
 
     public function testFluentInterface()
@@ -119,12 +119,12 @@ abstract class BaseMetadataTest extends TestCase
         $metadata->setName($this->name)
             ->setClass($this->class)
             ->setConfig($this->config);
-        $expected = array(
+        $expected = [
             'name'   => $this->name,
             'class'  => $this->class,
             'config' => $this->config,
             'hash'   => $metadata->getHash(),
-        );
+        ];
         static::assertEquals($expected, $metadata->toArray());
     }
 

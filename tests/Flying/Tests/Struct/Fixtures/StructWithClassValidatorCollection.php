@@ -18,7 +18,7 @@ class StructWithClassValidatorCollection extends BasicStruct
     public function getExpectedContents()
     {
         $contents = parent::getExpectedContents();
-        $contents['collection'] = array();
+        $contents['collection'] = [];
         return $contents;
     }
 }

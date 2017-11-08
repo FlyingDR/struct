@@ -21,45 +21,45 @@ class ComplexStructure extends StructStub implements MetadataTestcaseInterface
     public function getExpectedMetadata()
     {
         $nsMap = ConfigurationManager::getConfiguration()->getStructNamespacesMap();
-        $metadata = array(
+        $metadata = [
             'name'       => null,
             'class'      => __CLASS__,
-            'config'     => array(),
+            'config'     => [],
             'hash'       => 'test',
-            'properties' => array(
-                'basic'          => array(
+            'properties' => [
+                'basic'          => [
                     'name'       => 'basic',
                     'class'      => $nsMap->get('fixtures') . '\\BasicStruct',
-                    'config'     => array(
+                    'config'     => [
                         'abc' => 123,
                         'xyz' => 'test',
-                    ),
+                    ],
                     'hash'       => 'test',
-                    'properties' => array(),
-                ),
-                'child'          => array(
+                    'properties' => [],
+                ],
+                'child'          => [
                     'name'       => 'child',
                     'class'      => $nsMap->get('fixtures') . '\\StructWithChild',
-                    'config'     => array(),
+                    'config'     => [],
                     'hash'       => 'test',
-                    'properties' => array(),
-                ),
-                'propertyTest'   => array(
+                    'properties' => [],
+                ],
+                'propertyTest'   => [
                     'name'       => 'propertyTest',
                     'class'      => $nsMap->get('fixtures') . '\\CustomPropertiesTest',
-                    'config'     => array(),
+                    'config'     => [],
                     'hash'       => 'test',
-                    'properties' => array(),
-                ),
-                'annotationTest' => array(
+                    'properties' => [],
+                ],
+                'annotationTest' => [
                     'name'       => 'annotationTest',
                     'class'      => $nsMap->get('fixtures') . '\\CustomAnnotationsTest',
-                    'config'     => array(),
+                    'config'     => [],
                     'hash'       => 'test',
-                    'properties' => array(),
-                ),
-            ),
-        );
+                    'properties' => [],
+                ],
+            ],
+        ];
         foreach ($metadata['properties'] as $name => $info) {
             /** @var $struct MetadataTestcaseInterface */
             $struct = new $info['class'];

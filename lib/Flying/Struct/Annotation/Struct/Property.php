@@ -40,7 +40,7 @@ class Property extends Annotation
      *
      * @var array
      */
-    private $config = array();
+    private $config = [];
 
     /**
      * {@inheritdoc}
