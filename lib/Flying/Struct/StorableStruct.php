@@ -230,15 +230,9 @@ class StorableStruct extends Struct implements StorableInterface
     }
 
     /**
-     * Perform required operations when configuration option value is changed
-     *
-     * @param string $name          Configuration option name
-     * @param mixed $value          Configuration option value
-     * @param boolean $merge        TRUE if configuration option is changed during merge process,
-     *                              FALSE if it is changed by setting configuration option
-     * @return void
+     * {@inheritdoc}
      */
-    protected function onConfigChange($name, $value, $merge)
+    protected function onConfigChange($name, $value)
     {
         switch ($name) {
             case 'storage':
@@ -254,7 +248,7 @@ class StorableStruct extends Struct implements StorableInterface
                 $this->parent = $value;
                 break;
         }
-        parent::onConfigChange($name, $value, $merge);
+        parent::onConfigChange($name, $value);
     }
 
     /**

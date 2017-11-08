@@ -65,7 +65,7 @@ class Enum extends Property
     /**
      * {@inheritdoc}
      */
-    protected function onConfigChange($name, $value, $merge)
+    protected function onConfigChange($name, $value)
     {
         /** @noinspection DegradedSwitchInspection */
         switch ($name) {
@@ -73,7 +73,7 @@ class Enum extends Property
                 $this->values = $value;
                 break;
             default:
-                parent::onConfigChange($name, $value, $merge);
+                parent::onConfigChange($name, $value);
                 break;
         }
     }

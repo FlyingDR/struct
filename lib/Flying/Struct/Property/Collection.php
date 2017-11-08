@@ -440,7 +440,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * {@inheritdoc}
      */
-    protected function onConfigChange($name, $value, $merge)
+    protected function onConfigChange($name, $value)
     {
         /** @noinspection DegradedSwitchInspection */
         switch ($name) {
@@ -448,7 +448,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                 $this->allowed = $value;
                 break;
             default:
-                parent::onConfigChange($name, $value, $merge);
+                parent::onConfigChange($name, $value);
                 break;
         }
     }

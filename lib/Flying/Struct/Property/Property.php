@@ -187,7 +187,7 @@ class Property extends AbstractConfig implements PropertyInterface
     /**
      * {@inheritdoc}
      */
-    protected function onConfigChange($name, $value, $merge)
+    protected function onConfigChange($name, $value)
     {
         switch ($name) {
             case 'nullable':
