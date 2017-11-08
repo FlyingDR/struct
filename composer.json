@@ -15,17 +15,19 @@
         }
     },
     "require": {
+        "php": ">=5.6",
         "doctrine/annotations": "~1.0",
-        "flying/config": "~2.0",
+        "flying/config": "~3.0",
         "doctrine/cache": "~1.0"
     },
     "conflict": {
         "doctrine/annotations": ">=1.5",
         "doctrine/instantiator": ">=1.1",
-        "doctrine/cache": ">=1.7"
+        "doctrine/cache": ">=1.7",
+        "mockery/mockery": ">=1.0"
     },
     "require-dev": {
-        "mockery/mockery": "~0.8",
-        "phpunit/phpunit": "~4.8"
+        "mockery/mockery": "~0.9",
+        "phpunit/phpunit": "^5.7"
     }
 }
