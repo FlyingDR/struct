@@ -82,7 +82,8 @@ abstract class BasePropertyTest extends TestCase
             $config = array();
         }
         $defaults = $this->getDefaultConfig();
-        $defaults['default'] = $this->getDefaultValue();
+        $defaultValue = $this->getDefaultValue();
+        $defaults['default'] = $defaultValue;
         $config = array_merge($defaults, $config);
         $property = new $class($value, $config);
         return $property;

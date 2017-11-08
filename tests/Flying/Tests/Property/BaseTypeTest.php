@@ -67,10 +67,11 @@ abstract class BaseTypeTest extends BasePropertyTest
 
     public function testUnacceptableNullValue()
     {
+        $defaultValue = $this->getDefaultValue();
         $property = $this->getTestProperty(null, array(
             'nullable' => false,
         ));
-        static::assertEquals($property->getValue(), $this->getDefaultValue());
+        static::assertEquals($property->getValue(), $defaultValue);
     }
 
     public function serializationDataProvider()
