@@ -3,7 +3,6 @@
 namespace Flying\Tests\Struct\Common;
 
 use Flying\Tests\Struct\Fixtures\InlineStructDefinition;
-use Mockery;
 
 /**
  * @method InlineStructDefinition getTestStruct($contents = null, $config = null)
@@ -15,7 +14,7 @@ abstract class InlineStructDefinitionTest extends BaseStructTest
      *
      * @var string
      */
-    protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\InlineStructDefinition';
+    protected $fixtureClass = InlineStructDefinition::class;
 
     public function testCreation()
     {

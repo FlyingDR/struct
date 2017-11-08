@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
+use Flying\Struct\Exception;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
@@ -26,6 +27,6 @@ class StructWithNonStructureClass extends StructStub implements MetadataTestcase
      */
     public function getExpectedException()
     {
-        return ['Flying\Struct\Exception', 'Unable to resolve structure class: \ArrayObject'];
+        return [Exception::class, 'Unable to resolve structure class: \ArrayObject'];
     }
 }

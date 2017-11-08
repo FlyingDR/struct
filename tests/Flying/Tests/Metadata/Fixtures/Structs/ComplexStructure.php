@@ -60,7 +60,7 @@ class ComplexStructure extends StructStub implements MetadataTestcaseInterface
                 ],
             ],
         ];
-        foreach ($metadata['properties'] as $name => $info) {
+        foreach ((array)$metadata['properties'] as $name => $info) {
             /** @var $struct MetadataTestcaseInterface */
             $struct = new $info['class'];
             $meta = $struct->getExpectedMetadata();

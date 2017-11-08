@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Metadata;
 
+use Flying\Struct\Exception;
 use Flying\Struct\Metadata\PropertyMetadata;
 use Flying\Struct\Metadata\StructMetadata;
 
@@ -58,6 +59,14 @@ class StructMetadataTest extends BaseMetadataTest
         static::assertArrayNotHasKey($p2->getName(), $properties);
     }
 
+    /**
+     * @return StructMetadata
+     */
+    protected function getMetadataObject()
+    {
+        return new StructMetadata();
+    }
+
     public function testFillingObjectFromConstructor()
     {
         $class = get_class($this->getMetadataObject());
@@ -78,7 +87,7 @@ class StructMetadataTest extends BaseMetadataTest
 
     public function testGettingInvalidProperty()
     {
-        $this->setExpectedException('Flying\Struct\Exception');
+        $this->expectException(Exception::class);
         $metadata = $this->getMetadataObject();
         $metadata->getProperty('unavailable');
     }
@@ -95,7 +104,7 @@ class StructMetadataTest extends BaseMetadataTest
         /** @var $new StructMetadata */
         $new = unserialize($serialized);
         static::assertNotSame($metadata, $new);
-        static::assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $new);
+        static::assertInstanceOf(StructMetadata::class, $new);
         static::assertTrue($new->hasProperty('p1'));
         static::assertTrue($new->hasProperty('p2'));
     }
@@ -159,13 +168,5 @@ class StructMetadataTest extends BaseMetadataTest
         $hash = $metadata->getHash();
         $metadata->setProperties([$p1, $p2]);
         static::assertNotEquals($hash, $metadata->getHash());
-    }
-
-    /**
-     * @return StructMetadata
-     */
-    protected function getMetadataObject()
-    {
-        return new StructMetadata();
     }
 }

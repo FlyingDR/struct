@@ -11,7 +11,7 @@ use Flying\Tests\TestCaseUsingConfiguration;
  */
 abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
 {
-    protected static $annotationFixtures = [
+    private static $annotationFixtures = [
         'BasicStruct',
         'StructWithChild',
         'CustomPropertiesTest',
@@ -53,14 +53,14 @@ abstract class TestUsingFixtureStructures extends TestCaseUsingConfiguration
      */
     protected function getFixtureClass($class)
     {
-        if (class_exists($class, true)) {
+        if (class_exists($class)) {
             return $class;
         }
-        $class = trim(ucfirst($class), '\\');
+        $class = ucfirst(trim($class, '\\'));
         $namespaces = ConfigurationManager::getConfiguration()->getStructNamespacesMap()->getAll();
         foreach ($namespaces as $ns) {
             $nsClass = $ns . '\\' . $class;
-            if (class_exists($nsClass, true)) {
+            if (class_exists($nsClass)) {
                 return $nsClass;
             }
         }

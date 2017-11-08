@@ -18,12 +18,6 @@ use Flying\Struct\Property\PropertyInterface;
 class Struct extends AbstractConfig implements StructInterface, MetadataModificationInterface
 {
     /**
-     * Structure contents
-     *
-     * @var array
-     */
-    private $struct;
-    /**
      * Initial contents for structure properties
      *
      * @var array
@@ -35,6 +29,18 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      * @var boolean
      */
     protected $skipNotify = false;
+    /**
+     * Parent structure or NULL if this is top-level structure
+     *
+     * @var Struct
+     */
+    protected $parent;
+    /**
+     * Structure contents
+     *
+     * @var array
+     */
+    private $struct;
     /**
      * Structure size (for Countable interface)
      *
@@ -53,19 +59,14 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      * @var StructMetadata
      */
     private $metadata;
-    /**
-     * Parent structure or NULL if this is top-level structure
-     *
-     * @var Struct
-     */
-    protected $parent;
 
     /**
      * Class constructor
      *
      * @param array|object $contents OPTIONAL Contents to initialize structure with
      * @param array|object $config   OPTIONAL Configuration for this structure
-     * @return Struct
+     * @throws \Flying\Struct\Exception
+     * @throws \RuntimeException
      */
     public function __construct($contents = null, $config = null)
     {
@@ -81,55 +82,74 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
     }
 
     /**
-     * Handling of object cloning
+     * Create structure from given metadata information
      *
+     * @param StructMetadata $metadata
+     * @throws Exception
      * @return void
+     * @throws \RuntimeException
      */
-    public function __clone()
+    protected function createStruct(StructMetadata $metadata = null)
     {
-        $config = [
+        if (!$metadata) {
+            $metadata = $this->getMetadata();
+        }
+        $contents = $this->getInitialContents();
+        $baseConfig = [
             'parent_structure'       => $this,
             'update_notify_listener' => $this,
         ];
-        /** @var $property Property */
-        foreach ($this->struct as &$property) {
-            $property = clone $property;
-            $property->setConfig($config);
+        $this->struct = [];
+        /** @var $property MetadataInterface */
+        foreach ($metadata->getProperties() as $name => $property) {
+            $class = $property->getClass();
+            $value = array_key_exists($name, $contents) ? $contents[$name] : null;
+            $config = array_merge($property->getConfig(), $baseConfig);
+            if ($property instanceof StructMetadata) {
+                $config['metadata'] = $property;
+            }
+            if ($class === null) {
+                // Structure properties metadata is defined explicitly
+                $class = $this->getConfig('explicit_metadata_class');
+                $config['metadata'] = $property;
+            }
+            $instance = new $class($value, $config);
+            if ((!$instance instanceof PropertyInterface) && (!$instance instanceof StructInterface)) {
+                throw new Exception('Invalid class "' . $class . '" for structure property: ' . $name);
+            }
+            $this->struct[$name] = $instance;
         }
+        $this->count = count($this->struct);
+        $this->rewind();
     }
 
     /**
      * Get structure metadata
      *
-     * @throws Exception
      * @return StructMetadata
+     * @throws \Flying\Struct\Exception
      */
     protected function getMetadata()
     {
         if (!$this->metadata) {
-            /** @var $metadata StructMetadata */
-            $metadata = $this->getConfig('metadata');
-            if (!$metadata instanceof StructMetadata) {
-                /** @var $configuration Configuration */
-                $configuration = $this->getConfig('configuration');
-                $metadata = $configuration->getMetadataManager()->getMetadata($this);
+            try {
+                /** @var $metadata StructMetadata */
+                $metadata = $this->getConfig('metadata');
                 if (!$metadata instanceof StructMetadata) {
-                    throw new Exception('No metadata information is found for structure: ' . get_class($this));
+                    /** @var $configuration Configuration */
+                    $configuration = $this->getConfig('configuration');
+                    $metadata = $configuration->getMetadataManager()->getMetadata($this);
+                    /** @noinspection NotOptimalIfConditionsInspection */
+                    if (!$metadata instanceof StructMetadata) {
+                        throw new Exception('No metadata information is found for structure: ' . get_class($this));
+                    }
                 }
+            } catch (\RuntimeException $e) {
+                throw new Exception('Failed to obtain metadata information for structure: ' . get_class($this));
             }
             $this->metadata = $metadata;
         }
         return $this->metadata;
-    }
-
-    /**
-     * Modify metadata for this structure after it was parsed by MetadataManager
-     *
-     * @param StructMetadata $metadata
-     */
-    public static function modifyMetadata(StructMetadata $metadata)
-    {
-
     }
 
     /**
@@ -145,10 +165,10 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
             $this->initialContents = [];
         }
         if ($name !== null) {
-            return (array_key_exists($name, $this->initialContents)) ? $this->initialContents[$name] : null;
-        } else {
-            return $this->initialContents;
+            return array_key_exists($name, $this->initialContents) ? $this->initialContents[$name] : null;
         }
+
+        return $this->initialContents;
     }
 
     /**
@@ -170,71 +190,91 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
     }
 
     /**
-     * Attempt to convert given structure contents to array
+     * Defined by Iterator interface
      *
-     * @param mixed $contents Value to convert to array
-     * @return array
+     * @return void
      */
-    protected function convertToArray($contents)
+    public function rewind()
     {
-        if (is_object($contents)) {
-            if (is_callable([$contents, 'toArray'])) {
-                $contents = $contents->toArray();
-            } elseif ($contents instanceof \ArrayObject) {
-                $contents = $contents->getArrayCopy();
-            } elseif ($contents instanceof \Iterator) {
-                $temp = [];
-                foreach ($contents as $k => $v) {
-                    $temp[$k] = $v;
-                }
-                $contents = $temp;
-            }
-        }
-        if (!is_array($contents)) {
-            $contents = [];
-        }
-        return $contents;
+        reset($this->struct);
+        $this->index = 0;
     }
 
     /**
-     * Create structure from given metadata information
+     * Modify metadata for this structure after it was parsed by MetadataManager
      *
      * @param StructMetadata $metadata
-     * @throws Exception
+     */
+    public static function modifyMetadata(StructMetadata $metadata)
+    {
+
+    }
+
+    /**
+     * Handling of object cloning
+     *
      * @return void
      */
-    protected function createStruct(StructMetadata $metadata = null)
+    public function __clone()
     {
-        if (!$metadata) {
-            $metadata = $this->getMetadata();
-        }
-        $contents = $this->getInitialContents();
-        $baseConfig = [
+        $config = [
             'parent_structure'       => $this,
             'update_notify_listener' => $this,
         ];
-        $this->struct = [];
-        /** @var $property MetadataInterface */
-        foreach ($metadata->getProperties() as $name => $property) {
-            $class = $property->getClass();
-            $value = (array_key_exists($name, $contents)) ? $contents[$name] : null;
-            $config = array_merge($property->getConfig(), $baseConfig);
-            if ($property instanceof StructMetadata) {
-                $config['metadata'] = $property;
-            }
-            if ($class === null) {
-                // Structure properties metadata is defined explicitly
-                $class = $this->getConfig('explicit_metadata_class');
-                $config['metadata'] = $property;
-            }
-            $instance = new $class($value, $config);
-            if ((!$instance instanceof PropertyInterface) && (!$instance instanceof StructInterface)) {
-                throw new Exception('Invalid class "' . $class . '" for structure property: ' . $name);
-            }
-            $this->struct[$name] = $instance;
+        /** @var $property Property */
+        foreach ($this->struct as &$property) {
+            $property = clone $property;
+            $property->setConfig($config);
         }
-        $this->count = count($this->struct);
-        $this->rewind();
+    }
+
+    /**
+     * Get structure property with given name
+     *
+     * @param string $name
+     * @return PropertyInterface|ComplexPropertyInterface|null
+     */
+    public function getProperty($name)
+    {
+        if ($this->__isset($name)) {
+            return $this->struct[$name];
+        }
+        return null;
+    }
+
+    /**
+     * Support isset() overloading
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        return array_key_exists($name, $this->struct);
+    }
+
+    /**
+     * Magic function so that $obj->value will work.
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        return $this->get($name);
+    }
+
+    /**
+     * Magic function for setting structure property value
+     *
+     * @param string $name Structure property name to set value of
+     * @param mixed $value New value for this property
+     * @return void
+     * @throws \RuntimeException
+     */
+    public function __set($name, $value)
+    {
+        $this->set($name, $value);
     }
 
     /**
@@ -261,21 +301,6 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
     }
 
     /**
-     * Get structure property with given name
-     *
-     * @param string $name
-     * @return PropertyInterface|ComplexPropertyInterface|null
-     */
-    public function getProperty($name)
-    {
-        /** @noinspection ImplicitMagicMethodCallInspection */
-        if ($this->__isset($name)) {
-            return $this->struct[$name];
-        }
-        return null;
-    }
-
-    /**
      * Handle get requests for missed structure properties
      *
      * @param string $name   Requested structure property name
@@ -290,27 +315,17 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
     }
 
     /**
-     * Magic function so that $obj->value will work.
-     *
-     * @param string $name
-     * @return mixed
-     */
-    public function __get($name)
-    {
-        return ($this->get($name));
-    }
-
-    /**
      * Set value of structure property with given name
      *
      * @param string|array $name    Either name of structure property to set value of
      *                              or array of structure properties to set
      * @param mixed $value          OPTIONAL New value for this property (only if $name is a string)
      * @return void
+     * @throws \RuntimeException
      */
     public function set($name, $value = null)
     {
-        $values = (is_scalar($name)) ? [$name => $value] : $name;
+        $values = is_scalar($name) ? [$name => $value] : $name;
         foreach ($values as $k => $v) {
             if (!array_key_exists($k, $this->struct)) {
                 $this->setMissed($k, $v);
@@ -328,18 +343,6 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
     }
 
     /**
-     * Magic function for setting structure property value
-     *
-     * @param string $name Structure property name to set value of
-     * @param mixed $value New value for this property
-     * @return void
-     */
-    public function __set($name, $value)
-    {
-        $this->set($name, $value);
-    }
-
-    /**
      * Handle set requests for missed structure properties
      *
      * @param string $name Structure property name to set
@@ -350,6 +353,23 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
     {
         // This method can be overridden into derived classes
         // to handle attempts to set missed structure properties
+    }
+
+    /**
+     * Handle notification about update of given property
+     *
+     * @param SimplePropertyInterface $property
+     * @return void
+     * @throws \RuntimeException
+     */
+    public function updateNotify(SimplePropertyInterface $property)
+    {
+        if (!$this->skipNotify) {
+            $owner = $this->getConfig('update_notify_listener');
+            if ($owner instanceof UpdateNotifyListenerInterface) {
+                $owner->updateNotify($property);
+            }
+        }
     }
 
     /**
@@ -382,6 +402,154 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
     }
 
     /**
+     * Defined by Countable interface
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->count;
+    }
+
+    /**
+     * Defined by Iterator interface
+     *
+     * @return mixed
+     */
+    public function current()
+    {
+        return $this->get(key($this->struct));
+    }
+
+    /**
+     * Defined by Iterator interface
+     *
+     * @return mixed
+     */
+    public function key()
+    {
+        return key($this->struct);
+    }
+
+    /**
+     * Defined by Iterator interface
+     *
+     * @return void
+     */
+    public function next()
+    {
+        next($this->struct);
+        $this->index++;
+    }
+
+    /**
+     * Defined by Iterator interface
+     *
+     * @return boolean
+     */
+    public function valid()
+    {
+        return ($this->index < $this->count);
+    }
+
+    /**
+     * Defined by RecursiveIterator interface
+     *
+     * @return boolean
+     */
+    public function hasChildren()
+    {
+        return ($this->struct[key($this->struct)] instanceof StructInterface);
+    }
+
+    /**
+     * Defined by RecursiveIterator interface
+     *
+     * @return \RecursiveIterator
+     */
+    public function getChildren()
+    {
+        return $this->struct[key($this->struct)];
+    }
+
+    /**
+     * Defined by ArrayAccess interface
+     *
+     * @param mixed $offset
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return $this->__isset($offset);
+    }
+
+    /**
+     * Defined by ArrayAccess interface
+     *
+     * @param mixed $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    /**
+     * Defined by ArrayAccess interface
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     * @return void
+     * @throws \RuntimeException
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->set($offset, $value);
+    }
+
+    /**
+     * Defined by ArrayAccess interface
+     *
+     * @param mixed $offset
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        $this->__unset($offset);
+    }
+
+    /**
+     * Support unset() overloading
+     * Unset of structure property in a term of removing it from structure is not allowed,
+     * so unset() just reset field's value.
+     *
+     * @param  string $name
+     * @return void
+     */
+    public function __unset($name)
+    {
+        if (array_key_exists($name, $this->struct)) {
+            /** @var $property PropertyInterface */
+            $property = $this->struct[$name];
+            $property->reset();
+        }
+    }
+
+    /**
+     * Implementation of Serializable interface
+     *
+     * @return string
+     * @throws \Flying\Struct\Exception
+     */
+    public function serialize()
+    {
+        return serialize([
+            'metadata' => $this->getMetadata(),
+            'struct'   => $this->toArray(),
+        ]);
+    }
+
+    /**
      * Get structure contents as associative array
      *
      * @return array
@@ -396,29 +564,69 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
                 $array[$key] = $value->getValue();
             }
         }
-        return ($array);
+        return $array;
     }
 
     /**
-     * Handle notification about update of given property
+     * Implementation of Serializable interface
      *
-     * @param SimplePropertyInterface $property
+     * @param string $serialized Serialized object data
      * @return void
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \Flying\Struct\Exception
      */
-    public function updateNotify(SimplePropertyInterface $property)
+    public function unserialize($serialized)
     {
-        if (!$this->skipNotify) {
-            $owner = $this->getConfig('update_notify_listener');
-            if ($owner instanceof UpdateNotifyListenerInterface) {
-                $owner->updateNotify($property);
+        $data = unserialize($serialized);
+        if ((!is_array($data)) ||
+            (!array_key_exists('metadata', $data)) ||
+            (!array_key_exists('struct', $data)) ||
+            (!$data['metadata'] instanceof StructMetadata) ||
+            (!is_array($data['struct']))
+        ) {
+            throw new \InvalidArgumentException('Serialized structure information has invalid format');
+        }
+        $flag = $this->skipNotify;
+        $this->skipNotify = true;
+        $this->setConfig('metadata', $data['metadata']);
+        $this->createStruct();
+        $this->set($data['struct']);
+        $this->skipNotify = $flag;
+    }
+
+    /**
+     * Attempt to convert given structure contents to array
+     *
+     * @param mixed $contents Value to convert to array
+     * @return array
+     */
+    protected function convertToArray($contents)
+    {
+        if (is_object($contents)) {
+            if (is_callable([$contents, 'toArray'])) {
+                $contents = $contents->toArray();
+            } elseif ($contents instanceof \ArrayObject) {
+                $contents = $contents->getArrayCopy();
+            } elseif ($contents instanceof \Iterator) {
+                $temp = [];
+                foreach ($contents as $k => $v) {
+                    $temp[$k] = $v;
+                }
+                $contents = $temp;
             }
         }
+        if (!is_array($contents)) {
+            $contents = [];
+        }
+        return $contents;
     }
 
     /**
      * Initialize list of configuration options
      *
      * @return void
+     * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
     protected function initConfig()
@@ -438,6 +646,7 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
      *
      * @param string $name Configuration option name
      * @return mixed
+     * @throws \RuntimeException
      */
     protected function lazyConfigInit($name)
     {
@@ -490,15 +699,18 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
                 }
                 break;
             case 'explicit_metadata_class':
-                /** @noinspection ReferenceMismatchInspection */
                 if (!is_string($value)) {
                     throw new \InvalidArgumentException('Explicit metadata class name should be defined as string');
                 }
                 if (!class_exists($value)) {
                     throw new \InvalidArgumentException('Unknown class name is defined for explicit metadata class');
                 }
-                $reflection = new \ReflectionClass($value);
-                if ((!$reflection->isInstantiable()) || (!$reflection->implementsInterface('Flying\Struct\StructInterface'))) {
+                try {
+                    $reflection = new \ReflectionClass($value);
+                } catch (\ReflectionException $e) {
+                    throw new \InvalidArgumentException('Invalid class is defined for explicit metadata class');
+                }
+                if ((!$reflection->isInstantiable()) || (!$reflection->implementsInterface(StructInterface::class))) {
                     throw new \InvalidArgumentException('Invalid class is defined for explicit metadata class');
                 }
                 break;
@@ -520,201 +732,5 @@ class Struct extends AbstractConfig implements StructInterface, MetadataModifica
                 break;
         }
         parent::onConfigChange($name, $value);
-    }
-
-    /**
-     * Support isset() overloading
-     *
-     * @param string $name
-     * @return boolean
-     */
-    public function __isset($name)
-    {
-        return (array_key_exists($name, $this->struct));
-    }
-
-    /**
-     * Support unset() overloading
-     * Unset of structure property in a term of removing it from structure is not allowed,
-     * so unset() just reset field's value.
-     *
-     * @param  string $name
-     * @return void
-     */
-    public function __unset($name)
-    {
-        if (array_key_exists($name, $this->struct)) {
-            /** @var $property PropertyInterface */
-            $property = $this->struct[$name];
-            $property->reset();
-        }
-    }
-
-    /**
-     * Defined by Countable interface
-     *
-     * @return int
-     */
-    public function count()
-    {
-        return ($this->count);
-    }
-
-    /**
-     * Defined by Iterator interface
-     *
-     * @return mixed
-     */
-    public function current()
-    {
-        return ($this->get(key($this->struct)));
-    }
-
-    /**
-     * Defined by Iterator interface
-     *
-     * @return mixed
-     */
-    public function key()
-    {
-        return (key($this->struct));
-    }
-
-    /**
-     * Defined by Iterator interface
-     *
-     * @return void
-     */
-    public function next()
-    {
-        next($this->struct);
-        $this->index++;
-    }
-
-    /**
-     * Defined by Iterator interface
-     *
-     * @return void
-     */
-    public function rewind()
-    {
-        reset($this->struct);
-        $this->index = 0;
-    }
-
-    /**
-     * Defined by Iterator interface
-     *
-     * @return boolean
-     */
-    public function valid()
-    {
-        return ($this->index < $this->count);
-    }
-
-    /**
-     * Defined by RecursiveIterator interface
-     *
-     * @return boolean
-     */
-    public function hasChildren()
-    {
-        return ($this->struct[key($this->struct)] instanceof StructInterface);
-    }
-
-    /**
-     * Defined by RecursiveIterator interface
-     *
-     * @return \RecursiveIterator
-     */
-    public function getChildren()
-    {
-        return ($this->struct[key($this->struct)]);
-    }
-
-    /**
-     * Defined by ArrayAccess interface
-     *
-     * @param mixed $offset
-     * @return boolean
-     */
-    public function offsetExists($offset)
-    {
-        /** @noinspection ImplicitMagicMethodCallInspection */
-        return ($this->__isset($offset));
-    }
-
-    /**
-     * Defined by ArrayAccess interface
-     *
-     * @param mixed $offset
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-        return ($this->get($offset));
-    }
-
-    /**
-     * Defined by ArrayAccess interface
-     *
-     * @param mixed $offset
-     * @param mixed $value
-     * @return void
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->set($offset, $value);
-    }
-
-    /**
-     * Defined by ArrayAccess interface
-     *
-     * @param mixed $offset
-     * @return void
-     */
-    public function offsetUnset($offset)
-    {
-        /** @noinspection ImplicitMagicMethodCallInspection */
-        $this->__unset($offset);
-    }
-
-    /**
-     * Implementation of Serializable interface
-     *
-     * @return string
-     */
-    public function serialize()
-    {
-        return (serialize([
-            'metadata' => $this->getMetadata(),
-            'struct'   => $this->toArray(),
-        ]));
-    }
-
-    /**
-     * Implementation of Serializable interface
-     *
-     * @param array $data Serialized object data
-     * @throws \InvalidArgumentException
-     * @return void
-     */
-    public function unserialize($data)
-    {
-        $data = unserialize($data);
-        if ((!is_array($data)) ||
-            (!array_key_exists('metadata', $data)) ||
-            (!$data['metadata'] instanceof StructMetadata) ||
-            (!array_key_exists('struct', $data)) ||
-            (!is_array($data['struct']))
-        ) {
-            throw new \InvalidArgumentException('Serialized structure information has invalid format');
-        }
-        $flag = $this->skipNotify;
-        $this->skipNotify = true;
-        $this->setConfig('metadata', $data['metadata']);
-        $this->createStruct();
-        $this->set($data['struct']);
-        $this->skipNotify = $flag;
     }
 }

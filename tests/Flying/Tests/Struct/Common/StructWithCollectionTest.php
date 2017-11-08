@@ -3,6 +3,8 @@
 namespace Flying\Tests\Struct\Common;
 
 use Flying\Struct\Common\ComplexPropertyInterface;
+use Flying\Struct\Property\Collection;
+use Flying\Struct\Property\PropertyInterface;
 use Flying\Tests\Struct\Fixtures\StructWithCollection;
 
 /**
@@ -15,7 +17,7 @@ abstract class StructWithCollectionTest extends BaseStructTest
      *
      * @var string
      */
-    protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\StructWithCollection';
+    protected $fixtureClass = StructWithCollection::class;
 
     public function testCreation()
     {
@@ -26,8 +28,8 @@ abstract class StructWithCollectionTest extends BaseStructTest
     public function testGettingProperty()
     {
         $struct = $this->getTestStruct();
-        static::assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('first'));
-        static::assertInstanceOf('Flying\Struct\Common\ComplexPropertyInterface', $struct->getProperty('collection'));
+        static::assertInstanceOf(PropertyInterface::class, $struct->getProperty('first'));
+        static::assertInstanceOf(ComplexPropertyInterface::class, $struct->getProperty('collection'));
         static::assertNull($struct->getProperty('unavailable'));
     }
 
@@ -57,7 +59,7 @@ abstract class StructWithCollectionTest extends BaseStructTest
     public function testCollectionAccess()
     {
         $struct = $this->getTestStruct();
-        static::assertInstanceOf('Flying\Struct\Property\Collection', $struct->collection);
+        static::assertInstanceOf(Collection::class, $struct->collection);
     }
 
     public function testArrayAccess()

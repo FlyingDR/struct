@@ -37,33 +37,6 @@ class Struct extends Annotation
     private $config = [];
 
     /**
-     * {@inheritdoc}
-     */
-    protected function parseValues(array &$values)
-    {
-        parent::parseValues($values);
-        if (array_key_exists('class', $values)) {
-            $this->class = $values['class'];
-            unset($values['class']);
-        }
-        if ((array_key_exists('value', $values)) && (is_array($values['value']))) {
-            $this->properties = $values['value'];
-            unset($values['value']);
-        }
-        $this->config = $values;
-        foreach ($this->properties as $p) {
-            if (!$p instanceof Annotation) {
-                throw new AnnotationException('Inline structure property definition should be valid annotation');
-            }
-        }
-        // Check if we got required properties
-        if (((!is_string($this->class)) || ($this->class === '')) && (!count($this->properties))) {
-            // We should have either explicitly defined structure properties or structure class name
-            throw new AnnotationException('Required property annotation is missed: class');
-        }
-    }
-
-    /**
      * Get structure class
      *
      * @return string
@@ -91,5 +64,32 @@ class Struct extends Annotation
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function parseValues(array &$values)
+    {
+        parent::parseValues($values);
+        if (array_key_exists('class', $values)) {
+            $this->class = $values['class'];
+            unset($values['class']);
+        }
+        if (array_key_exists('value', $values) && is_array($values['value'])) {
+            $this->properties = $values['value'];
+            unset($values['value']);
+        }
+        $this->config = $values;
+        foreach ($this->properties as $p) {
+            if (!$p instanceof Annotation) {
+                throw new AnnotationException('Inline structure property definition should be valid annotation');
+            }
+        }
+        // Check if we got required properties
+        if (((!is_string($this->class)) || ($this->class === '')) && (!count($this->properties))) {
+            // We should have either explicitly defined structure properties or structure class name
+            throw new AnnotationException('Required property annotation is missed: class');
+        }
     }
 }

@@ -20,49 +20,13 @@ class NamespacesMap
      * Class constructor
      *
      * @param array|string $namespaces OPTIONAL Namespaces to register
+     * @throws \InvalidArgumentException
      */
     public function __construct($namespaces = null)
     {
-        $this->namespaces = [];
         if ($namespaces) {
             $this->add($namespaces);
         }
-    }
-
-    /**
-     * Get registered namespace by given alias
-     *
-     * @param string $alias Namespace alias
-     * @throws Exception
-     * @return string
-     */
-    public function get($alias)
-    {
-        if (!$this->has($alias)) {
-            throw new Exception('Class namespace with alias "' . $alias . '" is not registered');
-        }
-        return ($this->namespaces[$alias]);
-    }
-
-    /**
-     * Get all registered namespaces
-     *
-     * @return array
-     */
-    public function getAll()
-    {
-        return ($this->namespaces);
-    }
-
-    /**
-     * Check if namespace with given alias is registered
-     *
-     * @param string $alias Namespace alias
-     * @return boolean
-     */
-    public function has($alias)
-    {
-        return (array_key_exists($alias, $this->namespaces));
     }
 
     /**
@@ -82,17 +46,53 @@ class NamespacesMap
                 $namespace = [];
             }
         }
-        foreach ($namespace as $alias => $ns) {
+        foreach ((array)$namespace as $na => $ns) {
             if ((!is_string($ns)) || ($ns === '')) {
                 throw new \InvalidArgumentException('Class namespace must be a string');
             }
-            if ((!is_string($alias)) || ($alias === '')) {
-                $alias = mb_strtolower(str_replace('\\', '_', $ns));
+            if ((!is_string($na)) || ($na === '')) {
+                $na = mb_strtolower(str_replace('\\', '_', $ns));
             }
             $ns = trim($ns, '\\');
-            $this->namespaces[$alias] = $ns;
+            $this->namespaces[$na] = $ns;
         }
-        return ($this);
+        return $this;
+    }
+
+    /**
+     * Get registered namespace by given alias
+     *
+     * @param string $alias Namespace alias
+     * @throws Exception
+     * @return string
+     */
+    public function get($alias)
+    {
+        if (!$this->has($alias)) {
+            throw new Exception('Class namespace with alias "' . $alias . '" is not registered');
+        }
+        return $this->namespaces[$alias];
+    }
+
+    /**
+     * Check if namespace with given alias is registered
+     *
+     * @param string $alias Namespace alias
+     * @return boolean
+     */
+    public function has($alias)
+    {
+        return array_key_exists($alias, $this->namespaces);
+    }
+
+    /**
+     * Get all registered namespaces
+     *
+     * @return array
+     */
+    public function getAll()
+    {
+        return $this->namespaces;
     }
 
     /**
@@ -104,6 +104,6 @@ class NamespacesMap
     public function remove($alias)
     {
         unset($this->namespaces[$alias]);
-        return ($this);
+        return $this;
     }
 }

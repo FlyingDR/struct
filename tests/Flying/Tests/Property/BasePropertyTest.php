@@ -37,6 +37,9 @@ abstract class BasePropertyTest extends TestCase
 
     /**
      * @dataProvider serializationDataProvider
+     * @param mixed $value
+     * @param mixed $expected
+     * @param array|null $config
      */
     public function testSerialization($value, $expected, $config = null)
     {
@@ -49,33 +52,16 @@ abstract class BasePropertyTest extends TestCase
     }
 
     /**
-     * Get class name of the property to test
-     *
-     * @return string
-     */
-    protected function getPropertyClass()
-    {
-        $class = $this->propertyClass;
-        if (!class_exists($class, true)) {
-            $class = trim($this->propertyNs, '\\') . '\\' . trim($class, '\\');
-            if (!class_exists($class, true)) {
-                static::fail('Unable to find test property class: ' . $this->propertyClass);
-            }
-        }
-        return $class;
-    }
-
-    /**
      * Get property object to be tested
      *
      * @param mixed $value
      * @param array $config
-     * @return \Flying\Struct\Property\Property
+     * @return Property
      */
     protected function getTestProperty($value = null, $config = null)
     {
         $class = $this->getPropertyClass();
-        if (!is_subclass_of($class, 'Flying\Struct\Property\Property')) {
+        if (!is_subclass_of($class, Property::class)) {
             static::fail('Test property class must be inherited from Property');
         }
         if (!is_array($config)) {
@@ -85,16 +71,25 @@ abstract class BasePropertyTest extends TestCase
         $defaultValue = $this->getDefaultValue();
         $defaults['default'] = $defaultValue;
         $config = array_merge($defaults, $config);
-        $property = new $class($value, $config);
-        return $property;
+        return new $class($value, $config);
     }
 
     /**
-     * @return mixed
+     * Get class name of the property to test
+     *
+     * @return string
      */
-    protected function getDefaultValue()
+    protected function getPropertyClass()
     {
-        return $this->defaultValue;
+        $class = $this->propertyClass;
+        if (!class_exists($class)) {
+            $class = trim($this->propertyNs, '\\') . '\\' . trim($class, '\\');
+            /** @noinspection NotOptimalIfConditionsInspection */
+            if (!class_exists($class)) {
+                static::fail('Unable to find test property class: ' . $this->propertyClass);
+            }
+        }
+        return $class;
     }
 
     /**
@@ -103,6 +98,14 @@ abstract class BasePropertyTest extends TestCase
     protected function getDefaultConfig()
     {
         return $this->defaultConfig;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getDefaultValue()
+    {
+        return $this->defaultValue;
     }
 
     abstract public function serializationDataProvider();

@@ -3,7 +3,6 @@
 namespace Flying\Tests\Struct\Common;
 
 use Flying\Struct\Common\ComplexPropertyInterface;
-use Flying\Struct\Configuration;
 use Flying\Struct\ConfigurationManager;
 use Flying\Struct\Struct;
 use Flying\Tests\Struct\Fixtures\TestStruct;
@@ -35,6 +34,40 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
         $struct = $this->getTestStruct();
         $expected = $struct->getExpectedContents();
         static::assertEquals(count($expected), count($struct));
+    }
+
+    /**
+     * @param array|object $contents OPTIONAL Contents to initialize structure with
+     * @param array|object $config   OPTIONAL Configuration for this structure
+     * @return TestStruct
+     */
+    protected function getTestStruct($contents = null, $config = null)
+    {
+        $class = $this->getFixtureClass($this->fixtureClass);
+        return new $class($contents, $config);
+    }
+
+    /**
+     * Get FQCN for given fixture class
+     *
+     * @param string $class
+     * @return string
+     */
+    protected function getFixtureClass($class)
+    {
+        if (class_exists($class)) {
+            return $class;
+        }
+        $class = ucfirst(trim($class, '\\'));
+        $namespaces = ConfigurationManager::getConfiguration()->getStructNamespacesMap()->getAll();
+        foreach ($namespaces as $ns) {
+            $nsClass = $ns . '\\' . $class;
+            if (class_exists($nsClass)) {
+                return $nsClass;
+            }
+        }
+        static::fail('Unable to find fixture class: ' . $class);
+        return null;
     }
 
     public function testIteratorInterface()
@@ -97,40 +130,5 @@ abstract class BaseStructTest extends TestCaseUsingConfiguration
         static::assertInstanceOf($class, $new);
         static::assertNotEquals($struct, $new);
         static::assertEquals($struct->getExpectedContents(), $new->toArray());
-    }
-
-    /**
-     * Get FQCN for given fixture class
-     *
-     * @param string $class
-     * @return string
-     */
-    protected function getFixtureClass($class)
-    {
-        if (class_exists($class, true)) {
-            return $class;
-        }
-        $class = trim(ucfirst($class), '\\');
-        $namespaces = ConfigurationManager::getConfiguration()->getStructNamespacesMap()->getAll();
-        foreach ($namespaces as $ns) {
-            $nsClass = $ns . '\\' . $class;
-            if (class_exists($nsClass, true)) {
-                return $nsClass;
-            }
-        }
-        static::fail('Unable to find fixture class: ' . $class);
-        return null;
-    }
-
-    /**
-     * @param array|object $contents OPTIONAL Contents to initialize structure with
-     * @param array|object $config   OPTIONAL Configuration for this structure
-     * @return TestStruct
-     */
-    protected function getTestStruct($contents = null, $config = null)
-    {
-        $class = $this->getFixtureClass($this->fixtureClass);
-        $struct = new $class($contents, $config);
-        return $struct;
     }
 }

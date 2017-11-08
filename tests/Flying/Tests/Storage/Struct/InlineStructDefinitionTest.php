@@ -5,9 +5,6 @@ namespace Flying\Tests\Storage\Struct;
 use Flying\Tests\Storage\Struct\Fixtures\InlineStructDefinition;
 use Flying\Tests\Struct\Common\InlineStructDefinitionTest as CommonInlineStructDefinitionTest;
 
-/**
- * @method InlineStructDefinition getTestStruct($contents = null, $config = null)
- */
 class InlineStructDefinitionTest extends CommonInlineStructDefinitionTest
 {
     /**
@@ -21,5 +18,5 @@ class InlineStructDefinitionTest extends CommonInlineStructDefinitionTest
      *
      * @var string
      */
-    protected $fixtureClass = 'Flying\Tests\Storage\Struct\Fixtures\InlineStructDefinition';
+    protected $fixtureClass = InlineStructDefinition::class;
 }

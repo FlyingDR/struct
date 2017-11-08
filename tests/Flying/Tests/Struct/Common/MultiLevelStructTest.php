@@ -3,6 +3,10 @@
 namespace Flying\Tests\Struct\Common;
 
 use Flying\Struct\Common\ComplexPropertyInterface;
+use Flying\Struct\Common\SimplePropertyInterface;
+use Flying\Struct\Common\UpdateNotifyListenerInterface;
+use Flying\Struct\Property\PropertyInterface;
+use Flying\Struct\StructInterface;
 use Flying\Tests\Struct\Fixtures\MultiLevelStruct;
 use Mockery;
 
@@ -16,7 +20,7 @@ abstract class MultiLevelStructTest extends BaseStructTest
      *
      * @var string
      */
-    protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\MultiLevelStruct';
+    protected $fixtureClass = MultiLevelStruct::class;
 
     public function testCreation()
     {
@@ -27,9 +31,9 @@ abstract class MultiLevelStructTest extends BaseStructTest
     public function testGettingProperty()
     {
         $struct = $this->getTestStruct();
-        static::assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('b'));
-        static::assertInstanceOf('Flying\Struct\StructInterface', $struct->getProperty('child'));
-        static::assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->child->getProperty('x'));
+        static::assertInstanceOf(PropertyInterface::class, $struct->getProperty('b'));
+        static::assertInstanceOf(StructInterface::class, $struct->getProperty('child'));
+        static::assertInstanceOf(PropertyInterface::class, $struct->child->getProperty('x'));
         static::assertNull($struct->getProperty('unavailable'));
     }
 
@@ -70,23 +74,20 @@ abstract class MultiLevelStructTest extends BaseStructTest
             'y' => 777,
             'z' => 'test string',
         ];
-        /** @noinspection PhpUndefinedFieldInspection */
         static::assertTrue($struct->child->x);
-        /** @noinspection PhpUndefinedFieldInspection */
         static::assertEquals(777, $struct->child->y);
-        /** @noinspection PhpUndefinedFieldInspection */
         static::assertEquals('test string', $struct->child->z);
     }
 
     public function testUpdateNotificationBubbling()
     {
         $struct = $this->getTestStruct();
-        $m1 = Mockery::mock('Flying\Struct\Common\UpdateNotifyListenerInterface')
+        $m1 = Mockery::mock(UpdateNotifyListenerInterface::class)
             ->shouldReceive('updateNotify')->once()
-            ->with(Mockery::type('Flying\Struct\Common\SimplePropertyInterface'))
+            ->with(Mockery::type(SimplePropertyInterface::class))
             ->getMock();
         $struct->setConfig('update_notify_listener', $m1);
-        $m2 = clone($m1);
+        $m2 = clone $m1;
         $struct->child->setConfig('update_notify_listener', $m2);
         $struct->child->x = true;
     }
@@ -96,8 +97,10 @@ abstract class MultiLevelStructTest extends BaseStructTest
         $struct = $this->getTestStruct();
         $clone = clone $struct;
         foreach ($struct as $name => $value) {
-            if ($value instanceof ComplexPropertyInterface) {
+            if ($value instanceof ComplexPropertyInterface && class_implements($value, \Iterator::class)) {
                 $cloned = $clone->get($name);
+                /** @var \Iterator $value */
+                /** @noinspection ForeachSourceInspection */
                 foreach ($value as $k => $v) {
                     static::assertEquals($v, $cloned->get($k));
                 }
@@ -116,8 +119,10 @@ abstract class MultiLevelStructTest extends BaseStructTest
             ],
         ]);
         foreach ($struct as $name => $value) {
-            if ($value instanceof ComplexPropertyInterface) {
+            if ($value instanceof ComplexPropertyInterface && class_implements($value, \Iterator::class)) {
                 $cloned = $clone->get($name);
+                /** @var \Iterator $value */
+                /** @noinspection ForeachSourceInspection */
                 foreach ($value as $k => $v) {
                     static::assertNotEquals($v, $cloned->get($k));
                 }

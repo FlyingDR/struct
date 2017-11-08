@@ -50,14 +50,4 @@ class InheritanceTestStructB extends InheritanceTestStructA
         ];
         return $metadata;
     }
-
-    /**
-     * Get expected exception that should be raised when parsing metadata from this testcase
-     *
-     * @return string|array|null
-     */
-    public function getExpectedException()
-    {
-        return null;
-    }
 }

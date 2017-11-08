@@ -28,6 +28,15 @@ class Collection extends BaseCollection implements CallbackTrackingInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function normalize(&$value, $key = null)
+    {
+        $this->logCallbackCall(__FUNCTION__, func_get_args());
+        return parent::normalize($value, $key);
+    }
+
+    /**
      * Log call to callback
      *
      * @param string $method Method name
@@ -41,15 +50,6 @@ class Collection extends BaseCollection implements CallbackTrackingInterface
             $logger = $this->cbLogs[$method];
             $logger->add($method, $args);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function normalize(&$value, $key = null)
-    {
-        $this->logCallbackCall(__FUNCTION__, func_get_args());
-        return parent::normalize($value, $key);
     }
 
     /**

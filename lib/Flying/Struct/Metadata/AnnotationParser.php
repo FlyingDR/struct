@@ -30,9 +30,46 @@ class AnnotationParser extends AbstractMetadataParser
     private $namespaces = [];
 
     /**
+     * Load annotation class
+     *
+     * @param string $class
+     *
+     * @return boolean
+     */
+    public function loadClass($class)
+    {
+        if (class_exists($class)) {
+            return true;
+        }
+        $class = ucfirst(trim($class, '\\'));
+        foreach ($this->namespaces as $ns) {
+            $fqcn = $ns . '\\' . $class;
+            if (class_exists($fqcn)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws \Flying\Struct\Exception
+     * @throws \InvalidArgumentException
+     */
+    protected function parseMetadata(\ReflectionClass $reflection, StructMetadata $metadata)
+    {
+        $reader = $this->getReader();
+        $annotations = $reader->getClassAnnotations($reflection);
+        foreach ($annotations as $annotation) {
+            $metadata->addProperty($this->convertToMetadata($annotation));
+        }
+    }
+
+    /**
      * Get annotations reader
      *
      * @return Reader
+     * @throws \InvalidArgumentException
      */
     public function getReader()
     {
@@ -62,45 +99,12 @@ class AnnotationParser extends AbstractMetadataParser
     }
 
     /**
-     * Load annotation class
-     *
-     * @param string $class
-     *
-     * @return boolean
-     */
-    public function loadClass($class)
-    {
-        if (class_exists($class, true)) {
-            return true;
-        }
-        $class = ucfirst(trim($class, '\\'));
-        foreach ($this->namespaces as $ns) {
-            $fqcn = $ns . '\\' . $class;
-            if (class_exists($fqcn, true)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function parseMetadata(\ReflectionClass $reflection, StructMetadata $metadata)
-    {
-        $reader = $this->getReader();
-        $annotations = $reader->getClassAnnotations($reflection);
-        foreach ($annotations as $annotation) {
-            $metadata->addProperty($this->convertToMetadata($annotation));
-        }
-    }
-
-    /**
      * Convert given structure annotation into structure metadata
      *
      * @param Annotation $annotation Structure annotation to convert
      *
      * @return PropertyMetadata
+     * @throws \InvalidArgumentException
      * @throws Exception
      */
     protected function convertToMetadata(Annotation $annotation)
@@ -112,30 +116,32 @@ class AnnotationParser extends AbstractMetadataParser
             }
             $property = new PropertyMetadata($annotation->getName(), $class, $annotation->getConfig());
             return $property;
-        } elseif ($annotation instanceof Struct) {
-            if ($annotation->getClass()) {
-                $class = $this->resolveStructClass($annotation->getClass());
-                if (!$class) {
-                    throw new Exception('Unable to resolve structure class: ' . $annotation->getClass());
-                }
-                $struct = ConfigurationManager::getConfiguration()->getMetadataManager()->getMetadata($class);
-                if (!$struct instanceof StructMetadata) {
-                    throw new Exception('Failed to get structure metadata for class: ' . $class);
-                }
-                $struct->setName($annotation->getName());
-                $struct->setConfig($annotation->getConfig());
-            } else {
-                if (!count($annotation->getProperties())) {
-                    throw new Exception('Structure metadata should have either class name or explicitly defined list of structure properties');
-                }
-                $struct = new StructMetadata($annotation->getName(), null, $annotation->getConfig());
-                foreach ($annotation->getProperties() as $p) {
-                    $struct->addProperty($this->convertToMetadata($p));
-                }
-            }
-            return $struct;
-        } else {
+        }
+
+        if (!($annotation instanceof Struct)) {
             throw new Exception('Unknown structure annotation type');
         }
+
+        if ($annotation->getClass()) {
+            $class = $this->resolveStructClass($annotation->getClass());
+            if (!$class) {
+                throw new Exception('Unable to resolve structure class: ' . $annotation->getClass());
+            }
+            $struct = ConfigurationManager::getConfiguration()->getMetadataManager()->getMetadata($class);
+            if (!$struct instanceof StructMetadata) {
+                throw new Exception('Failed to get structure metadata for class: ' . $class);
+            }
+            $struct->setName($annotation->getName());
+            $struct->setConfig($annotation->getConfig());
+        } else {
+            if (!count($annotation->getProperties())) {
+                throw new Exception('Structure metadata should have either class name or explicitly defined list of structure properties');
+            }
+            $struct = new StructMetadata($annotation->getName(), null, $annotation->getConfig());
+            foreach ($annotation->getProperties() as $p) {
+                $struct->addProperty($this->convertToMetadata($p));
+            }
+        }
+        return $struct;
     }
 }

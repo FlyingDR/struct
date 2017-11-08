@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Annotation;
 
+use Flying\Struct\Annotation\Struct\Annotation;
 use Flying\Struct\Annotation\Struct\Boolean;
 use Flying\Struct\Annotation\Struct\Property;
 use Flying\Struct\Annotation\Struct\Struct;
@@ -12,7 +13,7 @@ class StructTest extends TestCase
     public function testInheritance()
     {
         $annotation = new Struct(['name' => 'test', 'class' => 'test']);
-        static::assertInstanceOf('Flying\Struct\Annotation\Struct\Annotation', $annotation);
+        static::assertInstanceOf(Annotation::class, $annotation);
     }
 
     public function testBasicOperations()
@@ -29,12 +30,12 @@ class StructTest extends TestCase
         static::assertEquals('xyz', $config['abc']);
     }
 
+    /**
+     * @expectedException \Doctrine\Common\Annotations\AnnotationException
+     * @expectedExceptionMessage Required property annotation is missed: class
+     */
     public function testMissedClass()
     {
-        $this->setExpectedException(
-            'Doctrine\Common\Annotations\AnnotationException',
-            'Required property annotation is missed: class'
-        );
         new Struct(['name' => 'test']);
     }
 

@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Property;
 
+use Flying\Struct\Property\DateTime;
 use Flying\Struct\Property\Property;
 use Flying\Tests\Property\Stubs\ToString;
 use Flying\Tests\Property\Stubs\UsToString;
@@ -13,7 +14,7 @@ class DateTimeTest extends BaseTypeTest
      *
      * @var string
      */
-    protected $propertyClass = 'Flying\Struct\Property\DateTime';
+    protected $propertyClass = DateTime::class;
 
     /**
      * {@inheritdoc}
@@ -50,15 +51,7 @@ class DateTimeTest extends BaseTypeTest
     public function testNullDefaultForNotNullablePropertyResultsInDateTimeDefault()
     {
         $property = $this->getTestProperty(null, ['nullable' => false, 'default' => null]);
-        static::assertInstanceOf('\DateTime', $property->getConfig('default'));
-    }
-
-    /**
-     * @return \DateTime
-     */
-    protected function getDefaultValue()
-    {
-        return new \DateTime();
+        static::assertInstanceOf(\DateTime::class, $property->getConfig('default'));
     }
 
     public function serializationDataProvider()
@@ -88,5 +81,13 @@ class DateTimeTest extends BaseTypeTest
             ],
         ];
         return $tests;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    protected function getDefaultValue()
+    {
+        return new \DateTime();
     }
 }

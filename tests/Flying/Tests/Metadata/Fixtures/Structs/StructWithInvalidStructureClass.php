@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
+use Flying\Struct\Exception;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
@@ -26,6 +27,6 @@ class StructWithInvalidStructureClass extends StructStub implements MetadataTest
      */
     public function getExpectedException()
     {
-        return ['Flying\Struct\Exception', 'Unable to resolve structure class: UnavailableStruct'];
+        return [Exception::class, 'Unable to resolve structure class: UnavailableStruct'];
     }
 }

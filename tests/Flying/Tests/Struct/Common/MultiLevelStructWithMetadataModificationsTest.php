@@ -14,5 +14,5 @@ class MultiLevelStructWithMetadataModificationsTest extends BaseStructTest
      *
      * @var string
      */
-    protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\MultiLevelStructWithMetadataModifications';
+    protected $fixtureClass = MultiLevelStructWithMetadataModifications::class;
 }

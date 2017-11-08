@@ -37,34 +37,72 @@ class MetadataManager implements MetadataManagerInterface
     private $cachePrefix = 'StructMetadata_';
 
     /**
-     * Get metadata parser
+     * Get structure metadata information for given structure
      *
-     * @return MetadataParserInterface
+     * @param string|StructInterface $struct    Either structure class name or instance of structure object
+     *                                          to get metadata for
+     * @throws \InvalidArgumentException
+     * @return StructMetadata|null
      */
-    public function getParser()
+    public function getMetadata($struct)
     {
-        if (!$this->parser) {
-            $this->parser = ConfigurationManager::getConfiguration()->getMetadataParser();
-            if ($this->parser instanceof AbstractMetadataParser) {
-                $this->parser->setMetadataManager($this);
+        $class = null;
+        // Get class name of given structure
+        if (is_object($struct)) {
+            if ($struct instanceof StructInterface) {
+                $class = get_class($struct);
+            } else {
+                throw new \InvalidArgumentException('Structure class must implement StructInterface interface');
             }
+        } elseif (is_string($struct)) {
+            try {
+                $reflection = new \ReflectionClass($struct);
+            } catch (\ReflectionException $e) {
+                throw new \InvalidArgumentException('Invalid structure class "' . $struct . '"');
+            }
+            if (in_array(StructInterface::class, $reflection->getInterfaceNames(), true)) {
+                $class = $reflection->getName();
+            } else {
+                throw new \InvalidArgumentException('Structure class must implement StructInterface interface');
+            }
+        } else {
+            throw new \InvalidArgumentException('Invalid structure information is given');
         }
-        return $this->parser;
+        // Check local metadata storage - fastest possible way
+        if (array_key_exists($class, $this->metadata)) {
+            return clone $this->metadata[$class];
+        }
+        // Check metadata cache
+        $cacheKey = $this->getCacheKey($class);
+        if ($this->getCache()->contains($cacheKey)) {
+            $cachedMetadata = $this->getCache()->fetch($cacheKey);
+            if ($cachedMetadata instanceof StructMetadata) {
+                $this->metadata[$class] = $cachedMetadata;
+                return clone $cachedMetadata;
+            }
+            // Cache has incorrect or corrupted entry
+            $this->getCache()->delete($cacheKey);
+        }
+        // Get metadata from parser
+        $metadata = $this->getParser()->getMetadata($class);
+        if ($metadata instanceof StructMetadata) {
+            $this->metadata[$class] = $metadata;
+            $this->getCache()->save($cacheKey, $metadata);
+            return clone $metadata;
+        }
+        // No metadata is found for structure
+        return null;
     }
 
     /**
-     * Set metadata parser
+     * Get cache key for given class
      *
-     * @param MetadataParserInterface $parser
-     * @return $this
+     * @param string $class
+     * @return string
      */
-    public function setParser(MetadataParserInterface $parser)
+    protected function getCacheKey($class)
     {
-        $this->parser = $parser;
-        if ($this->parser instanceof AbstractMetadataParser) {
-            $this->parser->setMetadataManager($this);
-        }
-        return $this;
+        return $this->cachePrefix . str_replace('\\', '_', $class);
     }
 
     /**
@@ -93,68 +131,33 @@ class MetadataManager implements MetadataManagerInterface
     }
 
     /**
-     * Get cache key for given class
+     * Get metadata parser
      *
-     * @param string $class
-     * @return string
+     * @return MetadataParserInterface
      */
-    protected function getCacheKey($class)
+    public function getParser()
     {
-        return $this->cachePrefix . str_replace('\\', '_', $class);
+        if (!$this->parser) {
+            $this->parser = ConfigurationManager::getConfiguration()->getMetadataParser();
+            if ($this->parser instanceof AbstractMetadataParser) {
+                $this->parser->setMetadataManager($this);
+            }
+        }
+        return $this->parser;
     }
 
     /**
-     * Get structure metadata information for given structure
+     * Set metadata parser
      *
-     * @param string|StructInterface $struct    Either structure class name or instance of structure object
-     *                                          to get metadata for
-     * @throws \InvalidArgumentException
-     * @return StructMetadata|null
+     * @param MetadataParserInterface $parser
+     * @return $this
      */
-    public function getMetadata($struct)
+    public function setParser(MetadataParserInterface $parser)
     {
-        $class = null;
-        // Get class name of given structure
-        if (is_object($struct)) {
-            if ($struct instanceof StructInterface) {
-                $class = get_class($struct);
-            } else {
-                throw new \InvalidArgumentException('Structure class must implement StructInterface interface');
-            }
-        } elseif (is_string($struct)) {
-            $reflection = new \ReflectionClass($struct);
-            if (in_array('Flying\Struct\StructInterface', $reflection->getInterfaceNames(), true)) {
-                $class = $reflection->getName();
-            } else {
-                throw new \InvalidArgumentException('Structure class must implement StructInterface interface');
-            }
-        } else {
-            throw new \InvalidArgumentException('Invalid structure information is given');
+        $this->parser = $parser;
+        if ($this->parser instanceof AbstractMetadataParser) {
+            $this->parser->setMetadataManager($this);
         }
-        // Check local metadata storage - fastest possible way
-        if (array_key_exists($class, $this->metadata)) {
-            return clone $this->metadata[$class];
-        }
-        // Check metadata cache
-        $cacheKey = $this->getCacheKey($class);
-        if ($this->getCache()->contains($cacheKey)) {
-            $metadata = $this->getCache()->fetch($cacheKey);
-            if ($metadata instanceof StructMetadata) {
-                $this->metadata[$class] = $metadata;
-                return clone $metadata;
-            } else {
-                // Cache has incorrect or corrupted entry
-                $this->getCache()->delete($cacheKey);
-            }
-        }
-        // Get metadata from parser
-        $metadata = $this->getParser()->getMetadata($class);
-        if ($metadata instanceof StructMetadata) {
-            $this->metadata[$class] = $metadata;
-            $this->getCache()->save($cacheKey, $metadata);
-            return clone $metadata;
-        }
-        // No metadata is found for structure
-        return null;
+        return $this;
     }
 }

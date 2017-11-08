@@ -4,6 +4,7 @@ namespace Flying\Tests\Struct\Fixtures;
 
 use Flying\Struct\Metadata\PropertyMetadata;
 use Flying\Struct\Metadata\StructMetadata;
+use Flying\Struct\Property\Str;
 
 /**
  * @Struct\Boolean(name="first", default=true)
@@ -23,7 +24,7 @@ class StructWithMetadataModifications extends TestStruct
         $config = $fourth->getConfig();
         $config['default'] = 'another value';
         $fourth->setConfig($config);
-        $property = new PropertyMetadata('new', 'Flying\Struct\Property\Str', ['default' => 'custom property']);
+        $property = new PropertyMetadata('new', Str::class, ['default' => 'custom property']);
         $metadata->addProperty($property);
     }
 
@@ -32,11 +33,11 @@ class StructWithMetadataModifications extends TestStruct
      */
     public function getExpectedContents()
     {
-        return ([
+        return [
             'first'  => true,
             'second' => 100,
             'fourth' => 'another value',
             'new'    => 'custom property',
-        ]);
+        ];
     }
 }

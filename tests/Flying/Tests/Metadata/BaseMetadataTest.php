@@ -28,6 +28,11 @@ abstract class BaseMetadataTest extends TestCase
         static::assertSame($this->config, $metadata->getConfig());
     }
 
+    /**
+     * @return MetadataInterface
+     */
+    abstract protected function getMetadataObject();
+
     public function testFillingObjectFromConstructor()
     {
         $class = get_class($this->getMetadataObject());
@@ -35,26 +40,28 @@ abstract class BaseMetadataTest extends TestCase
         $metadata = new $class($this->name, $this->class, $this->config);
         static::assertEquals($metadata->getName(), $this->name);
         static::assertEquals($metadata->getClass(), $this->class);
-        static::assertsame($this->config, $metadata->getConfig());
+        static::assertSame($this->config, $metadata->getConfig());
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Property name must be a string
+     */
     public function testSettingInvalidName()
     {
-        $this->setExpectedException(
-            '\InvalidArgumentException',
-            'Property name must be a string'
-        );
         $metadata = $this->getMetadataObject();
+        /** @noinspection PhpParamsInspection */
         $metadata->setName(['test_name']);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Property class name must be a string
+     */
     public function testSettingInvalidClass()
     {
-        $this->setExpectedException(
-            '\InvalidArgumentException',
-            'Property class name must be a string'
-        );
         $metadata = $this->getMetadataObject();
+        /** @noinspection PhpParamsInspection */
         $metadata->setClass(['test_class']);
     }
 
@@ -141,9 +148,4 @@ abstract class BaseMetadataTest extends TestCase
         $metadata->setConfig($this->config);
         static::assertNotEquals($hash, $metadata->getHash());
     }
-
-    /**
-     * @return MetadataInterface
-     */
-    abstract protected function getMetadataObject();
 }

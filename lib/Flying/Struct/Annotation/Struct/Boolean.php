@@ -3,8 +3,8 @@
 namespace Flying\Struct\Annotation\Struct;
 
 use Doctrine\Common\Annotations\Annotation\Attribute;
-use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\Annotation\Attributes;
+use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * @Annotation

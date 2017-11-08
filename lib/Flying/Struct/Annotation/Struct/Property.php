@@ -43,6 +43,26 @@ class Property extends Annotation
     private $config = [];
 
     /**
+     * Get property type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Get property config
+     *
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function parseValues(array &$values)
@@ -61,26 +81,6 @@ class Property extends Annotation
         if ((!is_string($this->type)) || ($this->type === '')) {
             throw new AnnotationException('Required property annotation is missed: type');
         }
-    }
-
-    /**
-     * Get property type
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Get property config
-     *
-     * @return array
-     */
-    public function getConfig()
-    {
-        return $this->config;
     }
 
     /**

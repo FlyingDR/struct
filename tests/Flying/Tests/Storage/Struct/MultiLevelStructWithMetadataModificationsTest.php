@@ -5,9 +5,6 @@ namespace Flying\Tests\Storage\Struct;
 use Flying\Tests\Storage\Struct\Fixtures\MultiLevelStructWithMetadataModifications;
 use Flying\Tests\Struct\Common\MultiLevelStructWithMetadataModificationsTest as CommonMultiLevelStructWithMetadataModificationsTest;
 
-/**
- * @method MultiLevelStructWithMetadataModifications getTestStruct($contents = null, $config = null)
- */
 class MultiLevelStructWithMetadataModificationsTest extends CommonMultiLevelStructWithMetadataModificationsTest
 {
     /**
@@ -21,5 +18,5 @@ class MultiLevelStructWithMetadataModificationsTest extends CommonMultiLevelStru
      *
      * @var string
      */
-    protected $fixtureClass = 'Flying\Tests\Storage\Struct\Fixtures\MultiLevelStructWithMetadataModifications';
+    protected $fixtureClass = MultiLevelStructWithMetadataModifications::class;
 }

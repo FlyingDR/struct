@@ -19,7 +19,6 @@ class Boolean extends Property
             return true;
         }
         if (!is_scalar($value)) {
-            /** @noinspection IsEmptyFunctionUsageInspection */
             $value = !empty($value);
         }
         $value = (boolean)$value;

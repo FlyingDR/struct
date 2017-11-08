@@ -28,7 +28,7 @@ class ConfigurationManager
         if (!self::$configuration instanceof Configuration) {
             self::setConfiguration(new Configuration());
         }
-        return (self::$configuration);
+        return self::$configuration;
     }
 
     /**

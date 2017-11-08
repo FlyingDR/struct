@@ -33,6 +33,19 @@ class CacheBackend implements BackendInterface
     }
 
     /**
+     * Get cache to use as storage
+     *
+     * @return Cache
+     */
+    protected function getCache()
+    {
+        if (!$this->cache) {
+            $this->cache = ConfigurationManager::getConfiguration()->getCache();
+        }
+        return $this->cache;
+    }
+
+    /**
      * Save given contents into storage
      *
      * @param string $key
@@ -74,18 +87,5 @@ class CacheBackend implements BackendInterface
     public function clear()
     {
         // Cache doesn't have such function
-    }
-
-    /**
-     * Get cache to use as storage
-     *
-     * @return Cache
-     */
-    protected function getCache()
-    {
-        if (!$this->cache) {
-            $this->cache = ConfigurationManager::getConfiguration()->getCache();
-        }
-        return $this->cache;
     }
 }

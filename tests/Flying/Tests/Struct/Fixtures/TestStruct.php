@@ -29,6 +29,31 @@ abstract class TestStruct extends Struct implements CallbackTrackingInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function updateNotify(SimplePropertyInterface $property)
+    {
+        $this->logCallbackCall(__FUNCTION__, func_get_args());
+        parent::updateNotify($property);
+    }
+
+    /**
+     * Get contents that are expected to be returned by this structure
+     *
+     * @return array
+     */
+    abstract public function getExpectedContents();
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMissed($name, $default)
+    {
+        $this->logCallbackCall(__FUNCTION__, func_get_args());
+        return parent::getMissed($name, $default);
+    }
+
+    /**
      * Log call to callback
      *
      * @param string $method Method name
@@ -42,15 +67,6 @@ abstract class TestStruct extends Struct implements CallbackTrackingInterface
             $logger = $this->cbLogs[$method];
             $logger->add($method, $args);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getMissed($name, $default)
-    {
-        $this->logCallbackCall(__FUNCTION__, func_get_args());
-        return parent::getMissed($name, $default);
     }
 
     /**
@@ -70,20 +86,4 @@ abstract class TestStruct extends Struct implements CallbackTrackingInterface
         $this->logCallbackCall(__FUNCTION__, func_get_args());
         parent::onChange($name);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function updateNotify(SimplePropertyInterface $property)
-    {
-        $this->logCallbackCall(__FUNCTION__, func_get_args());
-        parent::updateNotify($property);
-    }
-
-    /**
-     * Get contents that are expected to be returned by this structure
-     *
-     * @return array
-     */
-    abstract public function getExpectedContents();
 }

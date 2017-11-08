@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
+use Flying\Struct\Exception;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
@@ -26,6 +27,6 @@ class StructWithInvalidPropertyType extends StructStub implements MetadataTestca
      */
     public function getExpectedException()
     {
-        return ['Flying\Struct\Exception', 'Unable to resolve structure property class for type: unknown'];
+        return [Exception::class, 'Unable to resolve structure property class for type: unknown'];
     }
 }

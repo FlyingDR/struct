@@ -2,7 +2,6 @@
 
 namespace Flying\Tests\Storage\Backend;
 
-use Flying\Struct\Configuration;
 use Flying\Struct\ConfigurationManager;
 use Flying\Struct\Storage\ArrayBackend;
 use Flying\Struct\Storage\BackendInterface;
@@ -26,6 +25,31 @@ class StorageTest extends TestCaseUsingConfiguration
         static::assertEquals($stored, $object->toStorage());
         $storage->remove($object);
         static::assertFalse($storage->has($object));
+    }
+
+    /**
+     * Get instance of mock object for StorableInterface
+     *
+     * @return StorableInterface
+     */
+    protected function getStorableMock()
+    {
+        /** @var $mock StorableInterface */
+        $mock = Mockery::mock(StorableInterface::class)
+            ->shouldReceive('getStorageKey')->andReturn('myTestKey')->getMock()
+            ->shouldReceive('toStorage')->andReturn(['myStorageRepresentation'])
+            ->getMock();
+        return $mock;
+    }
+
+    /**
+     * Get new instance of class being tested
+     *
+     * @return Storage
+     */
+    protected function getTestStorage()
+    {
+        return new Storage();
     }
 
     public function testBackendShouldBeTakenFromConfigurationByDefault()
@@ -72,7 +96,7 @@ class StorageTest extends TestCaseUsingConfiguration
     {
         $storage = $this->getTestStorage();
         $mock = $this->getStorableMock();
-        $backend = Mockery::mock('Flying\Struct\Storage\BackendInterface');
+        $backend = Mockery::mock(BackendInterface::class);
         $backend->shouldReceive('has')->once()->ordered()->with($mock->getStorageKey())->andReturn(false)->getMock();
         $backend->shouldReceive('save')->once()->ordered()->with($mock->getStorageKey(), $mock->toStorage())->getMock();
         /** @var $backend BackendInterface */
@@ -97,7 +121,7 @@ class StorageTest extends TestCaseUsingConfiguration
         $storage = $this->getTestStorage();
         $mock = $this->getStorableMock();
         $key = $mock->getStorageKey();
-        $backend = Mockery::mock('Flying\Struct\Storage\BackendInterface');
+        $backend = Mockery::mock(BackendInterface::class);
         $backend->shouldReceive('has')->once()->ordered()->with($key)->andReturn(true)->getMock();
         $backend->shouldReceive('save')->times(0)->getMock();
         /** @var $backend BackendInterface */
@@ -116,32 +140,7 @@ class StorageTest extends TestCaseUsingConfiguration
         $m2 = clone $m1;
         $storage->register($m2);
         $storage->markAsDirty($m2);
-        $this->setExpectedException('\RuntimeException');
+        $this->expectException(\RuntimeException::class);
         $storage->flush();
-    }
-
-    /**
-     * Get new instance of class being tested
-     *
-     * @return Storage
-     */
-    protected function getTestStorage()
-    {
-        return new Storage();
-    }
-
-    /**
-     * Get instance of mock object for StorableInterface
-     *
-     * @return StorableInterface
-     */
-    protected function getStorableMock()
-    {
-        /** @var $mock StorableInterface */
-        $mock = Mockery::mock('Flying\Struct\Storage\StorableInterface')
-            ->shouldReceive('getStorageKey')->andReturn('myTestKey')->getMock()
-            ->shouldReceive('toStorage')->andReturn(['myStorageRepresentation'])
-            ->getMock();
-        return $mock;
     }
 }

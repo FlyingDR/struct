@@ -4,6 +4,8 @@ namespace Flying\Struct\Metadata;
 
 use Flying\Struct\ConfigurationManager;
 use Flying\Struct\Exception;
+use Flying\Struct\Property\PropertyInterface;
+use Flying\Struct\StructInterface;
 
 /**
  * Base implementation of structures metadata parser
@@ -28,6 +30,40 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
     private $metadataManager;
 
     /**
+     * Get structure metadata information for given class
+     *
+     * @param string $class Structure class name to parse metadata from
+     *
+     * @throws Exception
+     * @return StructMetadata
+     * @throws \InvalidArgumentException
+     */
+    public function getMetadata($class)
+    {
+        try {
+            $reflection = new \ReflectionClass($class);
+            $parent = $reflection->getParentClass();
+            $metadata = null;
+            if (($parent instanceof \ReflectionClass) && $parent->implementsInterface(StructInterface::class)) {
+                $metadata = $this->getMetadataManager()->getMetadata($parent->getName());
+            }
+            if (!$metadata instanceof StructMetadata) {
+                $metadata = new StructMetadata();
+            }
+            $metadata->setClass($class);
+            $this->parseMetadata($reflection, $metadata);
+            $reflection = new \ReflectionClass($class);
+            if ($reflection->implementsInterface(MetadataModificationInterface::class)) {
+                /** @var $class MetadataModificationInterface */
+                $class::modifyMetadata($metadata);
+            }
+        } catch (\ReflectionException $e) {
+            throw new \InvalidArgumentException('Failed to obtain exception for metadata class "' . $class . '"');
+        }
+        return $metadata;
+    }
+
+    /**
      * @return MetadataManagerInterface
      */
     public function getMetadataManager()
@@ -47,35 +83,6 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
     }
 
     /**
-     * Get structure metadata information for given class
-     *
-     * @param string $class Structure class name to parse metadata from
-     *
-     * @throws Exception
-     * @return StructMetadata
-     */
-    public function getMetadata($class)
-    {
-        $reflection = new \ReflectionClass($class);
-        $parent = $reflection->getParentClass();
-        $metadata = null;
-        if (($parent instanceof \ReflectionClass) && ($parent->implementsInterface('Flying\Struct\StructInterface'))) {
-            $metadata = $this->getMetadataManager()->getMetadata($parent->getName());
-        }
-        if (!$metadata instanceof StructMetadata) {
-            $metadata = new StructMetadata();
-        }
-        $metadata->setClass($class);
-        $this->parseMetadata($reflection, $metadata);
-        $reflection = new \ReflectionClass($class);
-        if ($reflection->implementsInterface('Flying\Struct\Metadata\MetadataModificationInterface')) {
-            /** @var $class MetadataModificationInterface */
-            $class::modifyMetadata($metadata);
-        }
-        return $metadata;
-    }
-
-    /**
      * Actual implementation of structure metadata parsing
      *
      * @param \ReflectionClass $reflection
@@ -89,6 +96,7 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
      *
      * @param string $class Structure property class
      * @return string|null
+     * @throws \InvalidArgumentException
      */
     protected function resolvePropertyClass($class)
     {
@@ -96,22 +104,7 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
             $ns = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->getAll();
             $this->nsProperty = array_reverse($ns, true);
         }
-        return ($this->resolveClass($class, $this->nsProperty, 'Flying\Struct\Property\PropertyInterface'));
-    }
-
-    /**
-     * Resolve given structure class into structure FQCN
-     *
-     * @param string $class Structure class
-     * @return string|null
-     */
-    protected function resolveStructClass($class)
-    {
-        if (!$this->nsStruct) {
-            $ns = ConfigurationManager::getConfiguration()->getStructNamespacesMap()->getAll();
-            $this->nsStruct = array_reverse($ns, true);
-        }
-        return ($this->resolveClass($class, $this->nsStruct, 'Flying\Struct\StructInterface'));
+        return $this->resolveClass($class, $this->nsProperty, PropertyInterface::class);
     }
 
     /**
@@ -125,15 +118,31 @@ abstract class AbstractMetadataParser implements MetadataParserInterface
     protected function resolveClass($class, array $namespaces, $interface = null)
     {
         $class = ucfirst(trim($class, '\\'));
-        if ((class_exists($class, true)) && (($interface === null) || (in_array($interface, class_implements($class), true)))) {
+        if (class_exists($class) && (($interface === null) || in_array($interface, class_implements($class), true))) {
             return $class;
         }
         foreach ($namespaces as $ns) {
             $fqcn = $ns . '\\' . $class;
-            if ((class_exists($fqcn, true)) && (($interface === null) || (in_array($interface, class_implements($fqcn), true)))) {
+            if (class_exists($fqcn) && (($interface === null) || in_array($interface, class_implements($fqcn), true))) {
                 return $fqcn;
             }
         }
         return null;
+    }
+
+    /**
+     * Resolve given structure class into structure FQCN
+     *
+     * @param string $class Structure class
+     * @return string|null
+     * @throws \InvalidArgumentException
+     */
+    protected function resolveStructClass($class)
+    {
+        if (!$this->nsStruct) {
+            $ns = ConfigurationManager::getConfiguration()->getStructNamespacesMap()->getAll();
+            $this->nsStruct = array_reverse($ns, true);
+        }
+        return $this->resolveClass($class, $this->nsStruct, StructInterface::class);
     }
 }

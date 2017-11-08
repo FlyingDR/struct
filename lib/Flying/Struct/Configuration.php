@@ -97,6 +97,7 @@ class Configuration
      * Get namespaces map for structure classes
      *
      * @return NamespacesMap
+     * @throws \InvalidArgumentException
      */
     public function getStructNamespacesMap()
     {
@@ -111,6 +112,7 @@ class Configuration
      * Get namespaces map for property classes
      *
      * @return NamespacesMap
+     * @throws \InvalidArgumentException
      */
     public function getPropertyNamespacesMap()
     {
@@ -125,6 +127,7 @@ class Configuration
      * Get namespaces map for annotation classes
      *
      * @return NamespacesMap
+     * @throws \InvalidArgumentException
      */
     public function getAnnotationNamespacesMap()
     {

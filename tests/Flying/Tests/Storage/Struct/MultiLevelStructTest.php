@@ -8,9 +8,6 @@ use Flying\Tests\Storage\Struct\Fixtures\MultiLevelStruct;
 use Flying\Tests\Struct\Common\MultiLevelStructTest as CommonMultiLevelStructTest;
 use Mockery;
 
-/**
- * @method MultiLevelStruct getTestStruct($contents = null, $config = null)
- */
 class MultiLevelStructTest extends CommonMultiLevelStructTest
 {
     /**
@@ -24,11 +21,11 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
      *
      * @var string
      */
-    protected $fixtureClass = 'Flying\Tests\Storage\Struct\Fixtures\MultiLevelStruct';
+    protected $fixtureClass = MultiLevelStruct::class;
 
     public function testChildStructureShouldNotCommunicateWithStorage()
     {
-        $storage = Mockery::mock('Flying\Struct\Storage\StorageInterface');
+        $storage = Mockery::mock(StorageInterface::class);
         $storage->shouldReceive('load')->once()->ordered()
             ->with('/^' . str_replace('\\', '_', $this->fixtureClass) . '/')->andReturnNull()->getMock();
         $storage->shouldReceive('register')->once()->ordered()
@@ -52,6 +49,7 @@ class MultiLevelStructTest extends CommonMultiLevelStructTest
 
     public function testChildStructureModificationsShouldMarkWholeStructureAsDirtyInStorage()
     {
+        /** @var MultiLevelStruct $struct */
         $struct = $this->getTestStruct();
         $storage = ConfigurationManager::getConfiguration()->getStorage();
         static::assertFalse($storage->isDirty($struct));

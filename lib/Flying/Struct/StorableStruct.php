@@ -14,6 +14,12 @@ use Flying\Struct\Storage\StorageInterface;
 class StorableStruct extends Struct implements StorableInterface
 {
     /**
+     * TRUE if structure is already marked as "dirty" into storage
+     *
+     * @var boolean
+     */
+    protected $markedAsDirty = false;
+    /**
      * Structures storage
      *
      * @var Storage
@@ -25,19 +31,14 @@ class StorableStruct extends Struct implements StorableInterface
      * @var string
      */
     private $storageKey;
-    /**
-     * TRUE if structure is already marked as "dirty" into storage
-     *
-     * @var boolean
-     */
-    protected $markedAsDirty = false;
 
     /**
      * Class constructor
      *
      * @param array|object $contents OPTIONAL Contents to initialize structure with
      * @param array|object $config   OPTIONAL Configuration for this structure
-     * @return StorableStruct
+     * @throws \Flying\Struct\Exception
+     * @throws \RuntimeException
      */
     public function __construct($contents = null, $config = null)
     {
@@ -72,6 +73,7 @@ class StorableStruct extends Struct implements StorableInterface
      * Get key for this structure to use in structures storage
      *
      * @return string
+     * @throws \Flying\Struct\Exception
      */
     public function getStorageKey()
     {
@@ -87,6 +89,35 @@ class StorableStruct extends Struct implements StorableInterface
     }
 
     /**
+     * Get storage container
+     *
+     * @return StorageInterface
+     * @throws \Flying\Struct\Exception
+     */
+    protected function getStorage()
+    {
+        if (!$this->storage) {
+            try {
+                /** @var $storage StorageInterface */
+                $storage = $this->getConfig('storage');
+                if (!$storage instanceof StorageInterface) {
+                    /** @var $configuration Configuration */
+                    $configuration = $this->getConfig('configuration');
+                    $storage = $configuration->getStorage();
+                    /** @noinspection NotOptimalIfConditionsInspection */
+                    if (!$storage instanceof StorageInterface) {
+                        throw new Exception('No storage is available');
+                    }
+                }
+            } catch (\RuntimeException $e) {
+                throw new Exception('Failed to obtain storage');
+            }
+            $this->storage = $storage;
+        }
+        return $this->storage;
+    }
+
+    /**
      * Get object representation suitable to put into storage
      *
      * @return mixed
@@ -97,27 +128,16 @@ class StorableStruct extends Struct implements StorableInterface
     }
 
     /**
-     * Get storage container
-     *
-     * @throws Exception
-     * @return StorageInterface
+     * {@inheritdoc}
+     * @throws \Flying\Struct\Exception
      */
-    protected function getStorage()
+    public function updateNotify(SimplePropertyInterface $property)
     {
-        if (!$this->storage) {
-            /** @var $storage StorageInterface */
-            $storage = $this->getConfig('storage');
-            if (!$storage instanceof StorageInterface) {
-                /** @var $configuration Configuration */
-                $configuration = $this->getConfig('configuration');
-                $storage = $configuration->getStorage();
-                if (!$storage instanceof StorageInterface) {
-                    throw new Exception('No storage is available');
-                }
-            }
-            $this->storage = $storage;
+        parent::updateNotify($property);
+        if ((!$this->markedAsDirty) && $this->getStorageKey()) {
+            $this->getStorage()->markAsDirty($this);
+            $this->markedAsDirty = true;
         }
-        return $this->storage;
     }
 
     /**
@@ -126,6 +146,7 @@ class StorableStruct extends Struct implements StorableInterface
      * @param string $name      OPTIONAL Structure property name to get contents of,
      *                          NULL to get all available contents
      * @return mixed
+     * @throws \Flying\Struct\Exception
      */
     protected function getInitialContents($name = null)
     {
@@ -162,6 +183,7 @@ class StorableStruct extends Struct implements StorableInterface
      * @param StructMetadata $metadata
      * @throws Exception
      * @return void
+     * @throws \RuntimeException
      */
     protected function createStruct(StructMetadata $metadata = null)
     {
@@ -175,6 +197,7 @@ class StorableStruct extends Struct implements StorableInterface
 
     /**
      * {@inheritdoc}
+     * @throws \RuntimeException
      */
     protected function initConfig()
     {
@@ -189,6 +212,7 @@ class StorableStruct extends Struct implements StorableInterface
      *
      * @param string $name Configuration option name
      * @return mixed
+     * @throws \RuntimeException
      */
     protected function lazyConfigInit($name)
     {
@@ -249,17 +273,5 @@ class StorableStruct extends Struct implements StorableInterface
                 break;
         }
         parent::onConfigChange($name, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function updateNotify(SimplePropertyInterface $property)
-    {
-        parent::updateNotify($property);
-        if ((!$this->markedAsDirty) && ($this->getStorageKey())) {
-            $this->getStorage()->markAsDirty($this);
-            $this->markedAsDirty = true;
-        }
     }
 }

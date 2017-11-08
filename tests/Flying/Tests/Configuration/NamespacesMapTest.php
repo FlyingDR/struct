@@ -23,6 +23,15 @@ class NamespacesMapTest extends TestCase
         static::assertCount(0, $map->getAll());
     }
 
+    /**
+     * @param array $namespaces
+     * @return NamespacesMap
+     */
+    protected function getObject($namespaces = null)
+    {
+        return new NamespacesMap($namespaces);
+    }
+
     public function testNamespaceSlashesTrimming()
     {
         $map = $this->getObject();
@@ -81,23 +90,25 @@ class NamespacesMapTest extends TestCase
         ];
     }
 
+    /**
+     * @expectedException \Flying\Struct\Exception
+     */
     public function testGettingInvalidNamespace()
     {
         $map = $this->getObject();
-        $this->setExpectedException('Flying\Struct\Exception');
         $map->get('unavailable');
     }
 
     /**
-     * @dataProvider dataProviderSettingInvalidNamespace
+     * @dataProvider             dataProviderSettingInvalidNamespace
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Class namespace must be a string
+     * @param string|array $ns
+     * @param string|null $alias
      */
     public function testSettingInvalidNamespace($ns, $alias = null)
     {
         $map = $this->getObject();
-        $this->setExpectedException(
-            '\InvalidArgumentException',
-            'Class namespace must be a string'
-        );
         $map->add($ns, $alias);
     }
 
@@ -109,14 +120,5 @@ class NamespacesMapTest extends TestCase
             [''],
             [new \ArrayObject()],
         ];
-    }
-
-    /**
-     * @param array $namespaces
-     * @return NamespacesMap
-     */
-    protected function getObject($namespaces = null)
-    {
-        return new NamespacesMap($namespaces);
     }
 }

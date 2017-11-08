@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Property;
 
+use Flying\Struct\Struct;
 use Flying\Tests\Property\Fixtures\Collection;
 use Flying\Tests\Property\Fixtures\CollectionWithCustomValidator;
 use Flying\Tests\Property\Stubs\ToArray;
@@ -57,7 +58,7 @@ class CollectionTest extends TestCase
         $values = ['a' => 'b', 'c' => 'd', 'e' => 'f'];
         $collection = new Collection($values);
         $iterator = $collection->getIterator();
-        static::assertInstanceOf('\Iterator', $iterator);
+        static::assertInstanceOf(\Iterator::class, $iterator);
         $actual = [];
         foreach ($iterator as $k => $v) {
             $actual[$k] = $v;
@@ -114,12 +115,14 @@ class CollectionTest extends TestCase
 
     /**
      * @dataProvider dataProviderSettingInvalidCollectionValues
+     * @param mixed $value
+     * @param bool $exception
      */
     public function testSettingInvalidCollectionValues($value, $exception = true)
     {
         $collection = new Collection();
         if ($exception) {
-            $this->setExpectedException('\InvalidArgumentException');
+            $this->expectException(\InvalidArgumentException::class);
         }
         $collection->setValue($value);
     }
@@ -205,6 +208,7 @@ class CollectionTest extends TestCase
 
     /**
      * @dataProvider dataProviderAllowedValuesLimitation
+     * @param $validator
      */
     public function testAllowedValuesLimitation($validator)
     {
@@ -223,7 +227,7 @@ class CollectionTest extends TestCase
     {
         $range = range(0, 10);
         $cb = function ($v) {
-            return ((is_int($v)) && ($v >= 0) && ($v <= 10));
+            return (is_int($v) && ($v >= 0) && ($v <= 10));
         };
         return [
             [$range],
@@ -241,7 +245,7 @@ class CollectionTest extends TestCase
     {
         $collection = new Collection(null, ['allowed' => $allowed]);
         $collection->add($value);
-        static::assertEquals($collection->count(), ($valid) ? 1 : 0);
+        static::assertEquals($collection->count(), $valid ? 1 : 0);
     }
 
     public function dataProviderVariousKindsOfAllowedValuesValidator()
@@ -256,9 +260,9 @@ class CollectionTest extends TestCase
             [[true, false], false, true],
             [[true, false], null, false],
             [[true, false], 1, false],
-            ['\DateTime', new \DateTime(), true],
-            ['\DateTime', new \ArrayObject(), false],
-            ['Flying\Struct\Struct', new BasicStruct(), true],
+            [\DateTime::class, new \DateTime(), true],
+            [\DateTime::class, new \ArrayObject(), false],
+            [Struct::class, new BasicStruct(), true],
         ];
     }
 
@@ -277,11 +281,13 @@ class CollectionTest extends TestCase
 
     /**
      * @dataProvider dataProviderConfigDefaultValues
+     * @param mixed $default
+     * @param bool $exception
      */
     public function testConfigDefaultValues($default, $exception = true)
     {
         if ($exception) {
-            $this->setExpectedException('\InvalidArgumentException');
+            $this->expectException(\InvalidArgumentException::class);
         }
         new Collection(null, ['default' => $default]);
     }
@@ -306,11 +312,13 @@ class CollectionTest extends TestCase
 
     /**
      * @dataProvider dataProviderConfigAllowedValues
+     * @param mixed $allowed
+     * @param bool $exception
      */
     public function testConfigAllowedValues($allowed, $exception = true)
     {
         if ($exception) {
-            $this->setExpectedException('\InvalidArgumentException');
+            $this->expectException(\InvalidArgumentException::class);
         }
         new Collection(null, ['allowed' => $allowed]);
     }
@@ -364,7 +372,6 @@ class CollectionTest extends TestCase
         }
         $log = $logger->get();
         foreach ($expected as $ek => $ev) {
-            /** @noinspection DisconnectedForeachInstructionInspection */
             $item = array_shift($log);
             array_shift($item);
             $av = array_shift($item);
@@ -477,7 +484,7 @@ class CollectionTest extends TestCase
         $collection->setCallbackLogger('onInvalidValue', $logger);
         call_user_func_array([$collection, $method], $args);
         $log = $logger->get();
-        static::assertCount(($calledOnInvalid) ? 1 : 0, $log);
+        static::assertCount($calledOnInvalid ? 1 : 0, $log);
     }
 
     public function dataProviderOnInvalidValueCallback()

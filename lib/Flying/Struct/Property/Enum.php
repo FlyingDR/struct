@@ -17,6 +17,29 @@ class Enum extends Property
     /**
      * {@inheritdoc}
      */
+    public function validateConfig($name, &$value)
+    {
+        /** @noinspection DegradedSwitchInspection */
+        switch ($name) {
+            case 'values':
+                if (!is_array($value)) {
+                    if (is_object($value) && method_exists($value, 'toArray')) {
+                        $value = $value->toArray();
+                    } else {
+                        throw new \InvalidArgumentException('Only arrays are accepted as list of values for enum property');
+                    }
+                }
+                break;
+            default:
+                return parent::validateConfig($name, $value);
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function initConfig()
     {
         parent::initConfig();
@@ -35,29 +58,6 @@ class Enum extends Property
         }
         if (!in_array($value, $this->values, true)) {
             return false;
-        }
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateConfig($name, &$value)
-    {
-        /** @noinspection DegradedSwitchInspection */
-        switch ($name) {
-            case 'values':
-                if (!is_array($value)) {
-                    if ((is_object($value)) && (method_exists($value, 'toArray'))) {
-                        $value = $value->toArray();
-                    } else {
-                        throw new \InvalidArgumentException('Only arrays are accepted as list of values for enum property');
-                    }
-                }
-                break;
-            default:
-                return parent::validateConfig($name, $value);
-                break;
         }
         return true;
     }

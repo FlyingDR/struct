@@ -6,7 +6,7 @@ use Flying\Struct\Property\Property;
 use Flying\Tests\Property\Stubs\ToString;
 use Flying\Tests\Property\Stubs\UsToString;
 
-class StringTest extends BaseTypeTest
+class StrTest extends BaseTypeTest
 {
     /**
      * Class name of the property to test
@@ -19,7 +19,7 @@ class StringTest extends BaseTypeTest
      *
      * @var string
      */
-    protected $defaultValue = 'default value';
+    protected $defaultValue = 'default string value';
     /**
      * Serialization tests
      *

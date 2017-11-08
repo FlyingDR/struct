@@ -2,12 +2,12 @@
 
 namespace Flying\Tests\Annotation;
 
+use Flying\Struct\Annotation\Struct\Annotation;
 use Flying\Struct\Annotation\Struct\Property;
 use Flying\Tests\TestCase;
 
 class PropertyTest extends TestCase
 {
-    protected $propertyNamespace = 'Flying\Struct\Annotation\Struct';
     protected static $typesMap = [
         'Boolean'    => 'boolean',
         'Integer'    => 'integer',
@@ -15,11 +15,12 @@ class PropertyTest extends TestCase
         'Enum'       => 'enum',
         'Collection' => 'collection',
     ];
+    protected $propertyNamespace = 'Flying\Struct\Annotation\Struct';
 
     public function testInheritance()
     {
         $annotation = new Property(['name' => 'test', 'type' => 'test']);
-        static::assertInstanceOf('Flying\Struct\Annotation\Struct\Annotation', $annotation);
+        static::assertInstanceOf(Annotation::class, $annotation);
     }
 
     public function testBasicOperations()
@@ -36,21 +37,21 @@ class PropertyTest extends TestCase
         static::assertEquals('xyz', $config['abc']);
     }
 
+    /**
+     * @expectedException \Doctrine\Common\Annotations\AnnotationException
+     * @expectedExceptionMessage Required property annotation is missed: name
+     */
     public function testMissedName()
     {
-        $this->setExpectedException(
-            'Doctrine\Common\Annotations\AnnotationException',
-            'Required property annotation is missed: name'
-        );
         new Property([]);
     }
 
+    /**
+     * @expectedException \Doctrine\Common\Annotations\AnnotationException
+     * @expectedExceptionMessage Required property annotation is missed: type
+     */
     public function testMissedType()
     {
-        $this->setExpectedException(
-            'Doctrine\Common\Annotations\AnnotationException',
-            'Required property annotation is missed: type'
-        );
         new Property([
             'name' => 'test',
         ]);

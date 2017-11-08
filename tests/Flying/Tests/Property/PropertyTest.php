@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Property;
 
+use Flying\Struct\Common\UpdateNotifyListenerInterface;
 use Flying\Tests\Property\Fixtures\Property;
 use Flying\Tests\Tools\CallbackLog;
 use Mockery;
@@ -13,7 +14,7 @@ class PropertyTest extends BasePropertyTest
      *
      * @var string
      */
-    protected $propertyClass = 'Flying\Tests\Property\Fixtures\Property';
+    protected $propertyClass = Property::class;
 
     public function testBasicOperations()
     {
@@ -44,9 +45,11 @@ class PropertyTest extends BasePropertyTest
         static::assertEquals(12345, $property->getValue());
     }
 
+    /**
+     * @expectedException \Flying\Struct\Exception
+     */
     public function testExceptionOnInvalidDefaultValue()
     {
-        $this->setExpectedException('Flying\Struct\Exception');
         new Property(null, [
             'nullable' => false,
             'default'  => null,
@@ -62,21 +65,12 @@ class PropertyTest extends BasePropertyTest
         ]);
     }
 
-    public function testOnChangeCallback()
-    {
-        $this->runCallbackTest('onChange', [
-            12345,
-        ], false);
-    }
-
-    public function testOnInvalidValueCallback()
-    {
-        $this->runCallbackTest('onInvalidValue', [
-            null,
-        ]);
-    }
-
-    protected function runCallbackTest($method, $expected, $useValue = true)
+    /**
+     * @param string $method
+     * @param array $expected
+     * @param bool $useValue
+     */
+    private function runCallbackTest($method, array $expected, $useValue = true)
     {
         /** @var $property Property */
         $property = $this->getTestProperty();
@@ -94,9 +88,7 @@ class PropertyTest extends BasePropertyTest
         $log = $logger->get();
         static::assertEquals(count($expected), count($log));
         foreach ($expected as $v) {
-            /** @noinspection DisconnectedForeachInstructionInspection */
             $temp = array_shift($log);
-            /** @noinspection DisconnectedForeachInstructionInspection */
             $exp = [$method];
             if ($useValue) {
                 $exp[] = $v;
@@ -105,11 +97,25 @@ class PropertyTest extends BasePropertyTest
         }
     }
 
+    public function testOnChangeCallback()
+    {
+        $this->runCallbackTest('onChange', [
+            12345,
+        ], false);
+    }
+
+    public function testOnInvalidValueCallback()
+    {
+        $this->runCallbackTest('onInvalidValue', [
+            null,
+        ]);
+    }
+
     public function testUpdateNotificationListener()
     {
-        $mock = Mockery::mock('Flying\Struct\Common\UpdateNotifyListenerInterface');
+        $mock = Mockery::mock(UpdateNotifyListenerInterface::class);
         $mock->shouldReceive('updateNotify')->once()
-            ->with(Mockery::type('Flying\Tests\Property\Fixtures\Property'));
+            ->with(Mockery::type(Property::class));
         $property = new Property(null, [
             'nullable'               => false,
             'default'                => $this->getDefaultValue(),

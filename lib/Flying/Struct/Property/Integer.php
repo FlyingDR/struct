@@ -10,6 +10,25 @@ class Integer extends Property
     /**
      * {@inheritdoc}
      */
+    public function validateConfig($name, &$value)
+    {
+        switch ($name) {
+            case 'min':
+            case 'max':
+                if ($value !== null) {
+                    $value = (int)$value;
+                }
+                break;
+            default:
+                return parent::validateConfig($name, $value);
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function initConfig()
     {
         parent::initConfig();
@@ -21,6 +40,7 @@ class Integer extends Property
 
     /**
      * {@inheritdoc}
+     * @throws \RuntimeException
      */
     protected function normalize(&$value)
     {
@@ -41,25 +61,6 @@ class Integer extends Property
         $max = $this->getConfig('max');
         if ($max !== null) {
             $value = min($value, $max);
-        }
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateConfig($name, &$value)
-    {
-        switch ($name) {
-            case 'min':
-            case 'max':
-                if ($value !== null) {
-                    $value = (int)$value;
-                }
-                break;
-            default:
-                return parent::validateConfig($name, $value);
-                break;
         }
         return true;
     }

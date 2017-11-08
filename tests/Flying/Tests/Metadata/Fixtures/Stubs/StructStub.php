@@ -19,7 +19,7 @@ class StructStub implements StructInterface
      */
     public function get($name, $default = null)
     {
-
+        return null;
     }
 
     /**
@@ -52,7 +52,7 @@ class StructStub implements StructInterface
      */
     public function toArray()
     {
-
+        return [];
     }
 
     /**
@@ -62,7 +62,7 @@ class StructStub implements StructInterface
      */
     public function count()
     {
-
+        return 0;
     }
 
     /**
@@ -72,7 +72,7 @@ class StructStub implements StructInterface
      */
     public function current()
     {
-
+        return null;
     }
 
     /**
@@ -82,7 +82,7 @@ class StructStub implements StructInterface
      */
     public function key()
     {
-
+        return null;
     }
 
     /**
@@ -112,7 +112,7 @@ class StructStub implements StructInterface
      */
     public function valid()
     {
-
+        return false;
     }
 
     /**
@@ -122,7 +122,7 @@ class StructStub implements StructInterface
      */
     public function hasChildren()
     {
-
+        return false;
     }
 
     /**
@@ -132,7 +132,7 @@ class StructStub implements StructInterface
      */
     public function getChildren()
     {
-
+        return new \RecursiveArrayIterator();
     }
 
     /**
@@ -143,7 +143,7 @@ class StructStub implements StructInterface
      */
     public function offsetExists($offset)
     {
-
+        return false;
     }
 
     /**
@@ -154,7 +154,7 @@ class StructStub implements StructInterface
      */
     public function offsetGet($offset)
     {
-
+        return null;
     }
 
     /**
@@ -187,7 +187,7 @@ class StructStub implements StructInterface
      */
     public function serialize()
     {
-
+        return 'N;';
     }
 
     /**

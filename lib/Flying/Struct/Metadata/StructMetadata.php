@@ -23,7 +23,7 @@ class StructMetadata extends PropertyMetadata
      * @param string $class     OPTIONAL Class name for property object
      * @param array $config     OPTIONAL Configuration options for property object
      * @param array $properties OPTIONAL Structure properties
-     * @return StructMetadata
+     * @throws \InvalidArgumentException
      */
     public function __construct($name = null, $class = null, $config = null, $properties = null)
     {
@@ -41,7 +41,7 @@ class StructMetadata extends PropertyMetadata
      */
     public function hasProperty($name)
     {
-        return (array_key_exists($name, $this->properties));
+        return array_key_exists($name, $this->properties);
     }
 
     /**
@@ -56,17 +56,7 @@ class StructMetadata extends PropertyMetadata
         if (!array_key_exists($name, $this->properties)) {
             throw new Exception('No metadata is available for property: ' . $name);
         }
-        return ($this->properties[$name]);
-    }
-
-    /**
-     * Get metadata for all registered structure properties
-     *
-     * @return array
-     */
-    public function getProperties()
-    {
-        return ($this->properties);
+        return $this->properties[$name];
     }
 
     /**
@@ -79,21 +69,6 @@ class StructMetadata extends PropertyMetadata
     {
         $this->properties[$metadata->getName()] = $metadata;
         $this->hash = null;
-        return $this;
-    }
-
-    /**
-     * Set structure properties metadata
-     *
-     * @param array $properties
-     * @return $this
-     */
-    public function setProperties(array $properties)
-    {
-        $this->clearProperties();
-        foreach ($properties as $metadata) {
-            $this->addProperty($metadata);
-        }
         return $this;
     }
 
@@ -119,6 +94,7 @@ class StructMetadata extends PropertyMetadata
     {
         $this->properties = [];
         $this->hash = null;
+        return $this;
     }
 
     /**
@@ -128,12 +104,37 @@ class StructMetadata extends PropertyMetadata
      */
     public function serialize()
     {
-        return (serialize([
+        return serialize([
             'name'       => $this->getName(),
             'class'      => $this->getClass(),
             'config'     => $this->getConfig(),
             'properties' => $this->getProperties(),
-        ]));
+        ]);
+    }
+
+    /**
+     * Get metadata for all registered structure properties
+     *
+     * @return array
+     */
+    public function getProperties()
+    {
+        return $this->properties;
+    }
+
+    /**
+     * Set structure properties metadata
+     *
+     * @param array $properties
+     * @return $this
+     */
+    public function setProperties(array $properties)
+    {
+        $this->clearProperties();
+        foreach ($properties as $metadata) {
+            $this->addProperty($metadata);
+        }
+        return $this;
     }
 
     /**
@@ -141,6 +142,7 @@ class StructMetadata extends PropertyMetadata
      *
      * @param string $serialized
      * @return void
+     * @throws \InvalidArgumentException
      */
     public function unserialize($serialized)
     {

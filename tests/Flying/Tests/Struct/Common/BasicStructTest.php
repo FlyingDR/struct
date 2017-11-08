@@ -2,9 +2,17 @@
 
 namespace Flying\Tests\Struct\Common;
 
+use Flying\Struct\Common\ComplexPropertyInterface;
+use Flying\Struct\Common\SimplePropertyInterface;
+use Flying\Struct\Common\UpdateNotifyListenerInterface;
 use Flying\Struct\Metadata\PropertyMetadata;
 use Flying\Struct\Metadata\StructMetadata;
+use Flying\Struct\Property\Boolean;
+use Flying\Struct\Property\Integer;
+use Flying\Struct\Property\PropertyInterface;
+use Flying\Struct\Property\Str;
 use Flying\Struct\Struct;
+use Flying\Struct\StructInterface;
 use Flying\Tests\Struct\Fixtures\BasicStruct;
 use Flying\Tests\Tools\CallbackLog;
 use Mockery;
@@ -19,20 +27,20 @@ abstract class BasicStructTest extends BaseStructTest
      *
      * @var string
      */
-    protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\BasicStruct';
+    protected $fixtureClass = BasicStruct::class;
 
     public function testStructureInterfaces()
     {
-        $reflection = new \ReflectionClass('Flying\Struct\Struct');
+        $reflection = new \ReflectionClass(Struct::class);
         $interfaces = $reflection->getInterfaces();
-        static::assertArrayHasKey('Flying\Struct\StructInterface', $interfaces);
+        static::assertArrayHasKey(StructInterface::class, $interfaces);
         static::assertArrayHasKey('Countable', $interfaces);
         static::assertArrayHasKey('Iterator', $interfaces);
         static::assertArrayHasKey('RecursiveIterator', $interfaces);
         static::assertArrayHasKey('ArrayAccess', $interfaces);
         static::assertArrayHasKey('Serializable', $interfaces);
-        static::assertArrayHasKey('Flying\Struct\Common\ComplexPropertyInterface', $interfaces);
-        static::assertArrayHasKey('Flying\Struct\Common\UpdateNotifyListenerInterface', $interfaces);
+        static::assertArrayHasKey(ComplexPropertyInterface::class, $interfaces);
+        static::assertArrayHasKey(UpdateNotifyListenerInterface::class, $interfaces);
     }
 
     public function testExplicitGetter()
@@ -47,7 +55,7 @@ abstract class BasicStructTest extends BaseStructTest
     public function testGettingProperty()
     {
         $struct = $this->getTestStruct();
-        static::assertInstanceOf('Flying\Struct\Property\PropertyInterface', $struct->getProperty('first'));
+        static::assertInstanceOf(PropertyInterface::class, $struct->getProperty('first'));
         static::assertNull($struct->getProperty('unavailable'));
     }
 
@@ -180,6 +188,8 @@ abstract class BasicStructTest extends BaseStructTest
 
     /**
      * @dataProvider getExplicitInitialContents
+     * @param $initial
+     * @param $expected
      */
     public function testExplicitlyGivenInitialContents($initial, $expected)
     {
@@ -220,9 +230,9 @@ abstract class BasicStructTest extends BaseStructTest
 
     public function testUpdateNotification()
     {
-        $mock = Mockery::mock('Flying\Struct\Common\UpdateNotifyListenerInterface')
+        $mock = Mockery::mock(UpdateNotifyListenerInterface::class)
             ->shouldReceive('updateNotify')->once()
-            ->with(Mockery::type('Flying\Struct\Common\SimplePropertyInterface'))
+            ->with(Mockery::type(SimplePropertyInterface::class))
             ->getMock();
         $struct = $this->getTestStruct(
             null,
@@ -278,7 +288,6 @@ abstract class BasicStructTest extends BaseStructTest
         $log = $logger->get();
         static::assertEquals(count($changes), count($log));
         foreach ($changes as $name => $value) {
-            /** @noinspection DisconnectedForeachInstructionInspection */
             $temp = array_shift($log);
             static::assertEquals([$method, $name], $temp);
         }
@@ -287,9 +296,9 @@ abstract class BasicStructTest extends BaseStructTest
     public function testExplicitMetadata()
     {
         $metadata = new StructMetadata();
-        $metadata->addProperty(new PropertyMetadata('a', 'Flying\Struct\Property\Integer', ['default' => 123]));
-        $metadata->addProperty(new PropertyMetadata('b', 'Flying\Struct\Property\Boolean', ['default' => false]));
-        $metadata->addProperty(new PropertyMetadata('c', 'Flying\Struct\Property\Str', ['default' => 'test']));
+        $metadata->addProperty(new PropertyMetadata('a', Integer::class, ['default' => 123]));
+        $metadata->addProperty(new PropertyMetadata('b', Boolean::class, ['default' => false]));
+        $metadata->addProperty(new PropertyMetadata('c', Str::class, ['default' => 'test']));
         $struct = new Struct(null, [
             'metadata' => $metadata,
         ]);

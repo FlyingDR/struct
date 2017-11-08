@@ -13,6 +13,9 @@ abstract class BaseTypeTest extends BasePropertyTest
     protected $serializationTests = [];
 
     /**
+     * @param mixed $value
+     * @param mixed $expected
+     * @param array|null $config
      * @dataProvider getValueTests
      */
     public function testValues($value, $expected, $config = null)
@@ -21,7 +24,6 @@ abstract class BaseTypeTest extends BasePropertyTest
             // Run test with given config
             $property = $this->getTestProperty($value, $config);
             static::assertEquals($expected, $property->getValue());
-
         } else {
             // Test setting value through constructor
             $property = $this->getTestProperty($value, [

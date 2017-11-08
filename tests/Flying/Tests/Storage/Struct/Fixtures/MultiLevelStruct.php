@@ -28,6 +28,6 @@ class MultiLevelStruct extends TestStruct
         ];
         $child = new ChildStruct();
         $contents['child'] = $child->getExpectedContents();
-        return ($contents);
+        return $contents;
     }
 }

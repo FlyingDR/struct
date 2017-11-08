@@ -20,7 +20,7 @@ abstract class Annotation
      * Class constructor
      *
      * @param array $values
-     * @return Annotation
+     * @throws AnnotationException
      */
     public function __construct(array $values)
     {

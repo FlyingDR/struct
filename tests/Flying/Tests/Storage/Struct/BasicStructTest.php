@@ -2,14 +2,16 @@
 
 namespace Flying\Tests\Storage\Struct;
 
+use Flying\Struct\Common\ComplexPropertyInterface;
+use Flying\Struct\Common\UpdateNotifyListenerInterface;
 use Flying\Struct\ConfigurationManager;
+use Flying\Struct\StorableStruct;
+use Flying\Struct\Storage\StorableInterface;
 use Flying\Struct\Storage\Storage;
+use Flying\Struct\StructInterface;
 use Flying\Tests\Storage\Struct\Fixtures\BasicStruct;
 use Flying\Tests\Struct\Common\BasicStructTest as CommonBasicStructTest;
 
-/**
- * @method BasicStruct getTestStruct($contents = null, $config = null)
- */
 class BasicStructTest extends CommonBasicStructTest
 {
     /**
@@ -23,26 +25,27 @@ class BasicStructTest extends CommonBasicStructTest
      *
      * @var string
      */
-    protected $fixtureClass = 'Flying\Tests\Storage\Struct\Fixtures\BasicStruct';
+    protected $fixtureClass = BasicStruct::class;
 
     public function testStructureInterfaces()
     {
-        $reflection = new \ReflectionClass('Flying\Struct\StorableStruct');
+        $reflection = new \ReflectionClass(StorableStruct::class);
         $interfaces = $reflection->getInterfaces();
-        static::assertArrayHasKey('Flying\Struct\StructInterface', $interfaces);
-        static::assertArrayHasKey('Flying\Struct\Storage\StorableInterface', $interfaces);
+        static::assertArrayHasKey(StructInterface::class, $interfaces);
+        static::assertArrayHasKey(StorableInterface::class, $interfaces);
         static::assertArrayHasKey('Countable', $interfaces);
         static::assertArrayHasKey('Iterator', $interfaces);
         static::assertArrayHasKey('RecursiveIterator', $interfaces);
         static::assertArrayHasKey('ArrayAccess', $interfaces);
         static::assertArrayHasKey('Serializable', $interfaces);
-        static::assertArrayHasKey('Flying\Struct\Common\ComplexPropertyInterface', $interfaces);
-        static::assertArrayHasKey('Flying\Struct\Common\UpdateNotifyListenerInterface', $interfaces);
+        static::assertArrayHasKey(ComplexPropertyInterface::class, $interfaces);
+        static::assertArrayHasKey(UpdateNotifyListenerInterface::class, $interfaces);
     }
 
     public function testExplicitStorageSetting()
     {
         $storage = new Storage();
+        /** @var BasicStruct $struct */
         $struct = $this->getTestStruct(null, [
             'storage' => $storage,
         ]);
@@ -53,6 +56,7 @@ class BasicStructTest extends CommonBasicStructTest
 
     public function testStructureShouldRegisterItselfIntoStorage()
     {
+        /** @var BasicStruct $struct */
         $struct = $this->getTestStruct();
         $storage = ConfigurationManager::getConfiguration()->getStorage();
         static::assertTrue($storage->has($struct));
@@ -60,6 +64,7 @@ class BasicStructTest extends CommonBasicStructTest
 
     public function testStructureModificationsShouldMarkItAsDirtyInStorage()
     {
+        /** @var BasicStruct $struct */
         $struct = $this->getTestStruct();
         $storage = ConfigurationManager::getConfiguration()->getStorage();
         static::assertFalse($storage->isDirty($struct));
@@ -84,10 +89,12 @@ class BasicStructTest extends CommonBasicStructTest
 
     public function testStructureShouldBeMarkedAsDirtyUponDirectChangeOfItsProperty()
     {
+        /** @var BasicStruct $struct */
         $struct = $this->getTestStruct();
         $storage = ConfigurationManager::getConfiguration()->getStorage();
         static::assertFalse($storage->isDirty($struct));
         $property = $struct->getProperty('fourth');
+        static::assertNotNull($property);
         $property->setValue('modified value');
         static::assertTrue($storage->isDirty($struct));
     }

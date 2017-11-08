@@ -83,6 +83,31 @@ class Storage implements StorageInterface
     }
 
     /**
+     * Get storage backend
+     *
+     * @return BackendInterface
+     */
+    public function getBackend()
+    {
+        if (!$this->backend) {
+            $this->backend = ConfigurationManager::getConfiguration()->getStorageBackend();
+        }
+        return $this->backend;
+    }
+
+    /**
+     * Set storage backend
+     *
+     * @param BackendInterface $backend
+     * @return $this
+     */
+    public function setBackend(BackendInterface $backend)
+    {
+        $this->backend = $backend;
+        return $this;
+    }
+
+    /**
      * Mark given object as "dirty"
      *
      * @param StorableInterface $object
@@ -121,31 +146,6 @@ class Storage implements StorageInterface
     }
 
     /**
-     * Get storage backend
-     *
-     * @return BackendInterface
-     */
-    public function getBackend()
-    {
-        if (!$this->backend) {
-            $this->backend = ConfigurationManager::getConfiguration()->getStorageBackend();
-        }
-        return $this->backend;
-    }
-
-    /**
-     * Set storage backend
-     *
-     * @param BackendInterface $backend
-     * @return $this
-     */
-    public function setBackend(BackendInterface $backend)
-    {
-        $this->backend = $backend;
-        return $this;
-    }
-
-    /**
      * Flush all changes in objects into storage
      *
      * @throws \RuntimeException
@@ -158,7 +158,7 @@ class Storage implements StorageInterface
         /** @var $object StorableInterface */
         foreach ($this->storage as $hash => $object) {
             $key = $object->getStorageKey();
-            if ((!array_key_exists($hash, $this->dirty)) && ($backend->has($key))) {
+            if ((!array_key_exists($hash, $this->dirty)) && $backend->has($key)) {
                 continue;
             }
             if (in_array($key, $storedKeys, true)) {

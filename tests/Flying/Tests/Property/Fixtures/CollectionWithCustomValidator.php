@@ -18,6 +18,6 @@ class CollectionWithCustomValidator extends BaseCollection
      */
     protected function validate($value)
     {
-        return ((is_int($value)) && ($value % 5 === 0));
+        return (is_int($value) && ($value % 5 === 0));
     }
 }

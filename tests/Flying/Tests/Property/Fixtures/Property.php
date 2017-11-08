@@ -31,6 +31,18 @@ class Property extends BaseProperty implements CallbackTrackingInterface
     }
 
     /**
+     * Normalize given value to make it compatible with property requirements
+     *
+     * @param mixed $value Given property value (passed by reference)
+     * @return mixed        TRUE if value can be accepted, FALSE otherwise
+     */
+    protected function normalize(&$value)
+    {
+        $this->logCallbackCall(__FUNCTION__, func_get_args());
+        return parent::normalize($value);
+    }
+
+    /**
      * Log call to callback
      *
      * @param string $method Method name
@@ -44,18 +56,6 @@ class Property extends BaseProperty implements CallbackTrackingInterface
             $logger = $this->cbLogs[$method];
             $logger->add($method, $args);
         }
-    }
-
-    /**
-     * Normalize given value to make it compatible with property requirements
-     *
-     * @param mixed $value Given property value (passed by reference)
-     * @return mixed        TRUE if value can be accepted, FALSE otherwise
-     */
-    protected function normalize(&$value)
-    {
-        $this->logCallbackCall(__FUNCTION__, func_get_args());
-        return parent::normalize($value);
     }
 
     /**

@@ -8,6 +8,12 @@ namespace Flying\Struct\Metadata;
 class PropertyMetadata implements MetadataInterface
 {
     /**
+     * Hash for property object
+     *
+     * @var string
+     */
+    protected $hash;
+    /**
      * Property name
      *
      * @var string
@@ -19,12 +25,6 @@ class PropertyMetadata implements MetadataInterface
      * @var string
      */
     private $class;
-    /**
-     * Hash for property object
-     *
-     * @var string
-     */
-    protected $hash;
     /**
      * Configuration options for property object
      *
@@ -38,7 +38,7 @@ class PropertyMetadata implements MetadataInterface
      * @param string $name  OPTIONAL Property name
      * @param string $class OPTIONAL Class name for property object
      * @param array $config OPTIONAL Configuration options for property object
-     * @return PropertyMetadata
+     * @throws \InvalidArgumentException
      */
     public function __construct($name = null, $class = null, $config = null)
     {
@@ -51,6 +51,20 @@ class PropertyMetadata implements MetadataInterface
         if ($config !== null) {
             $this->setConfig($config);
         }
+    }
+
+    /**
+     * Defined by Serializable interface
+     *
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize([
+            'name'   => $this->getName(),
+            'class'  => $this->getClass(),
+            'config' => $this->getConfig(),
+        ]);
     }
 
     /**
@@ -133,22 +147,9 @@ class PropertyMetadata implements MetadataInterface
     /**
      * Defined by Serializable interface
      *
-     * @return string
-     */
-    public function serialize()
-    {
-        return (serialize([
-            'name'   => $this->getName(),
-            'class'  => $this->getClass(),
-            'config' => $this->getConfig(),
-        ]));
-    }
-
-    /**
-     * Defined by Serializable interface
-     *
      * @param string $serialized
      * @return void
+     * @throws \InvalidArgumentException
      */
     public function unserialize($serialized)
     {

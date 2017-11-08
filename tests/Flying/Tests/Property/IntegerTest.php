@@ -5,7 +5,7 @@ namespace Flying\Tests\Property;
 
 use Flying\Struct\Property\Property;
 
-class IntTest extends BaseTypeTest
+class IntegerTest extends BaseTypeTest
 {
     /**
      * Class name of the property to test

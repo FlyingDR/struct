@@ -23,6 +23,13 @@ abstract class BaseStorageBackendTest extends TestCaseUsingConfiguration
         static::assertNull($backend->load($this->testKey));
     }
 
+    /**
+     * Get storage backend that needs to be tested
+     *
+     * @return BackendInterface
+     */
+    abstract protected function getTestBackend();
+
     public function testClearingBackend()
     {
         $backend = $this->getTestBackend();
@@ -42,12 +49,5 @@ abstract class BaseStorageBackendTest extends TestCaseUsingConfiguration
         static::assertFalse($backend->has('b'));
         static::assertFalse($backend->has('c'));
     }
-
-    /**
-     * Get storage backend that needs to be tested
-     *
-     * @return BackendInterface
-     */
-    abstract protected function getTestBackend();
 
 }

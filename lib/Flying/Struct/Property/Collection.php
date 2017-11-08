@@ -41,74 +41,64 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     public function setValue($value)
     {
         if (!is_array($value)) {
-            if ((is_object($value)) && (method_exists($value, 'toArray'))) {
+            if (is_object($value) && method_exists($value, 'toArray')) {
                 $value = $value->toArray();
             } else {
                 throw new \InvalidArgumentException('Only array values are accepted for collections');
             }
         }
         $elements = [];
-        foreach ($value as $k => $v) {
+        foreach ((array)$value as $k => $v) {
             if ($this->normalize($v, $k)) {
                 $elements[$k] = $v;
             }
         }
-        if ((count($value)) && (!count($elements))) {
+        if (count($value) && (!count($elements))) {
             // There is no valid elements into given value
             $this->onInvalidValue($value);
             return false;
-        } else {
-            $this->elements = $elements;
-            $this->onChange();
-            return true;
         }
+
+        $this->elements = $elements;
+        $this->onChange();
+        return true;
     }
 
     /**
-     * Gets the element at the specified key/index.
+     * Normalize given value to make it compatible with property requirements
      *
-     * @param string|integer $key The key/index of the element to retrieve.
-     * @return mixed
+     * @param mixed $value    Given property value (passed by reference)
+     * @param int|string $key OPTIONAL Key for given value in a case if multiple values are given
+     * @return mixed            TRUE if value can be accepted, FALSE otherwise
      */
-    public function get($key)
+    protected function normalize(&$value, $key = null)
     {
-        if (array_key_exists($key, $this->elements)) {
-            return $this->elements[$key];
+        if (!parent::normalize($value)) {
+            return false;
         }
-        return null;
+        $allowed = $this->allowed;
+        if (is_callable($allowed) && (!$allowed($value))) {
+            return false;
+        }
+        if (is_string($allowed) && ((!is_object($value)) || (!$value instanceof $allowed))) {
+            return false;
+        }
+        if (is_array($allowed) && (!is_callable($allowed)) && (!in_array($value, $allowed, true))) {
+            return false;
+        }
+        return true;
     }
 
     /**
-     * Sets an element in the collection at the specified key/index.
+     * Invalid value setting handler
      *
-     * @param string|integer $key The key/index of the element to set.
-     * @param mixed $element      The element to set.
+     * @param mixed $value    Invalid value given to property
+     * @param int|string $key OPTIONAL Key of this value
      * @return void
      */
-    public function set($key, $element)
+    protected function onInvalidValue($value, $key = null)
     {
-        if ($this->normalize($element)) {
-            $this->elements[$key] = $element;
-            $this->onChange();
-        } else {
-            $this->onInvalidValue($element, $key);
-        }
-    }
 
-    /**
-     * Adds an element at the end of the collection.
-     *
-     * @param mixed $element The element to add.
-     * @return void
-     */
-    public function add($element)
-    {
-        if ($this->normalize($element)) {
-            $this->elements[] = $element;
-            $this->onChange();
-        } else {
-            $this->onInvalidValue($element);
-        }
     }
 
     /**
@@ -117,6 +107,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      *
      * @param mixed $element The element to toggle.
      * @return void
+     * @throws \RuntimeException
      */
     public function toggle($element)
     {
@@ -147,27 +138,11 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     }
 
     /**
-     * Removes the element at the specified index from the collection.
-     *
-     * @param string|integer $key The kex/index of the element to remove.
-     * @return mixed                The removed element or NULL, if the collection did not contain the element.
-     */
-    public function remove($key)
-    {
-        if (array_key_exists($key, $this->elements) || isset($this->elements[$key])) {
-            $removed = $this->elements[$key];
-            unset($this->elements[$key]);
-            $this->onChange();
-            return $removed;
-        }
-        return null;
-    }
-
-    /**
      * Removes the specified element from the collection, if it is found.
      *
      * @param mixed $element The element to remove.
      * @return boolean          TRUE if this collection contained the specified element, FALSE otherwise.
+     * @throws \RuntimeException
      */
     public function removeElement($element)
     {
@@ -187,17 +162,6 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
             $this->onChange();
         }
         return $changed;
-    }
-
-    /**
-     * Checks whether the collection contains an element with the specified key/index.
-     *
-     * @param string|integer $key The key/index to check for.
-     * @return boolean
-     */
-    public function containsKey($key)
-    {
-        return array_key_exists($key, $this->elements) || isset($this->elements[$key]);
     }
 
     /**
@@ -262,6 +226,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
      * Clears the collection, removing all elements.
      *
      * @return void
+     * @throws \RuntimeException
      */
     public function clear()
     {
@@ -294,6 +259,17 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     }
 
     /**
+     * Checks whether the collection contains an element with the specified key/index.
+     *
+     * @param string|integer $key The key/index to check for.
+     * @return boolean
+     */
+    public function containsKey($key)
+    {
+        return array_key_exists($key, $this->elements) || isset($this->elements[$key]);
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function offsetGet($offset)
@@ -302,7 +278,22 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     }
 
     /**
+     * Gets the element at the specified key/index.
+     *
+     * @param string|integer $key The key/index of the element to retrieve.
+     * @return mixed
+     */
+    public function get($key)
+    {
+        if (array_key_exists($key, $this->elements)) {
+            return $this->elements[$key];
+        }
+        return null;
+    }
+
+    /**
      * {@inheritDoc}
+     * @throws \RuntimeException
      */
     public function offsetSet($offset, $value)
     {
@@ -314,11 +305,65 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     }
 
     /**
+     * Sets an element in the collection at the specified key/index.
+     *
+     * @param string|integer $key The key/index of the element to set.
+     * @param mixed $element      The element to set.
+     * @return void
+     * @throws \RuntimeException
+     */
+    public function set($key, $element)
+    {
+        if ($this->normalize($element)) {
+            $this->elements[$key] = $element;
+            $this->onChange();
+        } else {
+            $this->onInvalidValue($element, $key);
+        }
+    }
+
+    /**
+     * Adds an element at the end of the collection.
+     *
+     * @param mixed $element The element to add.
+     * @return void
+     * @throws \RuntimeException
+     */
+    public function add($element)
+    {
+        if ($this->normalize($element)) {
+            $this->elements[] = $element;
+            $this->onChange();
+        } else {
+            $this->onInvalidValue($element);
+        }
+    }
+
+    /**
      * {@inheritDoc}
+     * @throws \RuntimeException
      */
     public function offsetUnset($offset)
     {
         $this->remove($offset);
+    }
+
+    /**
+     * Removes the element at the specified index from the collection.
+     *
+     * @param string|integer $key The kex/index of the element to remove.
+     * @return mixed                The removed element or NULL, if the collection did not contain the element.
+     * @throws \RuntimeException
+     */
+    public function remove($key)
+    {
+        if (array_key_exists($key, $this->elements) || isset($this->elements[$key])) {
+            $removed = $this->elements[$key];
+            unset($this->elements[$key]);
+            $this->onChange();
+            return $removed;
+        }
+        return null;
     }
 
     /**
@@ -330,54 +375,6 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     }
 
     /**
-     * Invalid value setting handler
-     *
-     * @param mixed $value    Invalid value given to property
-     * @param int|string $key OPTIONAL Key of this value
-     * @return void
-     */
-    protected function onInvalidValue($value, $key = null)
-    {
-
-    }
-
-    /**
-     * Normalize given value to make it compatible with property requirements
-     *
-     * @param mixed $value    Given property value (passed by reference)
-     * @param int|string $key OPTIONAL Key for given value in a case if multiple values are given
-     * @return mixed            TRUE if value can be accepted, FALSE otherwise
-     */
-    protected function normalize(&$value, $key = null)
-    {
-        if (!parent::normalize($value)) {
-            return false;
-        }
-        $allowed = $this->allowed;
-        if ((is_callable($allowed)) && (!call_user_func($allowed, $value))) {
-            return false;
-        } elseif ((is_string($allowed)) && ((!is_object($value)) || (!$value instanceof $allowed))) {
-            return false;
-        } elseif ((is_array($allowed)) && (!is_callable($allowed)) && (!in_array($value, $allowed, true))) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function initConfig()
-    {
-        parent::initConfig();
-        $this->mergeConfig([
-            'default' => [], // Default value for collection
-            'allowed' => null, // Either list of allowed values for collection elements
-            // or callable to test if element is allowed to be in collection
-        ]);
-    }
-
-    /**
      * {@inheritdoc}
      * @throws \InvalidArgumentException
      */
@@ -386,7 +383,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
         switch ($name) {
             case 'default':
                 if (!is_array($value)) {
-                    if ((is_object($value)) && (method_exists($value, 'toArray'))) {
+                    if (is_object($value) && method_exists($value, 'toArray')) {
                         $value = $value->toArray();
                     } else {
                         throw new \InvalidArgumentException('Only arrays are accepted as default values for collection properties');
@@ -395,10 +392,10 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                 break;
             case 'allowed':
                 $valid = false;
-                if (($value === null) || (is_callable($value))) {
+                if (($value === null) || is_callable($value)) {
                     // Explicitly defined validator or empty validator
                     $valid = true;
-                } elseif ((is_array($value)) && (count($value) === 1) && (isset($value[0])) && (is_string($value[0]))) {
+                } elseif (is_array($value) && (count($value) === 1) && isset($value[0]) && is_string($value[0])) {
                     // This is probably validator defined through annotation's "allowed" parameter
                     $v = $value[0];
                     if (class_exists($v)) {
@@ -422,7 +419,7 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                         $value = [$this, $value];
                         $valid = true;
                     }
-                } elseif (is_array($value)) {
+                } /** @noinspection NotOptimalIfConditionsInspection */ elseif (is_array($value)) {
                     // Explicitly given list of valid values
                     $valid = true;
                 }
@@ -440,6 +437,39 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
     /**
      * {@inheritdoc}
      */
+    public function reset()
+    {
+        // No change notification should be made for reset,
+        // property value should be set to its default
+        $flag = $this->skipNotify;
+        $this->skipNotify = true;
+        $default = $this->getConfig('default');
+        foreach ((array)$default as $k => &$v) {
+            if (!$this->normalize($v, $k)) {
+                throw new Exception('Default value for property class ' . get_class($this) . ' is not acceptable for property validation rules');
+            }
+        }
+        unset($v);
+        $this->elements = $default;
+        $this->skipNotify = $flag;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initConfig()
+    {
+        parent::initConfig();
+        $this->mergeConfig([
+            'default' => [], // Default value for collection
+            'allowed' => null, // Either list of allowed values for collection elements
+            // or callable to test if element is allowed to be in collection
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function onConfigChange($name, $value)
     {
         /** @noinspection DegradedSwitchInspection */
@@ -451,25 +481,5 @@ class Collection extends Property implements ComplexPropertyInterface, \Iterator
                 parent::onConfigChange($name, $value);
                 break;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function reset()
-    {
-        // No change notification should be made for reset,
-        // property value should be set to its default
-        $flag = $this->skipNotify;
-        $this->skipNotify = true;
-        $default = $this->getConfig('default');
-        foreach ($default as $k => &$v) {
-            if (!$this->normalize($v, $k)) {
-                throw new Exception('Default value for property class ' . get_class($this) . ' is not acceptable for property validation rules');
-            }
-        }
-        unset($v);
-        $this->elements = $default;
-        $this->skipNotify = $flag;
     }
 }

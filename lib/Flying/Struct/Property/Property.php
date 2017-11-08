@@ -12,17 +12,17 @@ use Flying\Struct\Exception;
 class Property extends AbstractConfig implements PropertyInterface
 {
     /**
-     * Property value
-     *
-     * @var mixed
-     */
-    private $value;
-    /**
      * TRUE to skip property change notification, FALSE otherwise
      *
      * @var boolean
      */
     protected $skipNotify = false;
+    /**
+     * Property value
+     *
+     * @var mixed
+     */
+    private $value;
     /**
      * Cached value of "nullable" configuration option
      *
@@ -35,8 +35,8 @@ class Property extends AbstractConfig implements PropertyInterface
      *
      * @param mixed $value  OPTIONAL Property value
      * @param array $config OPTIONAL Configuration options for this property
-     * @throws Exception
-     * @return Property
+     * @throws \Flying\Struct\Exception
+     * @throws \RuntimeException
      */
     public function __construct($value = null, array $config = null)
     {
@@ -58,38 +58,11 @@ class Property extends AbstractConfig implements PropertyInterface
     }
 
     /**
-     * Get property value
-     *
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return ($this->value);
-    }
-
-    /**
-     * Set property value
-     *
-     * @param mixed $value
-     * @return boolean
-     */
-    public function setValue($value)
-    {
-        if ($this->normalize($value)) {
-            $this->value = $value;
-            $this->onChange();
-            return true;
-        } else {
-            $this->onInvalidValue($value);
-            return false;
-        }
-    }
-
-    /**
      * Reset property to its default state
      *
      * @throws Exception
      * @return void
+     * @throws \RuntimeException
      */
     public function reset()
     {
@@ -107,32 +80,6 @@ class Property extends AbstractConfig implements PropertyInterface
     }
 
     /**
-     * Value change notification handler
-     *
-     * @return void
-     */
-    protected function onChange()
-    {
-        if (!$this->skipNotify) {
-            $owner = $this->getConfig('update_notify_listener');
-            if ($owner instanceof UpdateNotifyListenerInterface) {
-                $owner->updateNotify($this);
-            }
-        }
-    }
-
-    /**
-     * Invalid value setting handler
-     *
-     * @param mixed $value
-     * @return void
-     */
-    protected function onInvalidValue($value)
-    {
-
-    }
-
-    /**
      * Normalize given value to make it compatible with property requirements
      *
      * @param mixed $value Given property value (passed by reference)
@@ -140,27 +87,13 @@ class Property extends AbstractConfig implements PropertyInterface
      */
     protected function normalize(&$value)
     {
-        if ((($value === null)) && (!$this->nullable)) {
+        if (($value === null) && (!$this->nullable)) {
             return false;
         }
         if ($value instanceof PropertyInterface) {
             $value = $value->getValue();
         }
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @throws \InvalidArgumentException
-     */
-    protected function initConfig()
-    {
-        parent::initConfig();
-        $this->mergeConfig([
-            'nullable'               => true, // TRUE if property value can be NULL, FALSE if not
-            'default'                => null, // Default value for the property
-            'update_notify_listener' => null, // Listener of property update notifications
-        ]);
     }
 
     /**
@@ -185,21 +118,53 @@ class Property extends AbstractConfig implements PropertyInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Implementation of Serializable interface
+     *
+     * @return string
+     * @throws \RuntimeException
      */
-    protected function onConfigChange($name, $value)
+    public function serialize()
     {
-        switch ($name) {
-            case 'nullable':
-                $this->nullable = $value;
-                break;
+        return serialize([
+            'value'  => $this->getValue(),
+            'config' => $this->getConfigForSerialization(),
+        ]);
+    }
+
+    /**
+     * Get property value
+     *
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set property value
+     *
+     * @param mixed $value
+     * @return boolean
+     * @throws \RuntimeException
+     */
+    public function setValue($value)
+    {
+        if ($this->normalize($value)) {
+            $this->value = $value;
+            $this->onChange();
+            return true;
         }
+
+        $this->onInvalidValue($value);
+        return false;
     }
 
     /**
      * Get property's configuration options prepared for serialization
      *
      * @return array
+     * @throws \RuntimeException
      */
     protected function getConfigForSerialization()
     {
@@ -211,26 +176,14 @@ class Property extends AbstractConfig implements PropertyInterface
     /**
      * Implementation of Serializable interface
      *
-     * @return string
-     */
-    public function serialize()
-    {
-        return (serialize([
-            'value'  => $this->getValue(),
-            'config' => $this->getConfigForSerialization(),
-        ]));
-    }
-
-    /**
-     * Implementation of Serializable interface
-     *
-     * @param array $data Serialized object data
-     * @throws \InvalidArgumentException
+     * @param string $serialized Serialized object data
      * @return void
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
-    public function unserialize($data)
+    public function unserialize($serialized)
     {
-        $data = unserialize($data);
+        $data = unserialize($serialized);
         if ((!is_array($data)) ||
             (!array_key_exists('value', $data)) ||
             (!array_key_exists('config', $data)) ||
@@ -243,5 +196,60 @@ class Property extends AbstractConfig implements PropertyInterface
         $this->setConfig($data['config']);
         $this->setValue($data['value']);
         $this->skipNotify = $flag;
+    }
+
+    /**
+     * Value change notification handler
+     *
+     * @return void
+     * @throws \RuntimeException
+     */
+    protected function onChange()
+    {
+        if ($this->skipNotify) {
+            return;
+        }
+        $owner = $this->getConfig('update_notify_listener');
+        if ($owner instanceof UpdateNotifyListenerInterface) {
+            $owner->updateNotify($this);
+        }
+    }
+
+    /**
+     * Invalid value setting handler
+     *
+     * @param mixed $value
+     * @return void
+     */
+    protected function onInvalidValue($value)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    protected function initConfig()
+    {
+        parent::initConfig();
+        $this->mergeConfig([
+            'nullable'               => true, // TRUE if property value can be NULL, FALSE if not
+            'default'                => null, // Default value for the property
+            'update_notify_listener' => null, // Listener of property update notifications
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function onConfigChange($name, $value)
+    {
+        switch ($name) {
+            case 'nullable':
+                $this->nullable = $value;
+                break;
+        }
     }
 }

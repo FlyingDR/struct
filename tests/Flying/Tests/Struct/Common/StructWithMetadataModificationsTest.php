@@ -14,5 +14,5 @@ class StructWithMetadataModificationsTest extends BaseStructTest
      *
      * @var string
      */
-    protected $fixtureClass = 'Flying\Tests\Struct\Fixtures\StructWithMetadataModifications';
+    protected $fixtureClass = StructWithMetadataModifications::class;
 }

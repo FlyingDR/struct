@@ -20,7 +20,7 @@ class MetadataManagerTest extends TestUsingFixtureStructures
     public function testMetadataManagerConnectsItselfWithParserWhenGettingParser()
     {
         $parser = new AbstractParserBasedParserStub();
-        $config = Mockery::mock('Flying\Struct\Configuration');
+        $config = Mockery::mock(Configuration::class);
         $config->shouldReceive('getMetadataManager')->once()
             ->andReturn(new MetadataManager());
         $config->shouldReceive('getMetadataParser')->once()
@@ -33,6 +33,16 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $parserFromManager = $manager->getParser();
         static::assertSame($parserFromManager, $parser);
         static::assertSame($parserFromManager->getMetadataManager(), $manager);
+    }
+
+    /**
+     * Get tested object instance
+     *
+     * @return MetadataManager
+     */
+    protected function getTestManager()
+    {
+        return new MetadataManager();
     }
 
     public function testMetadataManagerConnectsItselfWithParserWhenSettingParser()
@@ -58,13 +68,6 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $this->validateMetadata($metadata);
     }
 
-    public function testMetadataRetrievingByClassInstance()
-    {
-        $manager = $this->getTestManager();
-        $metadata = $manager->getMetadata(new BasicStruct());
-        $this->validateMetadata($metadata);
-    }
-
     /**
      * Validate given structure metadata
      *
@@ -72,7 +75,7 @@ class MetadataManagerTest extends TestUsingFixtureStructures
      */
     protected function validateMetadata($metadata)
     {
-        static::assertInstanceOf('Flying\Struct\Metadata\StructMetadata', $metadata);
+        static::assertInstanceOf(StructMetadata::class, $metadata);
         static::assertEquals($metadata->getClass(), $this->getFixtureClass('BasicStruct'));
         static::assertCount(4, $metadata->getProperties());
         static::assertArrayHasKey('first', $metadata->getProperties());
@@ -81,15 +84,21 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         static::assertArrayHasKey('fourth', $metadata->getProperties());
     }
 
+    public function testMetadataRetrievingByClassInstance()
+    {
+        $manager = $this->getTestManager();
+        $metadata = $manager->getMetadata(new BasicStruct());
+        $this->validateMetadata($metadata);
+    }
+
     /**
-     * @dataProvider dataProviderOfInvalidObjects
+     * @param mixed $object
+     * @dataProvider             dataProviderOfInvalidObjects
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Structure class must implement StructInterface interface
      */
     public function testGettingMetadataForInvalidObjects($object)
     {
-        $this->setExpectedException(
-            '\InvalidArgumentException',
-            'Structure class must implement StructInterface interface'
-        );
         $manager = $this->getTestManager();
         $manager->getMetadata($object);
     }
@@ -97,20 +106,19 @@ class MetadataManagerTest extends TestUsingFixtureStructures
     public function dataProviderOfInvalidObjects()
     {
         return [
-            ['\ArrayObject'],
+            [\ArrayObject::class],
             [new \ArrayObject()],
         ];
     }
 
     /**
-     * @dataProvider dataProviderOfInvalidValues
+     * @param mixed $value
+     * @dataProvider             dataProviderOfInvalidValues
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Invalid structure information is given
      */
     public function testGettingMetadataForInvalidValues($value)
     {
-        $this->setExpectedException(
-            '\InvalidArgumentException',
-            'Invalid structure information is given'
-        );
         $manager = $this->getTestManager();
         $manager->getMetadata($value);
     }
@@ -127,7 +135,7 @@ class MetadataManagerTest extends TestUsingFixtureStructures
 
     public function testManagerReceivesDependenciesFromConfigurationByDefault()
     {
-        $config = Mockery::mock('Flying\Struct\Configuration');
+        $config = Mockery::mock(Configuration::class);
         $config->shouldReceive('getMetadataParser')->once()
             ->andReturn(new AnnotationParser());
         $config->shouldReceive('getCache')->once()
@@ -158,6 +166,8 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $class = $this->getFixtureClass('BasicStruct');
         $m1 = $manager->getMetadata($class);
         $m2 = $manager->getMetadata($class);
+        static::assertNotNull($m1);
+        static::assertNotNull($m2);
         static::assertEquals($m1->toArray(), $m2->toArray());
         static::assertNotSame($m1, $m2);
     }
@@ -169,12 +179,12 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $metadata = $manager->getMetadata($class);
 
         $manager = $this->getTestManager();
-        $parser = Mockery::mock('Flying\Struct\Metadata\MetadataParserInterface');
+        $parser = Mockery::mock(MetadataParserInterface::class);
         $parser->shouldReceive('getMetadata')->once()
             ->andReturn($metadata);
         /** @var $parser MetadataParserInterface */
         $manager->setParser($parser);
-        $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
+        $cache = Mockery::mock(Cache::class)
             ->shouldIgnoreMissing()
             ->shouldReceive('contains')->once()->andReturn(false)->getMock();
         /** @var $cache Cache */
@@ -192,13 +202,15 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $metadata = $manager->getMetadata($class);
 
         $manager = $this->getTestManager();
-        $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
+        $cache = Mockery::mock(Cache::class)
             ->shouldReceive('contains')->once()->ordered()->andReturn(true)->getMock()
             ->shouldReceive('fetch')->once()->ordered()->andReturn($metadata)->getMock();
         /** @var $cache Cache */
         $manager->setCache($cache);
 
         $m = $manager->getMetadata($class);
+        static::assertNotNull($m);
+        static::assertNotNull($metadata);
         static::assertEquals($m->toArray(), $metadata->toArray());
         static::assertNotSame($m, $metadata);
     }
@@ -211,16 +223,18 @@ class MetadataManagerTest extends TestUsingFixtureStructures
 
         $manager = $this->getTestManager();
         /** @var MetadataParserInterface $parser */
-        $parser = Mockery::mock('Flying\Struct\Metadata\MetadataParserInterface')
+        $parser = Mockery::mock(MetadataParserInterface::class)
             ->shouldReceive('getMetadata')->andReturn($metadata)->getMock();
         $manager->setParser($parser);
-        $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
+        $cache = Mockery::mock(Cache::class)
             ->shouldReceive('contains')->once()->ordered()->andReturn(false)->getMock()
             ->shouldReceive('save')->once()->ordered()->with(Mockery::type('string'), get_class($metadata))->andReturnUndefined()->getMock();
         /** @var $cache Cache */
         $manager->setCache($cache);
 
         $m = $manager->getMetadata($class);
+        static::assertNotNull($m);
+        static::assertNotNull($metadata);
         static::assertEquals($m->toArray(), $metadata->toArray());
         static::assertNotSame($m, $metadata);
     }
@@ -230,10 +244,10 @@ class MetadataManagerTest extends TestUsingFixtureStructures
         $manager = $this->getTestManager();
         $class = $this->getFixtureClass('BasicStruct');
         /** @var MetadataParserInterface $parser */
-        $parser = Mockery::mock('Flying\Struct\Metadata\MetadataParserInterface')
+        $parser = Mockery::mock(MetadataParserInterface::class)
             ->shouldReceive('getMetadata')->andReturn($this->getTestManager()->getMetadata($class))->getMock();
         $manager->setParser($parser);
-        $cache = Mockery::mock('Doctrine\Common\Cache\Cache')
+        $cache = Mockery::mock(Cache::class)
             ->shouldReceive('contains')->once()->ordered()->andReturn(true)->getMock()
             ->shouldReceive('fetch')->once()->ordered()->andReturn([])->getMock()
             ->shouldReceive('delete')->once()->ordered()->getMock()
@@ -246,12 +260,12 @@ class MetadataManagerTest extends TestUsingFixtureStructures
     public function testManagerReturnsNullIfNoResultsAvailable()
     {
         $manager = $this->getTestManager();
-        $parser = Mockery::mock('Flying\Struct\Metadata\MetadataParserInterface');
+        $parser = Mockery::mock(MetadataParserInterface::class);
         $parser->shouldReceive('getMetadata')->once()
             ->andReturn(null);
         /** @var $parser MetadataParserInterface */
         $manager->setParser($parser);
-        $cache = Mockery::mock('Doctrine\Common\Cache\Cache');
+        $cache = Mockery::mock(Cache::class);
         $cache->shouldReceive('contains')->once()
             ->andReturn(false);
         /** @var $cache Cache */
@@ -259,15 +273,5 @@ class MetadataManagerTest extends TestUsingFixtureStructures
 
         $metadata = $manager->getMetadata($this->getFixtureClass('BasicStruct'));
         static::assertNull($metadata);
-    }
-
-    /**
-     * Get tested object instance
-     *
-     * @return MetadataManager
-     */
-    protected function getTestManager()
-    {
-        return new MetadataManager();
     }
 }
