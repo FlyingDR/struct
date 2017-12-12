@@ -38,12 +38,6 @@ class Configuration
      */
     private $propertyNsMap;
     /**
-     * Namespaces map for annotation classes
-     *
-     * @var NamespacesMap
-     */
-    private $annotationNsMap;
-    /**
      * Structures metadata manager
      *
      * @var MetadataManagerInterface
@@ -121,21 +115,6 @@ class Configuration
             $this->propertyNsMap->add('Flying\Struct\Property', 'default');
         }
         return $this->propertyNsMap;
-    }
-
-    /**
-     * Get namespaces map for annotation classes
-     *
-     * @return NamespacesMap
-     * @throws \InvalidArgumentException
-     */
-    public function getAnnotationNamespacesMap()
-    {
-        if (!$this->annotationNsMap) {
-            $this->annotationNsMap = new NamespacesMap();
-            $this->annotationNsMap->add('Flying\Struct\Annotation', 'default');
-        }
-        return $this->annotationNsMap;
     }
 
     /**

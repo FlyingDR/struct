@@ -2,9 +2,9 @@
 
 namespace Flying\Struct\Metadata;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use Flying\Struct\Annotation\Annotation;
 use Flying\Struct\Annotation\Property;
 use Flying\Struct\Annotation\Struct;
@@ -22,34 +22,6 @@ class AnnotationParser extends AbstractMetadataParser
      * @var Reader
      */
     private $reader;
-    /**
-     * Namespaces for annotations autoloading
-     *
-     * @var array
-     */
-    private $namespaces = [];
-
-    /**
-     * Load annotation class
-     *
-     * @param string $class
-     *
-     * @return boolean
-     */
-    public function loadClass($class)
-    {
-        if (class_exists($class)) {
-            return true;
-        }
-        $class = ucfirst(trim($class, '\\'));
-        foreach ($this->namespaces as $ns) {
-            $fqcn = $ns . '\\' . $class;
-            if (class_exists($fqcn)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * {@inheritdoc}
@@ -74,13 +46,8 @@ class AnnotationParser extends AbstractMetadataParser
     public function getReader()
     {
         if (!$this->reader) {
-            $this->reader = new SimpleAnnotationReader();
-            $namespaces = ConfigurationManager::getConfiguration()->getAnnotationNamespacesMap()->getAll();
-            foreach ($namespaces as $ns) {
-                $this->reader->addNamespace($ns);
-            }
-            $this->namespaces = array_reverse($namespaces, true);
-            AnnotationRegistry::registerLoader([$this, 'loadClass']);
+            $this->reader = new AnnotationReader();
+            AnnotationRegistry::registerLoader('class_exists');
         }
         return $this->reader;
     }
