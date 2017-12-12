@@ -1,6 +1,6 @@
 <?php
 
-namespace Flying\Struct\Annotation\Struct;
+namespace Flying\Struct\Annotation;
 
 use Doctrine\Common\Annotations\AnnotationException;
 

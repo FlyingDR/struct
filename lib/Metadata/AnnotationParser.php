@@ -5,9 +5,9 @@ namespace Flying\Struct\Metadata;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
-use Flying\Struct\Annotation\Struct\Annotation;
-use Flying\Struct\Annotation\Struct\Property;
-use Flying\Struct\Annotation\Struct\Struct;
+use Flying\Struct\Annotation\Annotation;
+use Flying\Struct\Annotation\Property;
+use Flying\Struct\Annotation\Struct;
 use Flying\Struct\ConfigurationManager;
 use Flying\Struct\Exception;
 

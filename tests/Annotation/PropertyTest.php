@@ -2,8 +2,8 @@
 
 namespace Flying\Tests\Annotation;
 
-use Flying\Struct\Annotation\Struct\Annotation;
-use Flying\Struct\Annotation\Struct\Property;
+use Flying\Struct\Annotation\Annotation;
+use Flying\Struct\Annotation\Property;
 use Flying\Tests\TestCase;
 
 class PropertyTest extends TestCase
@@ -15,7 +15,7 @@ class PropertyTest extends TestCase
         'Enum'       => 'enum',
         'Collection' => 'collection',
     ];
-    protected $propertyNamespace = 'Flying\Struct\Annotation\Struct';
+    protected $propertyNamespace = 'Flying\Struct\Annotation';
 
     public function testInheritance()
     {

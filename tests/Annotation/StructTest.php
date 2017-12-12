@@ -2,10 +2,10 @@
 
 namespace Flying\Tests\Annotation;
 
-use Flying\Struct\Annotation\Struct\Annotation;
-use Flying\Struct\Annotation\Struct\Boolean;
-use Flying\Struct\Annotation\Struct\Property;
-use Flying\Struct\Annotation\Struct\Struct;
+use Flying\Struct\Annotation\Annotation;
+use Flying\Struct\Annotation\Boolean;
+use Flying\Struct\Annotation\Property;
+use Flying\Struct\Annotation\Struct;
 use Flying\Tests\TestCase;
 
 class StructTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace Flying\Struct\Annotation\Struct;
+namespace Flying\Struct\Annotation;
 
 use Doctrine\Common\Annotations\Annotation\Attribute;
 use Doctrine\Common\Annotations\Annotation\Attributes;
@@ -11,11 +11,11 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @Target({"CLASS", "ANNOTATION"})
  * @Attributes({
  *      @Attribute("name", required=true, type="string"),
- *      @Attribute("default", required=false, type="mixed"),
+ *      @Attribute("default", required=false, type="array"),
  *      @Attribute("nullable", required=false, type="boolean"),
- *      @Attribute("values", required=true, type="array")
+ *      @Attribute("allowed", required=false, type="array")
  * })
  */
-class Enum extends Property
+class Collection extends Property
 {
 }
