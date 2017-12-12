@@ -20,7 +20,6 @@ class ComplexStructure extends StructStub implements MetadataTestcaseInterface
      */
     public function getExpectedMetadata()
     {
-        $nsMap = ConfigurationManager::getConfiguration()->getStructNamespacesMap();
         $metadata = [
             'name'       => null,
             'class'      => __CLASS__,
@@ -29,7 +28,7 @@ class ComplexStructure extends StructStub implements MetadataTestcaseInterface
             'properties' => [
                 'basic'          => [
                     'name'       => 'basic',
-                    'class'      => $nsMap->get('fixtures') . '\\BasicStruct',
+                    'class'      => BasicStruct::class,
                     'config'     => [
                         'abc' => 123,
                         'xyz' => 'test',
@@ -39,21 +38,21 @@ class ComplexStructure extends StructStub implements MetadataTestcaseInterface
                 ],
                 'child'          => [
                     'name'       => 'child',
-                    'class'      => $nsMap->get('fixtures') . '\\StructWithChild',
+                    'class'      => StructWithChild::class,
                     'config'     => [],
                     'hash'       => 'test',
                     'properties' => [],
                 ],
                 'propertyTest'   => [
                     'name'       => 'propertyTest',
-                    'class'      => $nsMap->get('fixtures') . '\\CustomPropertiesTest',
+                    'class'      => CustomPropertiesTest::class,
                     'config'     => [],
                     'hash'       => 'test',
                     'properties' => [],
                 ],
                 'annotationTest' => [
                     'name'       => 'annotationTest',
-                    'class'      => $nsMap->get('fixtures') . '\\CustomAnnotationsTest',
+                    'class'      => CustomAnnotationsTest::class,
                     'config'     => [],
                     'hash'       => 'test',
                     'properties' => [],

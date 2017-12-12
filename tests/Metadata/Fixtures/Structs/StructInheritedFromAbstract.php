@@ -3,7 +3,8 @@
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
 use Flying\Struct\Annotation as Struct;
-use Flying\Struct\ConfigurationManager;
+use Flying\Struct\Property\Boolean;
+use Flying\Struct\Property\Str;
 
 /**
  * @Struct\Str(name="inherited", default="yes")
@@ -17,7 +18,6 @@ class StructInheritedFromAbstract extends AbstractStruct
      */
     public function getExpectedMetadata()
     {
-        $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
         return [
             'name'       => null,
             'class'      => __CLASS__,
@@ -26,7 +26,7 @@ class StructInheritedFromAbstract extends AbstractStruct
             'properties' => [
                 'from_abstract' => [
                     'name'   => 'from_abstract',
-                    'class'  => $pNs . '\\Boolean',
+                    'class'  => Boolean::class,
                     'config' => [
                         'default' => true,
                     ],
@@ -34,7 +34,7 @@ class StructInheritedFromAbstract extends AbstractStruct
                 ],
                 'inherited'     => [
                     'name'   => 'inherited',
-                    'class'  => $pNs . '\\Str',
+                    'class'  => Str::class,
                     'config' => [
                         'default' => 'yes',
                     ],

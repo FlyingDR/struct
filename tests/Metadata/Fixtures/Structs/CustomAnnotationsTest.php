@@ -3,7 +3,9 @@
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
 use Flying\Struct\Annotation as Struct;
+use Flying\Struct\Property\Str;
 use Flying\Tests\Metadata\Fixtures\Annotations as CustomStruct;
+use Flying\Tests\Metadata\Fixtures\Properties\Custom;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
@@ -20,7 +22,6 @@ class CustomAnnotationsTest extends StructStub implements MetadataTestcaseInterf
      */
     public function getExpectedMetadata()
     {
-        $nsMap = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap();
         return [
             'name'       => null,
             'class'      => __CLASS__,
@@ -29,13 +30,13 @@ class CustomAnnotationsTest extends StructStub implements MetadataTestcaseInterf
             'properties' => [
                 'standard'       => [
                     'name'   => 'standard',
-                    'class'  => $nsMap->get('default') . '\\Str',
+                    'class'  => Str::class,
                     'config' => [],
                     'hash'   => 'test',
                 ],
                 'custom'         => [
                     'name'   => 'custom',
-                    'class'  => $nsMap->get('fixtures') . '\\Custom',
+                    'class'  => Custom::class,
                     'config' => [
                         'test'    => 123,
                         'enabled' => true,
@@ -44,7 +45,7 @@ class CustomAnnotationsTest extends StructStub implements MetadataTestcaseInterf
                 ],
                 'fromAnnotation' => [
                     'name'   => 'fromAnnotation',
-                    'class'  => $nsMap->get('fixtures') . '\\Custom',
+                    'class'  => Custom::class,
                     'config' => [
                         'abc' => 'xyz',
                     ],

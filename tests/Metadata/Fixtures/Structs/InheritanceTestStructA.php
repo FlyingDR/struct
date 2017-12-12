@@ -3,7 +3,9 @@
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
 use Flying\Struct\Annotation as Struct;
-use Flying\Struct\ConfigurationManager;
+use Flying\Struct\Property\Boolean;
+use Flying\Struct\Property\Integer;
+use Flying\Struct\Property\Str;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
@@ -21,7 +23,6 @@ class InheritanceTestStructA extends StructStub implements MetadataTestcaseInter
      */
     public function getExpectedMetadata()
     {
-        $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
         return [
             'name'       => null,
             'class'      => __CLASS__,
@@ -30,25 +31,25 @@ class InheritanceTestStructA extends StructStub implements MetadataTestcaseInter
             'properties' => [
                 'a1'         => [
                     'name'   => 'a1',
-                    'class'  => $pNs . '\\Integer',
+                    'class'  => Integer::class,
                     'config' => [],
                     'hash'   => 'test',
                 ],
                 'b1'         => [
                     'name'   => 'b1',
-                    'class'  => $pNs . '\\Boolean',
+                    'class'  => Boolean::class,
                     'config' => [],
                     'hash'   => 'test',
                 ],
                 'c1'         => [
                     'name'   => 'c1',
-                    'class'  => $pNs . '\\Str',
+                    'class'  => Str::class,
                     'config' => [],
                     'hash'   => 'test',
                 ],
                 'overloaded' => [
                     'name'   => 'overloaded',
-                    'class'  => $pNs . '\\Str',
+                    'class'  => Str::class,
                     'config' => [
                         'default' => 'FromA',
                     ],

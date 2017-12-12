@@ -3,7 +3,9 @@
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
 use Flying\Struct\Annotation as Struct;
-use Flying\Struct\ConfigurationManager;
+use Flying\Struct\Property\Boolean;
+use Flying\Struct\Property\Integer;
+use Flying\Struct\Property\Str;
 
 /**
  * @Struct\Integer(name="a2")
@@ -20,30 +22,29 @@ class InheritanceTestStructB extends InheritanceTestStructA
      */
     public function getExpectedMetadata()
     {
-        $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
         $metadata = parent::getExpectedMetadata();
         $metadata['class'] = __CLASS__;
         $metadata['properties']['a2'] = [
             'name'   => 'a2',
-            'class'  => $pNs . '\\Integer',
+            'class'  => Integer::class,
             'config' => [],
             'hash'   => 'test',
         ];
         $metadata['properties']['b2'] = [
             'name'   => 'b2',
-            'class'  => $pNs . '\\Boolean',
+            'class'  => Boolean::class,
             'config' => [],
             'hash'   => 'test',
         ];
         $metadata['properties']['c2'] = [
             'name'   => 'c2',
-            'class'  => $pNs . '\\Str',
+            'class'  => Str::class,
             'config' => [],
             'hash'   => 'test',
         ];
         $metadata['properties']['overloaded'] = [
             'name'   => 'overloaded',
-            'class'  => $pNs . '\\Str',
+            'class'  => Str::class,
             'config' => [
                 'default' => 'FromB',
             ],

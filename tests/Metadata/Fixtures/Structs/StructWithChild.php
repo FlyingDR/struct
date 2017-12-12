@@ -3,7 +3,7 @@
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
 use Flying\Struct\Annotation as Struct;
-use Flying\Struct\ConfigurationManager;
+use Flying\Struct\Property\Str;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
@@ -20,7 +20,6 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
      */
     public function getExpectedMetadata()
     {
-        $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
         $metadata = [
             'name'       => null,
             'class'      => __CLASS__,
@@ -29,7 +28,7 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
             'properties' => [
                 'name'  => [
                     'name'   => 'name',
-                    'class'  => $pNs . '\\Str',
+                    'class'  => Str::class,
                     'config' => [
                         'nullable'  => false,
                         'maxlength' => 100,
@@ -38,7 +37,7 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
                 ],
                 'email' => [
                     'name'   => 'email',
-                    'class'  => $pNs . '\\Str',
+                    'class'  => Str::class,
                     'config' => [
                         'nullable'  => false,
                         'maxlength' => 255,
@@ -47,7 +46,7 @@ class StructWithChild extends StructStub implements MetadataTestcaseInterface
                 ],
                 'child' => [
                     'name'       => 'child',
-                    'class'      => __NAMESPACE__ . '\\BasicStruct',
+                    'class'      => BasicStruct::class,
                     'config'     => [
                         'option'  => 'value',
                         'another' => 12345,

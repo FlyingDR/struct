@@ -3,9 +3,11 @@
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
 use Flying\Struct\Annotation as Struct;
-use Flying\Struct\ConfigurationManager;
 use Flying\Struct\Metadata\MetadataModificationInterface;
 use Flying\Struct\Metadata\StructMetadata;
+use Flying\Struct\Property\Boolean;
+use Flying\Struct\Property\Integer;
+use Flying\Struct\Property\Str;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
@@ -35,7 +37,6 @@ class StructWithMetadataModifications extends StructStub implements MetadataTest
      */
     public function getExpectedMetadata()
     {
-        $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
         return [
             'name'       => null,
             'class'      => __CLASS__,
@@ -44,7 +45,7 @@ class StructWithMetadataModifications extends StructStub implements MetadataTest
             'properties' => [
                 'first'  => [
                     'name'   => 'first',
-                    'class'  => $pNs . '\\Boolean',
+                    'class'  => Boolean::class,
                     'config' => [
                         'default' => true,
                     ],
@@ -52,7 +53,7 @@ class StructWithMetadataModifications extends StructStub implements MetadataTest
                 ],
                 'second' => [
                     'name'   => 'second',
-                    'class'  => $pNs . '\\Integer',
+                    'class'  => Integer::class,
                     'config' => [
                         'nullable' => false,
                         'default'  => 100,
@@ -63,7 +64,7 @@ class StructWithMetadataModifications extends StructStub implements MetadataTest
                 ],
                 'fourth' => [
                     'name'   => 'fourth',
-                    'class'  => $pNs . '\\Str',
+                    'class'  => Str::class,
                     'config' => [
                         'default' => 'another value',
                     ],

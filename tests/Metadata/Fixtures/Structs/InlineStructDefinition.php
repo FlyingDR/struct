@@ -3,7 +3,9 @@
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
 use Flying\Struct\Annotation as Struct;
-use Flying\Struct\ConfigurationManager;
+use Flying\Struct\Property\Boolean;
+use Flying\Struct\Property\Integer;
+use Flying\Struct\Property\Str;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
@@ -33,7 +35,6 @@ class InlineStructDefinition extends StructStub implements MetadataTestcaseInter
      */
     public function getExpectedMetadata()
     {
-        $pNs = ConfigurationManager::getConfiguration()->getPropertyNamespacesMap()->get('default');
         $metadata = [
             'name'       => null,
             'class'      => __CLASS__,
@@ -42,7 +43,7 @@ class InlineStructDefinition extends StructStub implements MetadataTestcaseInter
             'properties' => [
                 'boolean_property'                    => [
                     'name'   => 'boolean_property',
-                    'class'  => $pNs . '\\Boolean',
+                    'class'  => Boolean::class,
                     'config' => [
                         'default' => true,
                     ],
@@ -50,7 +51,7 @@ class InlineStructDefinition extends StructStub implements MetadataTestcaseInter
                 ],
                 'int_property'                        => [
                     'name'   => 'int_property',
-                    'class'  => $pNs . '\\Integer',
+                    'class'  => Integer::class,
                     'config' => [
                         'nullable' => false,
                         'default'  => 100,
@@ -61,13 +62,13 @@ class InlineStructDefinition extends StructStub implements MetadataTestcaseInter
                 ],
                 'string_property'                     => [
                     'name'   => 'string_property',
-                    'class'  => $pNs . '\\Str',
+                    'class'  => Str::class,
                     'config' => [],
                     'hash'   => 'test',
                 ],
                 'generic_property'                    => [
                     'name'   => 'generic_property',
-                    'class'  => $pNs . '\\Str',
+                    'class'  => Str::class,
                     'config' => [
                         'default' => 'some value',
                     ],
@@ -75,7 +76,7 @@ class InlineStructDefinition extends StructStub implements MetadataTestcaseInter
                 ],
                 'child_struct_with_explicit_class'    => [
                     'name'   => 'child_struct_with_explicit_class',
-                    'class'  => __NAMESPACE__ . '\\BasicStruct',
+                    'class'  => BasicStruct::class,
                     'config' => [],
                     'hash'   => 'test',
                 ],
@@ -87,19 +88,19 @@ class InlineStructDefinition extends StructStub implements MetadataTestcaseInter
                     'properties' => [
                         'a' => [
                             'name'   => 'a',
-                            'class'  => $pNs . '\\Boolean',
+                            'class'  => Boolean::class,
                             'config' => [],
                             'hash'   => 'test',
                         ],
                         'b' => [
                             'name'   => 'b',
-                            'class'  => $pNs . '\\Integer',
+                            'class'  => Integer::class,
                             'config' => [],
                             'hash'   => 'test',
                         ],
                         'c' => [
                             'name'   => 'c',
-                            'class'  => $pNs . '\\Str',
+                            'class'  => Str::class,
                             'config' => [],
                             'hash'   => 'test',
                         ],
@@ -111,7 +112,7 @@ class InlineStructDefinition extends StructStub implements MetadataTestcaseInter
                             'properties' => [
                                 'min' => [
                                     'name'   => 'min',
-                                    'class'  => $pNs . '\\Integer',
+                                    'class'  => Integer::class,
                                     'config' => [
                                         'default' => 0,
                                     ],
@@ -119,7 +120,7 @@ class InlineStructDefinition extends StructStub implements MetadataTestcaseInter
                                 ],
                                 'max' => [
                                     'name'   => 'max',
-                                    'class'  => $pNs . '\\Integer',
+                                    'class'  => Integer::class,
                                     'config' => [
                                         'default' => 100,
                                     ],
