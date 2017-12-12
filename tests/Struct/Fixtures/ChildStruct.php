@@ -2,6 +2,8 @@
 
 namespace Flying\Tests\Struct\Fixtures;
 
+use Flying\Struct\Annotation as Struct;
+
 /**
  * Child structure to test multi-level structures
  *

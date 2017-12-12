@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
+use Flying\Struct\Annotation as Struct;
 use Flying\Struct\ConfigurationManager;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 

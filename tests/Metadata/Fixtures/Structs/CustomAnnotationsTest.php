@@ -2,13 +2,14 @@
 
 namespace Flying\Tests\Metadata\Fixtures\Structs;
 
-use Flying\Struct\ConfigurationManager;
+use Flying\Struct\Annotation as Struct;
+use Flying\Tests\Metadata\Fixtures\Annotations as CustomStruct;
 use Flying\Tests\Metadata\Fixtures\Stubs\StructStub;
 
 /**
  * @Struct\Property(name="standard", type="string")
  * @Struct\Property(name="custom", type="custom", test=123, enabled=true)
- * @Struct\Custom(name="fromAnnotation", abc="xyz")
+ * @CustomStruct\Custom(name="fromAnnotation", abc="xyz")
  */
 class CustomAnnotationsTest extends StructStub implements MetadataTestcaseInterface
 {

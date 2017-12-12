@@ -2,6 +2,8 @@
 
 namespace Flying\Tests\Struct\Fixtures;
 
+use Flying\Struct\Annotation as Struct;
+
 /**
  * Fixture class with inline structure definition
  *

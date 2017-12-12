@@ -2,6 +2,7 @@
 
 namespace Flying\Tests\Struct\Fixtures;
 
+use Flying\Struct\Annotation as Struct;
 use Flying\Struct\Metadata\StructMetadata;
 
 /**
